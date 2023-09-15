@@ -5,7 +5,7 @@ import {routes} from "@/router";
 import {useRoute} from "vue-router";
 
 const settings = reactive({
-  projectName: 'admin-test'
+  projectName: 'king-admin-template'
 })
 
 const currentRoute = useRoute();
