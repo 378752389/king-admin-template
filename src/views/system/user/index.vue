@@ -1,6 +1,9 @@
 <script setup>
 import {getUserList} from "@/api/system/user";
-import {ref} from "vue";
+import {ref, onMounted} from "vue";
+import {useUserInfoStore} from "@/stores/userInfo";
+
+const userInfoStore = useUserInfoStore();
 
 const userList = ref([])
 const renderData = async () => {
@@ -9,16 +12,24 @@ const renderData = async () => {
   userList.value = userListResult.data.dataList;
 }
 
-renderData()
+onMounted(() => {
+  renderData()
+})
+
+const printUserInfo = () => {
+  console.log(userInfoStore.menuList, userInfoStore.permissionList, userInfoStore.userInfo)
+}
 </script>
 
 <template>
   <h1>系统用户页</h1>
+  <h2 v-auth="'system:user:add'"><span>haha </span>admin</h2>
   <ul>
     <li :key="user.id" v-for="user in userList">
-      {{ user}}
+      {{ user }}
     </li>
   </ul>
+  <el-button type="primary" @click="printUserInfo">click me</el-button>
 </template>
 
 <style scoped>

@@ -2,13 +2,16 @@
 import {ref, reactive} from 'vue';
 import {useRouter} from "vue-router";
 import SvgIcon from "@/components/SvgIcon.vue";
+import {useUserInfoStore} from "@/stores/userInfo";
+import {ElMessage} from "element-plus";
 
 const router = useRouter();
+const userInfoStore = useUserInfoStore();
 
 const loginData = ref({
-  username: '',
-  password: '',
-  agreement: false,
+  username: 'admin',
+  password: '123',
+  agreement: true,
 })
 
 const checkAgreement = (rule, value, callback) => {
@@ -24,7 +27,7 @@ const rules = reactive({
   ],
   password: [
     {required: true, message: '密码不能为空', trigger: 'blur'},
-    {min: 6, max: 15, message: '密码长度必须为6-15之间', trigger: 'blur'}
+    {min: 3, max: 15, message: '密码长度必须为6-15之间', trigger: 'blur'}
   ],
   agreement: [
     {validator: checkAgreement, trigger: 'blur'}
@@ -32,22 +35,33 @@ const rules = reactive({
 })
 
 const loginFormRef = ref(null);
-const doLogin = (loginFormRef) => {
-  loginFormRef.validate((valid) => {
+const doLogin = () => {
+  loginFormRef.value.validate(async (valid) => {
     if (!valid) {
-      // 表单校验失败，进行相应提示  TODO
+      // 表单校验失败，进行相应提示
+      ElMessage({
+        showClose: true,
+        message: '表单校验失败',
+        type: 'warning',
+      })
     }
+
+    // 登录
+    await userInfoStore.loadUserInfo({
+      username: loginData.value.username,
+      password: loginData.value.password
+    });
+
+    ElMessage({
+      showClose: true,
+      message: '登录成功',
+      type: 'success',
+    })
+
+    await router.replace({path: '/'})
   })
-  // TODO 提交表单
-  console.log(loginData.value)
-  if (loginData.value.username === 'admin'
-      && loginData.value.password === '123456'
-      && loginData.value.agreement === true
-  ) {
-    router.push('/')
-  } else {
-    console.log("username or password error")
-  }
+
+
 }
 </script>
 
@@ -76,7 +90,7 @@ const doLogin = (loginFormRef) => {
       </el-form-item>
 
       <el-form-item>
-        <el-button style="width: 100%" type="primary" @click="doLogin(loginFormRef)">登录</el-button>
+        <el-button style="width: 100%" type="primary" @click="doLogin">登录</el-button>
       </el-form-item>
     </el-form>
   </div>

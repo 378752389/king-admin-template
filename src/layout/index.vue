@@ -1,13 +1,18 @@
 <script setup>
 import SideBar from '@/layout/components/SideBar.vue'
 import NavBar from "@/layout/components/NavBar.vue";
-import {RouterView} from 'vue-router'
+import {RouterView} from 'vue-router';
+import {useUserInfoStore} from "@/stores/userInfo";
+import {storeToRefs} from "pinia";
+
+const {menuList} = storeToRefs(useUserInfoStore());
+
 </script>
 
 <template>
   <div class="view">
     <div class="side-bar-wrapper">
-      <SideBar/>
+      <SideBar :authed-route="menuList" />
     </div>
 
     <div class="main-wrapper">

@@ -4,6 +4,10 @@ import SvgIcon from "@/components/SvgIcon.vue";
 import {routes} from "@/router";
 import {useRoute} from "vue-router";
 
+const props = defineProps({
+  authedRoute: Array
+})
+
 const settings = reactive({
   projectName: 'king-admin-template'
 })
@@ -15,10 +19,30 @@ const isCollapse = ref(false)
 
 
 // const userPermission = []
-const processRoutes = () => {
+const processRoutes = (routeList) => {
   // 1. 依据权限来筛选子菜单
   // 2. 筛选所有隐藏菜单
-  return routes;
+  const permittedRoutes = [];
+  for (let i = 0; i < routeList.length; i++) {
+    const routeItem = routeList[i];
+    if (routeItem.meta
+        && routeItem.meta.permission
+        && routeItem.meta.permission.length > 0) {
+
+      // 路由项有配置permission，需要有对应的权限才能访问
+      if (props.authedRoute.indexOf(routeItem.meta.permission) !== -1) {
+        // 有对应的权限，进行渲染
+        permittedRoutes.push(routeItem);
+        if (routeItem.children && routeItem.children.length > 0) {
+          routeItem.children = processRoutes(routeItem.children);
+        }
+      }
+    } else {
+      // 路由项没有配置 permission，默认都可以访问
+      permittedRoutes.push(routeItem);
+    }
+  }
+  return permittedRoutes;
 }
 </script>
 
@@ -37,7 +61,7 @@ const processRoutes = () => {
         :default-active="currentRoute.path"
         :collapse="isCollapse"
         router>
-      <template v-for="routeItem in processRoutes()">
+      <template v-for="routeItem in processRoutes(routes)">
         <template v-if="routeItem.meta.hidden !== true">
           <!--        菜单项包含子菜单-->
           <el-sub-menu

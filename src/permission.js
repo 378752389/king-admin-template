@@ -1,21 +1,23 @@
-import router from '@/router/index'
+import router from '@/router/index';
 import NProgress from 'nprogress';
-import 'nprogress/nprogress.css'
+import 'nprogress/nprogress.css';
+import {useUserInfoStore} from "@/stores/userInfo";
 
 //白名单列表
 const whiteList = []
-const userPermissionList = []
 router.beforeEach(async (to, from, next) => {
     // console.log(to, from, next)
     NProgress.start();
     // 白名单列表，所有用户都可访问
     if (whiteList.indexOf(to.path) !== -1) {
         next();
+        return
     }
     // 判断目标路由是否有权限
-    else if (to.meta && to.meta.permission) {
+    if (to.meta && to.meta.permission) {
         // 判断用户是否拥有对应的权限
-        if (userPermissionList.indexOf(to.meta.permission) !== -1) {
+        const userInfoStore = useUserInfoStore();
+        if (userInfoStore.menuList && userInfoStore.menuList.indexOf(to.meta.permission) !== -1) {
             // 用户拥有对应权限
             next()
         } else {

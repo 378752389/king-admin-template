@@ -92,7 +92,8 @@ export const routes = [
         path: '/system',
         name: 'system',
         meta: {
-            title: '系统管理'
+            title: '系统管理',
+            permission: 'system'
         },
         component: () => import('@/layout/index.vue'),
         children: [
@@ -101,7 +102,8 @@ export const routes = [
                 name: 'user',
                 meta: {
                     title: '用户管理',
-                    icon: ''
+                    icon: '',
+                    permission: 'system:user'
                 },
                 component: () => import('@/views/system/user/index.vue')
             },
@@ -109,7 +111,8 @@ export const routes = [
                 path: 'role',
                 name: 'role',
                 meta: {
-                    title: '角色管理'
+                    title: '角色管理',
+                    permission: 'system:role'
                 },
                 component: () => import('@/views/system/role/index.vue')
             },
@@ -117,7 +120,8 @@ export const routes = [
                 path: 'resource',
                 name: 'resource',
                 meta: {
-                    title: '资源管理'
+                    title: '资源管理',
+                    permission: 'system:resource'
                 },
                 component: () => import('@/views/system/resource/index.vue')
             },
@@ -125,7 +129,8 @@ export const routes = [
                 path: 'log',
                 name: 'log',
                 meta: {
-                    title: '日志管理'
+                    title: '日志管理',
+                    permission: 'system:log'
                 },
                 component: () => import('@/views/system/log/index.vue')
             },
@@ -133,7 +138,8 @@ export const routes = [
                 path: 'config',
                 name: 'config',
                 meta: {
-                    title: '配置管理'
+                    title: '配置管理',
+                    permission: 'system:config'
                 },
                 component: () => import('@/views/system/config/index.vue')
             },
