@@ -1,6 +1,8 @@
 <script setup>
 import SectionTitle from "@/components/SectionTitle.vue";
-import {reactive, onMounted} from "vue";
+import {reactive, onMounted, ref} from "vue";
+import RoleDetail from "@/views/system/role/components/RoleDetail.vue";
+
 
 const searchForm = reactive({
   id: '',
@@ -93,9 +95,29 @@ const tableData = reactive([
   },
 ])
 
+const addFlag = ref(false);
+const roleDetailRef = ref(null);
+
 onMounted(() => {
   // todo 请求数据
 })
+
+const editRole = (row) => {
+  addFlag.value = false;
+  roleDetailRef.value.handleOpen(row);
+  console.log(row);
+}
+
+const addRole = () => {
+  addFlag.value = true;
+  roleDetailRef.value.handleOpen({});
+}
+
+const onSearch = () => {
+
+}
+
+
 
 
 </script>
@@ -128,7 +150,7 @@ onMounted(() => {
           />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">Query</el-button>
+          <el-button type="primary" @click="onSearch">查询</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -146,7 +168,7 @@ onMounted(() => {
         <el-table-column prop="createTime" label="创建时间"/>
         <el-table-column label="管理" align="center">
           <template #default="scope">
-            <el-button type="warning" size="small" @click="console.log(scope.row)">编辑</el-button>
+            <el-button type="warning" size="small" @click="editRole(scope.row)">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -161,6 +183,7 @@ onMounted(() => {
     </el-card>
   </div>
 
+  <RoleDetail :add-flag="addFlag" ref="roleDetailRef" />
 </template>
 
 <style lang="less" scoped>

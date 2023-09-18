@@ -1,5 +1,5 @@
 <script setup>
-import {getUserList} from "@/api/system/user";
+import {getUserPage} from "@/api/system/user";
 import {ref, onMounted} from "vue";
 import {useUserInfoStore} from "@/stores/userInfo";
 
@@ -8,7 +8,7 @@ const userInfoStore = useUserInfoStore();
 const userList = ref([])
 const renderData = async () => {
   // 分页获取用户列表数据
-  const userListResult = await getUserList();
+  const userListResult = await getUserPage();
   userList.value = userListResult.data.dataList;
 }
 
