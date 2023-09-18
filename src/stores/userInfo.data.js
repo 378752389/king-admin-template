@@ -1,4 +1,4 @@
-export const permissionData = {
+const permissionData = {
     "resourceList": [
         {
             "id": 1,
@@ -134,3 +134,5 @@ export const permissionData = {
     "uid": 1,
     "username": "admin"
 }
+
+export default permissionData

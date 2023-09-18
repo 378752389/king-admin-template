@@ -5,7 +5,10 @@ import {routes} from "@/router";
 import {useRoute} from "vue-router";
 
 const props = defineProps({
-  authedRoute: Array
+  authedRoute: {
+    type: Array,
+    default: () => []
+  }
 })
 
 const settings = reactive({
