@@ -1,11 +1,198 @@
 <script setup>
+import SectionTitle from "@/components/SectionTitle.vue";
+import {reactive, onMounted} from "vue";
+
+const searchForm = reactive({
+  id: '',
+  roleName: '',
+  createTime: '',
+})
+
+const pageData = reactive({
+  pageNum: 1,
+  pageSize: 10,
+  total: 100,
+  pageSizeList: [10, 20, 50, 100]
+})
+
+const tableData = reactive([
+  {
+    id: 1,
+    roleName: 'admin',
+    createTime: ''
+  },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
+  {
+    id: 3,
+    roleName: 'operation',
+    createTime: ''
+  },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
+])
+
+onMounted(() => {
+  // todo 请求数据
+})
+
 
 </script>
 
 <template>
-  <h1>系统角色页</h1>
+  <div class="data-wrapper">
+    <el-card class="search-card">
+      <SectionTitle title="查询搜索"/>
+      <!--      todo 查询表单数据-->
+      <el-form :inline="true" :model="searchForm">
+        <el-form-item label="id">
+          <el-input v-model="searchForm.id" placeholder="角色id" clearable/>
+        </el-form-item>
+        <el-form-item label="角色名">
+          <el-select
+              v-model="searchForm.roleName"
+              placeholder="角色名称"
+              clearable
+          >
+            <el-option label="Zone one" value="shanghai"/>
+            <el-option label="Zone two" value="beijing"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="创建时间">
+          <el-date-picker
+              v-model="searchForm.createTime"
+              type="datetime"
+              placeholder="角色创建时间"
+              clearable
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">Query</el-button>
+        </el-form-item>
+      </el-form>
+    </el-card>
+
+    <el-divider/>
+
+
+    <el-card class="content-card">
+      <SectionTitle title="数据列表"/>
+      <!--     todo 表格数据-->
+      <!--      table-layout: 固定表格宽度，让表格撑满整个父元素-->
+      <el-table :data="tableData" table-layout="fixed" max-height="490px">
+        <el-table-column prop="id" label="角色id"/>
+        <el-table-column prop="roleName" label="角色名称"/>
+        <el-table-column prop="createTime" label="创建时间"/>
+        <el-table-column label="管理" align="center">
+          <template #default="scope">
+            <el-button type="warning" size="small" @click="console.log(scope.row)">编辑</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <el-divider/>
+      <!--      分页-->
+      <el-pagination background layout="prev, pager, jumper, next, total, sizes"
+                     v-model:current-page="pageData.pageNum"
+                     v-model:page-size="pageData.pageSize"
+                     :page-sizes="pageData.pageSizeList"
+                     :total="pageData.total"/>
+    </el-card>
+  </div>
+
 </template>
 
-<style scoped>
+<style lang="less" scoped>
+
+.data-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.content-card {
+  flex-grow: 1;
+}
+
+:deep(.content-card .el-card__body) {
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .el-table {
+    flex-grow: 1;
+  }
+
+  .el-pagination {
+    justify-content: end;
+  }
+}
+
+:deep(.el-form-item) {
+  align-items: center;
+}
+
 
 </style>

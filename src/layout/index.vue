@@ -36,5 +36,12 @@ const {menuList} = storeToRefs(useUserInfoStore());
 
 .main-wrapper {
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-wrapper {
+  padding: 10px 20px;
+  flex-grow: 1;
 }
 </style>
