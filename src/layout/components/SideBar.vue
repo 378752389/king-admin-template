@@ -1,8 +1,12 @@
 <script setup>
-import {ref, reactive} from 'vue'
+import {reactive} from 'vue'
 import SvgIcon from "@/components/SvgIcon.vue";
 import {routes} from "@/router";
 import {useRoute} from "vue-router";
+import {useAppStore} from "@/stores/app";
+import {storeToRefs} from "pinia";
+
+const {sidebarCollapse} = storeToRefs(useAppStore());
 
 const props = defineProps({
   authedRoute: {
@@ -16,12 +20,6 @@ const settings = reactive({
 })
 
 const currentRoute = useRoute();
-
-
-const isCollapse = ref(false)
-
-
-// const userPermission = []
 const processRoutes = (routeList) => {
   // 1. 依据权限来筛选子菜单
   // 2. 筛选所有隐藏菜单
@@ -54,7 +52,7 @@ const processRoutes = (routeList) => {
   <div class="side-bar-area">
     <div class="project-title">
       <SvgIcon icon="king-home-filled"/>
-      <span v-if="!isCollapse">{{ settings.projectName }}</span>
+      <span v-if="!sidebarCollapse">{{ settings.projectName }}</span>
     </div>
     <el-menu
         active-text-color="#409eff"
@@ -62,7 +60,7 @@ const processRoutes = (routeList) => {
         text-color="#bfcbd9"
         class="side-bar"
         :default-active="currentRoute.path"
-        :collapse="isCollapse"
+        :collapse="sidebarCollapse"
         router>
       <template v-for="routeItem in processRoutes(routes)">
         <template v-if="routeItem.meta.hidden !== true">
@@ -103,13 +101,13 @@ const processRoutes = (routeList) => {
       </template>
     </el-menu>
 
-<!--    <el-button-->
-<!--        class="collapse-btn"-->
-<!--        @click="isCollapse = !isCollapse"-->
-<!--        text>-->
-<!--      <SvgIcon v-if="isCollapse" icon="king-expand"/>-->
-<!--      <SvgIcon v-else icon="king-fold"/>-->
-<!--    </el-button>-->
+    <!--    <el-button-->
+    <!--        class="collapse-btn"-->
+    <!--        @click="isCollapse = !isCollapse"-->
+    <!--        text>-->
+    <!--      <SvgIcon v-if="isCollapse" icon="king-expand"/>-->
+    <!--      <SvgIcon v-else icon="king-fold"/>-->
+    <!--    </el-button>-->
   </div>
 
 

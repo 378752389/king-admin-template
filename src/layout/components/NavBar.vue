@@ -3,6 +3,11 @@
 import SvgIcon from "@/components/SvgIcon.vue";
 import {useRouter} from "vue-router";
 import {useRoute} from "vue-router";
+import {storeToRefs} from "pinia";
+import {useAppStore} from "@/stores/app";
+
+const appStore = useAppStore();
+const {sidebarCollapse} = storeToRefs(appStore);
 
 const route = useRoute();
 
@@ -11,17 +16,27 @@ const router = useRouter();
 const logout = () => {
   router.push("/login")
 }
+
+const doToggle = () => {
+  appStore.toggleSideBar();
+}
 </script>
 
 <template>
   <div class="nav-bar">
-    <el-breadcrumb class="breadcrumb" separator="/">
-      <el-breadcrumb-item :key="item.meta.title"
-                          :to="{ path: item.path }"
-                          v-for="item in route.matched">
-        {{ item.meta.title }}
-      </el-breadcrumb-item>
-    </el-breadcrumb>
+    <div class="left">
+
+      <el-link class="collapse-btn" :underline="false" @click="doToggle">
+        <SvgIcon :icon="sidebarCollapse ? 'king-expand': 'king-fold'"/>
+      </el-link>
+      <el-breadcrumb class="breadcrumb" separator="/">
+        <el-breadcrumb-item :key="item.meta.title"
+                            :to="{ path: item.path }"
+                            v-for="item in route.matched">
+          {{ item.meta.title }}
+        </el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
 
     <el-dropdown placement="bottom-start">
       <el-link :underline="false">
@@ -53,14 +68,21 @@ const logout = () => {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.breadcrumb {
+.left {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
 
+.collapse-btn {
+  font-size: 1.5em;
+  line-height: 100%;
+  margin-right: 20px;
 }
 
 .el-link {
   margin-right: 30px;
 }
 
-.el-avatar {
-}
+
 </style>

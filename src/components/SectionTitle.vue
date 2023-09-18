@@ -31,7 +31,6 @@ defineProps({
 .section-title {
   display: flex;
   align-items: center;
-  padding: 0 0 20px;
   line-height: 40px;
 
   &::before {

@@ -33,66 +33,66 @@ const tableData = reactive([
     roleName: 'operation',
     createTime: ''
   },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
+  // {
+  //   id: 2,
+  //   roleName: 'development',
+  //   createTime: ''
+  // },
+  // {
+  //   id: 2,
+  //   roleName: 'development',
+  //   createTime: ''
+  // },
+  // {
+  //   id: 2,
+  //   roleName: 'development',
+  //   createTime: ''
+  // },
+  // {
+  //   id: 2,
+  //   roleName: 'development',
+  //   createTime: ''
+  // },
+  // {
+  //   id: 2,
+  //   roleName: 'development',
+  //   createTime: ''
+  // },
+  // {
+  //   id: 2,
+  //   roleName: 'development',
+  //   createTime: ''
+  // },
+  // {
+  //   id: 2,
+  //   roleName: 'development',
+  //   createTime: ''
+  // },
+  // {
+  //   id: 2,
+  //   roleName: 'development',
+  //   createTime: ''
+  // },
+  // {
+  //   id: 2,
+  //   roleName: 'development',
+  //   createTime: ''
+  // },
+  // {
+  //   id: 2,
+  //   roleName: 'development',
+  //   createTime: ''
+  // },
+  // {
+  //   id: 2,
+  //   roleName: 'development',
+  //   createTime: ''
+  // },
+  // {
+  //   id: 2,
+  //   roleName: 'development',
+  //   createTime: ''
+  // },
 ])
 
 const addFlag = ref(false);
@@ -118,14 +118,15 @@ const onSearch = () => {
 }
 
 
-
-
 </script>
 
 <template>
   <div class="data-wrapper">
     <el-card class="search-card">
-      <SectionTitle title="查询搜索"/>
+      <template #header>
+        <SectionTitle title="查询搜索"/>
+      </template>
+
       <!--      todo 查询表单数据-->
       <el-form :inline="true" :model="searchForm">
         <el-form-item label="id">
@@ -159,10 +160,12 @@ const onSearch = () => {
 
 
     <el-card class="content-card">
-      <SectionTitle title="数据列表"/>
+      <template #header>
+        <SectionTitle title="数据列表"/>
+      </template>
       <!--     todo 表格数据-->
       <!--      table-layout: 固定表格宽度，让表格撑满整个父元素-->
-      <el-table :data="tableData" table-layout="fixed" max-height="495px">
+      <el-table :data="tableData" table-layout="fixed" max-height="470px">
         <el-table-column prop="id" label="角色id"/>
         <el-table-column prop="roleName" label="角色名称"/>
         <el-table-column prop="createTime" label="创建时间"/>
@@ -183,7 +186,7 @@ const onSearch = () => {
     </el-card>
   </div>
 
-  <RoleDetail :add-flag="addFlag" ref="roleDetailRef" />
+  <RoleDetail :add-flag="addFlag" ref="roleDetailRef"/>
 </template>
 
 <style lang="less" scoped>
@@ -194,15 +197,18 @@ const onSearch = () => {
   height: 100%;
 }
 
+.search-card {
+  flex-shrink: 0;
+}
+
 .content-card {
   flex-grow: 1;
 }
 
 :deep(.content-card .el-card__body) {
-  overflow: hidden;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  height: 100%;
 
   .el-table {
     flex-grow: 1;
