@@ -31,6 +31,7 @@ const {menuList} = storeToRefs(useUserInfoStore());
 <style scoped>
 .view {
   display: flex;
+  width: 100vw;
   height: 100vh;
 }
 
@@ -42,6 +43,6 @@ const {menuList} = storeToRefs(useUserInfoStore());
 
 .content-wrapper {
   padding: 10px 20px;
-  flex-grow: 1;
+  min-height: calc(100vh - 60px);
 }
 </style>

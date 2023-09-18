@@ -162,7 +162,7 @@ const onSearch = () => {
       <SectionTitle title="数据列表"/>
       <!--     todo 表格数据-->
       <!--      table-layout: 固定表格宽度，让表格撑满整个父元素-->
-      <el-table :data="tableData" table-layout="fixed" max-height="490px">
+      <el-table :data="tableData" table-layout="fixed" max-height="495px">
         <el-table-column prop="id" label="角色id"/>
         <el-table-column prop="roleName" label="角色名称"/>
         <el-table-column prop="createTime" label="创建时间"/>

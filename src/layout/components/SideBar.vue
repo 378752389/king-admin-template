@@ -103,13 +103,13 @@ const processRoutes = (routeList) => {
       </template>
     </el-menu>
 
-    <el-button
-        class="collapse-btn"
-        @click="isCollapse = !isCollapse"
-        text>
-      <SvgIcon v-if="isCollapse" icon="king-expand"/>
-      <SvgIcon v-else icon="king-fold"/>
-    </el-button>
+<!--    <el-button-->
+<!--        class="collapse-btn"-->
+<!--        @click="isCollapse = !isCollapse"-->
+<!--        text>-->
+<!--      <SvgIcon v-if="isCollapse" icon="king-expand"/>-->
+<!--      <SvgIcon v-else icon="king-fold"/>-->
+<!--    </el-button>-->
   </div>
 
 
@@ -120,7 +120,7 @@ const processRoutes = (routeList) => {
 .side-bar-area {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
 //background-color: #304156;
 }
 
