@@ -44,5 +44,7 @@ const {menuList} = storeToRefs(useUserInfoStore());
 .content-wrapper {
   padding: 10px 20px;
   min-height: calc(100vh - 60px);
+  display: flex;
+  flex-direction: column;
 }
 </style>

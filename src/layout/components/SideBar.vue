@@ -50,10 +50,10 @@ const processRoutes = (routeList) => {
 <template>
 
   <div class="side-bar-area">
-    <div class="project-title">
-      <SvgIcon icon="king-home-filled"/>
-      <span v-if="!sidebarCollapse">{{ settings.projectName }}</span>
-    </div>
+<!--    <div class="project-title">-->
+<!--      <SvgIcon icon="king-home-filled"/>-->
+<!--      <span v-if="!sidebarCollapse">{{ settings.projectName }}</span>-->
+<!--    </div>-->
     <el-menu
         active-text-color="#409eff"
         background-color="#304156"
