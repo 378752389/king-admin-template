@@ -107,6 +107,23 @@ const tableData = reactive([
   },
 ])
 
+const searchFormRef = ref(null)
+
+const onSearch = () => {
+
+}
+const onReset = () => {
+  // 在模板中必须填写 prop 字段
+  searchFormRef.value.resetFields();
+}
+
+const onAdd = () => {
+
+}
+
+const onEdit = (row) => {
+  console.log(row)
+}
 </script>
 
 <template>
@@ -116,11 +133,11 @@ const tableData = reactive([
     </template>
 
     <!--      todo 查询表单数据-->
-    <el-form :inline="true" :model="searchForm">
-      <el-form-item label="id">
-        <el-input v-model="searchForm.id" placeholder="角色id" clearable/>
+    <el-form ref="searchFormRef" :inline="true" :model="searchForm">
+      <el-form-item label="id" prop="id">
+        <el-input v-model="searchForm.id" placeholder="角色id" />
       </el-form-item>
-      <el-form-item label="角色名">
+      <el-form-item label="角色名" prop="roleName">
         <el-select
             v-model="searchForm.roleName"
             placeholder="角色名称"
@@ -130,7 +147,7 @@ const tableData = reactive([
           <el-option label="Zone two" value="beijing"/>
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间">
+      <el-form-item label="创建时间" prop="createTime">
         <el-date-picker
             v-model="searchForm.createTime"
             type="datetime"
@@ -140,8 +157,8 @@ const tableData = reactive([
       </el-form-item>
       <el-form-item style="">
         <el-button type="primary" @click="onSearch">查询</el-button>
-        <el-button type="default" @click="onSearch">重置</el-button>
-        <el-button type="success" @click="onSearch">创建</el-button>
+        <el-button type="default" @click="onReset">重置</el-button>
+        <el-button type="success" v-auth="'system:user:add'" @click="onAdd">创建</el-button>
       </el-form-item>
     </el-form>
   </el-card>
@@ -161,7 +178,7 @@ const tableData = reactive([
         <el-table-column prop="createTime" label="创建时间"/>
         <el-table-column label="管理" align="center">
           <template #default="scope">
-            <el-button type="warning" size="small" @click="editRole(scope.row)">编辑</el-button>
+            <el-button type="warning" size="small" @click="onEdit(scope.row)">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
