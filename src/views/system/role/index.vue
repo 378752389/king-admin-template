@@ -33,66 +33,66 @@ const tableData = reactive([
     roleName: 'operation',
     createTime: ''
   },
-  // {
-  //   id: 2,
-  //   roleName: 'development',
-  //   createTime: ''
-  // },
-  // {
-  //   id: 2,
-  //   roleName: 'development',
-  //   createTime: ''
-  // },
-  // {
-  //   id: 2,
-  //   roleName: 'development',
-  //   createTime: ''
-  // },
-  // {
-  //   id: 2,
-  //   roleName: 'development',
-  //   createTime: ''
-  // },
-  // {
-  //   id: 2,
-  //   roleName: 'development',
-  //   createTime: ''
-  // },
-  // {
-  //   id: 2,
-  //   roleName: 'development',
-  //   createTime: ''
-  // },
-  // {
-  //   id: 2,
-  //   roleName: 'development',
-  //   createTime: ''
-  // },
-  // {
-  //   id: 2,
-  //   roleName: 'development',
-  //   createTime: ''
-  // },
-  // {
-  //   id: 2,
-  //   roleName: 'development',
-  //   createTime: ''
-  // },
-  // {
-  //   id: 2,
-  //   roleName: 'development',
-  //   createTime: ''
-  // },
-  // {
-  //   id: 2,
-  //   roleName: 'development',
-  //   createTime: ''
-  // },
-  // {
-  //   id: 2,
-  //   roleName: 'development',
-  //   createTime: ''
-  // },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
+  {
+    id: 2,
+    roleName: 'development',
+    createTime: ''
+  },
 ])
 
 const addFlag = ref(false);
@@ -163,26 +163,29 @@ const onSearch = () => {
       <template #header>
         <SectionTitle title="数据列表"/>
       </template>
-      <!--     todo 表格数据-->
-      <!--      table-layout: 固定表格宽度，让表格撑满整个父元素-->
-      <el-table :data="tableData" table-layout="fixed" max-height="470px">
-        <el-table-column prop="id" label="角色id"/>
-        <el-table-column prop="roleName" label="角色名称"/>
-        <el-table-column prop="createTime" label="创建时间"/>
-        <el-table-column label="管理" align="center">
-          <template #default="scope">
-            <el-button type="warning" size="small" @click="editRole(scope.row)">编辑</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <div class="table-wrapper">
+        <!--     todo 表格数据-->
+        <!--      table-layout: 固定表格宽度，让表格撑满整个父元素-->
+        <el-table :data="tableData" table-layout="fixed" max-height="500px">
+          <el-table-column prop="id" label="角色id"/>
+          <el-table-column prop="roleName" label="角色名称"/>
+          <el-table-column prop="createTime" label="创建时间"/>
+          <el-table-column label="管理" align="center">
+            <template #default="scope">
+              <el-button type="warning" size="small" @click="editRole(scope.row)">编辑</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
 
-      <el-divider/>
-      <!--      分页-->
-      <el-pagination background layout="prev, pager, jumper, next, total, sizes"
-                     v-model:current-page="pageData.pageNum"
-                     v-model:page-size="pageData.pageSize"
-                     :page-sizes="pageData.pageSizeList"
-                     :total="pageData.total"/>
+      <div class="page-wrapper">
+        <!--      分页-->
+        <el-pagination background layout="prev, pager, jumper, next, total, sizes"
+                       v-model:current-page="pageData.pageNum"
+                       v-model:page-size="pageData.pageSize"
+                       :page-sizes="pageData.pageSizeList"
+                       :total="pageData.total"/>
+      </div>
     </el-card>
   </div>
 
@@ -203,24 +206,28 @@ const onSearch = () => {
 
 .content-card {
   flex-grow: 1;
-}
-
-:deep(.content-card .el-card__body) {
   display: flex;
   flex-direction: column;
-  height: 100%;
 
-  .el-table {
+  &:deep(.el-card__body) {
+    position: relative;
     flex-grow: 1;
-  }
 
-  .el-pagination {
-    justify-content: end;
-  }
-}
+    .table-wrapper {
+      width: calc(100% - 40px);
+      position: absolute;
+    }
 
-:deep(.el-form-item) {
-  align-items: center;
+    .page-wrapper {
+      width: calc(100% - 40px);
+      position: absolute;
+      bottom: 10px;
+
+      .el-pagination {
+        justify-content: right;
+      }
+    }
+  }
 }
 
 

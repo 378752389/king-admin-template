@@ -52,59 +52,59 @@ const tableData = reactive([
     roleName: 'operation',
     createTime: ''
   },
-  // {
-  //   id: 3,
-  //   roleName: 'operation',
-  //   createTime: ''
-  // },
-  // {
-  //   id: 3,
-  //   roleName: 'operation',
-  //   createTime: ''
-  // },
-  // {
-  //   id: 3,
-  //   roleName: 'operation',
-  //   createTime: ''
-  // },
-  // {
-  //   id: 3,
-  //   roleName: 'operation',
-  //   createTime: ''
-  // },
-  // {
-  //   id: 3,
-  //   roleName: 'operation',
-  //   createTime: ''
-  // },
-  // {
-  //   id: 3,
-  //   roleName: 'operation',
-  //   createTime: ''
-  // },{
-  //   id: 3,
-  //   roleName: 'operation',
-  //   createTime: ''
-  // },
-  // {
-  //   id: 3,
-  //   roleName: 'operation',
-  //   createTime: ''
-  // },{
-  //   id: 3,
-  //   roleName: 'operation',
-  //   createTime: ''
-  // },
-  // {
-  //   id: 3,
-  //   roleName: 'operation',
-  //   createTime: ''
-  // },
-  // {
-  //   id: 3,
-  //   roleName: 'operation',
-  //   createTime: ''
-  // },
+  {
+    id: 3,
+    roleName: 'operation',
+    createTime: ''
+  },
+  {
+    id: 3,
+    roleName: 'operation',
+    createTime: ''
+  },
+  {
+    id: 3,
+    roleName: 'operation',
+    createTime: ''
+  },
+  {
+    id: 3,
+    roleName: 'operation',
+    createTime: ''
+  },
+  {
+    id: 3,
+    roleName: 'operation',
+    createTime: ''
+  },
+  {
+    id: 3,
+    roleName: 'operation',
+    createTime: ''
+  },{
+    id: 3,
+    roleName: 'operation',
+    createTime: ''
+  },
+  {
+    id: 3,
+    roleName: 'operation',
+    createTime: ''
+  },{
+    id: 3,
+    roleName: 'operation',
+    createTime: ''
+  },
+  {
+    id: 3,
+    roleName: 'operation',
+    createTime: ''
+  },
+  {
+    id: 3,
+    roleName: 'operation',
+    createTime: ''
+  },
 ])
 
 </script>
@@ -138,8 +138,10 @@ const tableData = reactive([
             clearable
         />
       </el-form-item>
-      <el-form-item>
+      <el-form-item style="">
         <el-button type="primary" @click="onSearch">查询</el-button>
+        <el-button type="default" @click="onSearch">重置</el-button>
+        <el-button type="success" @click="onSearch">创建</el-button>
       </el-form-item>
     </el-form>
   </el-card>
@@ -166,7 +168,6 @@ const tableData = reactive([
     </div>
 
     <div class="page-wrapper">
-      <el-divider/>
       <!--      分页-->
       <el-pagination background layout="prev, pager, jumper, next, total, sizes"
                      v-model:current-page="pageData.pageNum"
@@ -199,6 +200,8 @@ const tableData = reactive([
       width: calc(100% - 40px);
       position: absolute;
       bottom: 10px;
+      background-color: white;
+      z-index: 10;
 
       .el-pagination {
         justify-content: right;

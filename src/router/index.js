@@ -6,30 +6,21 @@ export const routes = [
         path: '/',
         name: 'home',
         meta: {
-            title: '主页',
-            hidden: true
-        },
-        // component: () => import('@/views/AboutView.vue')
-        component: () => import('@/layout/index.vue')
-    },
-    {
-        path: '/login',
-        name: 'login',
-        meta: {
-            title: '登录',
-            hidden: true
-        },
-        component: () => import('@/views/login/index.vue')
-    },
-    {
-        path: '/common',
-        name: 'common',
-        meta: {
-            title: '通用页',
+            title: 'king-food-admin',
+            icon: 'king-home-filled',
             hidden: true
         },
         component: () => import('@/layout/index.vue'),
         children: [
+            {
+                path: '',
+                name: 'home1',
+                meta: {
+                    title: '主页',
+                    icon: 'king-home-filled',
+                },
+                component: () => import('@/views/common/profiler.vue')
+            },
             {
                 path: '401',
                 name: '401',
@@ -51,6 +42,15 @@ export const routes = [
                 component: () => import('@/views/common/404.vue')
             },
         ]
+    },
+    {
+        path: '/login',
+        name: 'login',
+        meta: {
+            title: '登录',
+            hidden: true
+        },
+        component: () => import('@/views/login/index.vue')
     },
     {
         path: '/test',
