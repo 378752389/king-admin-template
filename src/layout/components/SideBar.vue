@@ -21,7 +21,7 @@ const currentRoute = useRoute();
 const sidebarWidth = ref('0');
 
 watch(sidebarCollapse, (n) => {
-  sidebarWidth.value = n ? '0' : '200px';
+  sidebarWidth.value = n ? '0' : '230px';
 }, {immediate: true})
 
 const processRoutes = (routeList) => {
@@ -116,18 +116,24 @@ const processRoutes = (routeList) => {
     flex-grow: 1;
 
     // 设置侧边栏的最小宽度，不然内容会被侧边栏 menu-item撑开
-    .el-sub-menu {
+    .el-sub-menu, .el-menu-item {
       min-width: v-bind(sidebarWidth);
+    }
+
+    .el-sub-menu__title:hover {
+      background-color: #1b2c3d !important;
+    }
+
+    .el-menu-item:hover {
+      background-color: #001528 !important;
+      color: white;
     }
 
     .el-menu-item {
       background-color: #1b2c3d;
     }
+
+
   }
 }
-
-.el-button.is-text:not(.is-disabled):focus, .el-button.is-text:not(.is-disabled):hover {
-  background-color: #304156;
-}
-
 </style>
