@@ -89,6 +89,108 @@ export const routes = [
         ]
     },
     {
+        path: '/content',
+        name: 'content',
+        meta: {
+            title: '内容管理'
+        },
+        component: () => import('@/layout/index.vue'),
+        children: [
+            {
+                path: 'category',
+                name: 'category',
+                meta: {
+                    title: '目录管理'
+                },
+                component: () => import('@/views/content/category/index.vue')
+            },
+            {
+                path: 'food',
+                name: 'food',
+                meta: {
+                    title: '食品管理'
+                },
+                component: () => import('@/views/content/food/index.vue')
+            },
+            {
+                path: 'material',
+                name: 'material',
+                meta: {
+                    title: '物料管理'
+                },
+                component: () => import('@/views/content/material/index.vue')
+            },
+        ]
+    },
+    {
+        path: '/order',
+        name: 'order',
+        meta: {
+            title: '订单管理'
+        },
+        component: () => import('@/layout/index.vue'),
+        children: [
+            {
+                path: 'list',
+                name: 'list',
+                meta: {
+                    title: '订单列表'
+                },
+                component: () => import('@/views/order/list/index.vue')
+            },
+            {
+                path: 'setting',
+                name: 'setting',
+                meta: {
+                    title: '退货申请管理'
+                },
+                component: () => import('@/views/order/setting/index.vue')
+            },
+            {
+                path: 'returnApply',
+                name: 'returnApply',
+                meta: {
+                    title: '退货申请管理'
+                },
+                component: () => import('@/views/order/returnApply/index.vue')
+            },
+            {
+                path: 'returnReason',
+                name: 'returnReason',
+                meta: {
+                    title: '退货原因管理'
+                },
+                component: () => import('@/views/order/returnReason/index.vue')
+            },
+        ]
+    },
+    {
+        path: '/marketing',
+        name: 'marketing',
+        meta: {
+            title: '营销管理'
+        },
+        component: () => import('@/layout/index.vue'),
+        children: [
+            {
+                path: 'coupon',
+                name: 'coupon',
+                meta: {
+                    title: '优惠券管理'
+                },
+                component: () => import('@/views/marketing/coupon/index.vue')
+            },
+            {
+                path: 'advertise',
+                name: 'advertise',
+                meta: {
+                    title: '广告管理'
+                },
+                component: () => import('@/views/marketing/advertise/index.vue')
+            },
+        ]
+    },
+    {
         path: '/system',
         name: 'system',
         meta: {
