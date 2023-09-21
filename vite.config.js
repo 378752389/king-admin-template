@@ -32,10 +32,10 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            [`import.meta.VITE_HTTP_BASE_URL`]: {
+            [`import.meta.env.VITE_HTTP_BASE_URL`]: {
                 target: 'http://localhost:8080',
                 changeOrigin: true,
-                rewrite: (path) => path.replace(/^\/`import.meta.VITE_HTTP_BASE_URL`/, '')
+                rewrite: (path) => path.replace(/^\/`import.meta.env.VITE_HTTP_BASE_URL`/, '')
             }
         }
     }

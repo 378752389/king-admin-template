@@ -1,7 +1,8 @@
 <script setup>
 
 import SectionTitle from "@/components/SectionTitle.vue";
-import {reactive, ref} from 'vue';
+import {reactive, ref, onMounted} from 'vue';
+import {getLogPage} from '@/api/system/log';
 
 const searchForm = ref({
   id: '',
@@ -16,96 +17,8 @@ const pageData = reactive({
   pageSizeList: [10, 20, 50, 100]
 })
 
-const tableData = reactive([
-  {
-    id: 1,
-    roleName: 'admin',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-  {
-    id: 3,
-    roleName: 'operation',
-    createTime: ''
-  },
-  {
-    id: 3,
-    roleName: 'operation',
-    createTime: ''
-  },
-  {
-    id: 3,
-    roleName: 'operation',
-    createTime: ''
-  },
-  {
-    id: 3,
-    roleName: 'operation',
-    createTime: ''
-  },
-  {
-    id: 3,
-    roleName: 'operation',
-    createTime: ''
-  },
-  {
-    id: 3,
-    roleName: 'operation',
-    createTime: ''
-  },
-  {
-    id: 3,
-    roleName: 'operation',
-    createTime: ''
-  },
-  {
-    id: 3,
-    roleName: 'operation',
-    createTime: ''
-  },
-  {
-    id: 3,
-    roleName: 'operation',
-    createTime: ''
-  },
-  {
-    id: 3,
-    roleName: 'operation',
-    createTime: ''
-  },
-  {
-    id: 3,
-    roleName: 'operation',
-    createTime: ''
-  },{
-    id: 3,
-    roleName: 'operation',
-    createTime: ''
-  },
-  {
-    id: 3,
-    roleName: 'operation',
-    createTime: ''
-  },{
-    id: 3,
-    roleName: 'operation',
-    createTime: ''
-  },
-  {
-    id: 3,
-    roleName: 'operation',
-    createTime: ''
-  },
-  {
-    id: 3,
-    roleName: 'operation',
-    createTime: ''
-  },
-])
+
+const tableData = ref([])
 
 const searchFormRef = ref(null)
 
@@ -124,6 +37,26 @@ const onAdd = () => {
 const onEdit = (row) => {
   console.log(row)
 }
+
+const loadData = async (page) => {
+  const pageDataResult = await getLogPage(page || {});
+  tableData.value = pageDataResult.data.dataList;
+  pageData.pageNum = pageDataResult.data.pageNum;
+  pageData.pageSize = pageDataResult.data.pageSize;
+  pageData.total = pageDataResult.data.total;
+}
+
+const pageNumChange = (pageNum) => {
+  loadData({pageNum, pageSize: pageData.pageSize})
+}
+const pageSizeChange = (pageSize) => {
+  loadData({pageSize, pageNum: pageData.pageNum})
+}
+
+
+onMounted(() => {
+  loadData()
+})
 </script>
 
 <template>
@@ -134,10 +67,7 @@ const onEdit = (row) => {
 
     <!--      todo 查询表单数据-->
     <el-form ref="searchFormRef" :inline="true" :model="searchForm">
-      <el-form-item label="id" prop="id">
-        <el-input v-model="searchForm.id" placeholder="角色id" />
-      </el-form-item>
-      <el-form-item label="角色名" prop="roleName">
+      <el-form-item label="用户名" prop="createBy">
         <el-select
             v-model="searchForm.roleName"
             placeholder="角色名称"
@@ -147,7 +77,7 @@ const onEdit = (row) => {
           <el-option label="Zone two" value="beijing"/>
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
+      <el-form-item label="操作时间" prop="createTime">
         <el-date-picker
             v-model="searchForm.createTime"
             type="datetime"
@@ -173,8 +103,9 @@ const onEdit = (row) => {
     <!--      table-layout: 固定表格宽度，让表格撑满整个父元素-->
     <div class="table-wrapper">
       <el-table :data="tableData" max-height="500">
-        <el-table-column prop="id" label="角色id"/>
-        <el-table-column prop="roleName" label="角色名称"/>
+        <el-table-column type="index" label="序号" />
+        <el-table-column prop="createBy" label="用户名"/>
+        <el-table-column prop="description" label="操作内容" show-overflow-tooltip/>
         <el-table-column prop="createTime" label="创建时间"/>
         <el-table-column label="管理" align="center">
           <template #default="scope">
@@ -190,7 +121,9 @@ const onEdit = (row) => {
                      v-model:current-page="pageData.pageNum"
                      v-model:page-size="pageData.pageSize"
                      :page-sizes="pageData.pageSizeList"
-                     :total="pageData.total"/>
+                     :total="pageData.total"
+                     @current-change="pageNumChange"
+                     @size-change="pageSizeChange"/>
     </div>
 
 
@@ -216,7 +149,8 @@ const onEdit = (row) => {
     .page-wrapper {
       width: calc(100% - 40px);
       position: absolute;
-      bottom: 10px;
+      bottom: 0;
+      padding: 10px 0;
       background-color: white;
       z-index: 10;
 

@@ -1,13 +1,14 @@
+const BASE_URL = '/api';
 export default [
     {
-        url: '/api/user',
+        url: `${BASE_URL}/user`,
         method: 'get',
-        response: () => {
+        response: ({query}) => {
             return {
                 code: 200,
                 message: '请求成功',
                 data: {
-                    'dataList|10': [
+                    [`dataList|${query.pageSize}`]: [
                         {
                             'id|+1': 1,
                             'username': '@cname',

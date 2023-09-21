@@ -151,7 +151,10 @@ const onSearch = () => {
     .page-wrapper {
       width: calc(100% - 40px);
       position: absolute;
-      bottom: 10px;
+      bottom: 0;
+      padding: 10px 0;
+      background-color: white;
+      z-index: 10;
 
       .el-pagination {
         justify-content: right;
