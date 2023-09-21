@@ -121,7 +121,7 @@ const processRoutes = (routeList) => {
     }
 
     .el-sub-menu__title:hover {
-      background-color: #1b2c3d !important;
+      background-color: #385269 !important;
     }
 
     .el-menu-item:hover {
