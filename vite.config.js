@@ -22,7 +22,15 @@ export default defineConfig({
         // vite mockjs 插件
         viteMockServe({
             mockPath: 'mock',
-            enable: false
+            // todo 本地开发环境是否开启mock服务
+            localEnabled: true,
+            // 生成环境是否开启mock服务
+            prodEnabled: false,
+            injectCode: `
+              import { setupProdMockServer } from './mockProdServer';
+              setupProdMockServer();
+            `,
+            logger: false
         })
     ],
     resolve: {
