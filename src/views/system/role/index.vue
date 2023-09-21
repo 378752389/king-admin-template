@@ -2,6 +2,7 @@
 import SectionTitle from "@/components/SectionTitle.vue";
 import {reactive, onMounted, ref} from "vue";
 import RoleDetail from "@/views/system/role/components/RoleDetail.vue";
+import {getRolePage} from "@/api/system/role";
 
 
 const searchForm = reactive({
@@ -17,89 +18,18 @@ const pageData = reactive({
   pageSizeList: [10, 20, 50, 100]
 })
 
-const tableData = reactive([
-  {
-    id: 1,
-    roleName: 'admin',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-  {
-    id: 3,
-    roleName: 'operation',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-  {
-    id: 2,
-    roleName: 'development',
-    createTime: ''
-  },
-])
+const tableData = ref([])
 
 const addFlag = ref(false);
 const roleDetailRef = ref(null);
 
+const loadData = async () => {
+  const res = await getRolePage({pageNum: 1, pageSize: 10});
+  tableData.value = res.data.dataList;
+}
+
 onMounted(() => {
-  // todo 请求数据
+  loadData()
 })
 
 const editRole = (row) => {

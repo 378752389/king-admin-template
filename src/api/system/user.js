@@ -3,7 +3,7 @@ import request from "@/utils/request";
 export const userReq = {
 
 }
-export const getUserPage = ({pageNum = 1, pageSize = 10, username}) => {
+export const getUserPage = ({pageNum, pageSize, username}) => {
     return request({
         url: '/user',
         method: 'get',

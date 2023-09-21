@@ -7,8 +7,9 @@ const userInfoStore = useUserInfoStore();
 
 const userList = ref([])
 const renderData = async () => {
+  const params = {pageNum: 1, pageSize: 10}
   // 分页获取用户列表数据
-  const userListResult = await getUserPage();
+  const userListResult = await getUserPage(params);
   userList.value = userListResult.data.dataList;
 }
 

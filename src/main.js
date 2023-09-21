@@ -9,6 +9,7 @@ import * as Icons from '@element-plus/icons-vue'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import {authPlugin} from "@/directives/auth";
 import './permission'
+import {setupProdMockServer} from "@/mockProdServer";
 
 const app = createApp(App)
 
@@ -31,5 +32,6 @@ for (const key in Icons) {
     app.component(registerKey, Icons[key])
 }
 
+setupProdMockServer()
 
 app.mount('#app')
