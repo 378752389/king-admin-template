@@ -3,44 +3,22 @@ import {createRouter, createWebHistory} from 'vue-router'
 
 export const routes = [
     {
-        path: '/',
+        path: '',
         name: 'home',
         meta: {
-            title: 'king-food-admin',
+            title: '主页',
             icon: 'king-home-filled',
-            hidden: true
         },
         component: () => import('@/layout/index.vue'),
         children: [
             {
                 path: '',
-                name: 'home1',
+                name: 'dashboard',
                 meta: {
-                    title: '主页',
-                    icon: 'king-home-filled',
+                    title: '仪表盘',
                 },
-                component: () => import('@/views/common/profiler.vue')
-            },
-            {
-                path: '401',
-                name: '401',
-                meta: {
-                    title: '401',
-                    icon: '',
-                    hidden: true
-                },
-                component: () => import('@/views/common/401.vue')
-            },
-            {
-                path: '404',
-                name: '404',
-                meta: {
-                    title: '404',
-                    icon: '',
-                    hidden: true
-                },
-                component: () => import('@/views/common/404.vue')
-            },
+                component: () => import('@/views/home/dashboard/index.vue')
+            }
         ]
     },
     {
@@ -51,42 +29,6 @@ export const routes = [
             hidden: true
         },
         component: () => import('@/views/login/index.vue')
-    },
-    {
-        path: '/test',
-        name: 'test',
-        meta: {
-            title: '测试菜单11111111'
-        },
-        component: () => import('@/layout/index.vue'),
-        children: [
-            {
-                path: 'page1',
-                name: 'page1',
-                meta: {
-                    hidden: true,
-                    title: '测试页1'
-                },
-                component: () => import('@/views/Test.vue')
-            },
-            {
-                path: 'page2',
-                name: 'page2',
-                meta: {
-                    title: '测试页2',
-                    permission: 'test:page2'
-                },
-                component: () => import('@/views/Test.vue')
-            },
-            {
-                path: 'page3',
-                name: 'pag3',
-                meta: {
-                    title: '测试页2'
-                },
-                component: () => import('@/views/Test.vue')
-            }
-        ]
     },
     {
         path: '/content',
@@ -244,6 +186,37 @@ export const routes = [
                     permission: 'system:config'
                 },
                 component: () => import('@/views/system/config/index.vue')
+            },
+        ]
+    },
+    {
+        path: '/common',
+        name: 'common',
+        meta: {
+            title: '通用页',
+            hidden: true
+        },
+        component: () => import('@/layout/index.vue'),
+        children: [
+            {
+                path: '401',
+                name: '401',
+                meta: {
+                    title: '401',
+                    icon: '',
+                    hidden: true
+                },
+                component: () => import('@/views/common/401.vue')
+            },
+            {
+                path: '404',
+                name: '404',
+                meta: {
+                    title: '404',
+                    icon: '',
+                    hidden: true
+                },
+                component: () => import('@/views/common/404.vue')
             },
         ]
     }

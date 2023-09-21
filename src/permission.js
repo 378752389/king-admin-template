@@ -22,7 +22,7 @@ router.beforeEach(async (to, from, next) => {
             next()
         } else {
             // 用户没有权限，跳转到登录页
-            next('/401')
+            next('/common/401')
         }
     } else {
         // 页面没有权限，可以直接跳转

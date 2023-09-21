@@ -1,5 +1,5 @@
 <script setup>
-import {reactive} from 'vue'
+import {watch, ref} from 'vue'
 import SvgIcon from "@/components/SvgIcon.vue";
 import {routes} from "@/router";
 import {useRoute} from "vue-router";
@@ -15,11 +15,15 @@ const props = defineProps({
   }
 })
 
-const settings = reactive({
-  projectName: 'king-admin-template'
-})
-
 const currentRoute = useRoute();
+
+// 监听侧边栏宽度变化
+const sidebarWidth = ref('0');
+
+watch(sidebarCollapse, (n) => {
+  sidebarWidth.value = n ? '0' : '200px';
+}, {immediate: true})
+
 const processRoutes = (routeList) => {
   // 1. 依据权限来筛选子菜单
   // 2. 筛选所有隐藏菜单
@@ -50,10 +54,6 @@ const processRoutes = (routeList) => {
 <template>
 
   <div class="side-bar-area">
-<!--    <div class="project-title">-->
-<!--      <SvgIcon icon="king-home-filled"/>-->
-<!--      <span v-if="!sidebarCollapse">{{ settings.projectName }}</span>-->
-<!--    </div>-->
     <el-menu
         active-text-color="#409eff"
         background-color="#304156"
@@ -100,57 +100,34 @@ const processRoutes = (routeList) => {
 
       </template>
     </el-menu>
-
-    <!--    <el-button-->
-    <!--        class="collapse-btn"-->
-    <!--        @click="isCollapse = !isCollapse"-->
-    <!--        text>-->
-    <!--      <SvgIcon v-if="isCollapse" icon="king-expand"/>-->
-    <!--      <SvgIcon v-else icon="king-fold"/>-->
-    <!--    </el-button>-->
   </div>
 
 
 </template>
 
-<style scoped>
+<style lang="less" scoped>
 
 .side-bar-area {
   display: flex;
   flex-direction: column;
   height: 100%;
-//background-color: #304156;
-}
 
-.project-title {
-  height: 60px;
-  line-height: 60px;
-  text-align: center;
-  background-color: #304156;
-  margin-right: 1px;
-  color: #bfcbd9;
-}
+  &:deep(.side-bar) {
+    flex-grow: 1;
 
-:deep(.side-bar) {
-  flex-grow: 1;
-}
+    // 设置侧边栏的最小宽度，不然内容会被侧边栏 menu-item撑开
+    .el-sub-menu {
+      min-width: v-bind(sidebarWidth);
+    }
 
-:deep(li.el-sub-menu.is-opened .el-menu-item) {
-  background-color: #1b2c3d;
-}
-
-.collapse-btn {
-  text-align: right;
-  font-size: 24px;
-  background-color: #304156;
-  border-radius: 0;
-  margin-right: 1px;
-  justify-content: end;
+    .el-menu-item {
+      background-color: #1b2c3d;
+    }
+  }
 }
 
 .el-button.is-text:not(.is-disabled):focus, .el-button.is-text:not(.is-disabled):hover {
   background-color: #304156;
 }
-
 
 </style>
