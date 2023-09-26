@@ -54,52 +54,54 @@ const processRoutes = (routeList) => {
 <template>
 
   <div class="side-bar-area">
-    <el-menu
-        active-text-color="#409eff"
-        background-color="#304156"
-        text-color="#bfcbd9"
-        class="side-bar"
-        :default-active="currentRoute.path"
-        :collapse="sidebarCollapse"
-        router>
-      <template v-for="routeItem in processRoutes(routes)">
-        <template v-if="routeItem.meta.hidden !== true">
-          <!--        菜单项包含子菜单-->
-          <el-sub-menu
-              v-if="routeItem.children && routeItem.children.length > 0"
-              :key="routeItem.name"
-              :index="routeItem.path">
-            <template #title>
+    <el-scrollbar height="100%">
+      <el-menu
+          active-text-color="#409eff"
+          background-color="#304156"
+          text-color="#bfcbd9"
+          class="side-bar"
+          :default-active="currentRoute.path"
+          :collapse="sidebarCollapse"
+          router>
+        <template v-for="routeItem in processRoutes(routes)">
+          <template v-if="routeItem.meta.hidden !== true">
+            <!--        菜单项包含子菜单-->
+            <el-sub-menu
+                v-if="routeItem.children && routeItem.children.length > 0"
+                :key="routeItem.name"
+                :index="routeItem.path">
+              <template #title>
 
-              <SvgIcon :icon="routeItem.meta.icon || 'king-menu'"/>
-              <span>{{ routeItem.meta.title }}</span>
-            </template>
-
-            <template :key="childItem.name" v-for="childItem in routeItem.children">
-              <!--              添加选择 hidden 不为 true 的菜单项-->
-              <template v-if="childItem.meta.hidden !== true">
-                <el-menu-item
-                    :index="routeItem.path + '/' + childItem.path">
-                  <SvgIcon :icon="childItem.meta.icon || 'king-location'"/>
-                  <template #title>{{ childItem.meta.title }}</template>
-                </el-menu-item>
+                <SvgIcon :icon="routeItem.meta.icon || 'king-menu'"/>
+                <span>{{ routeItem.meta.title }}</span>
               </template>
-            </template>
+
+              <template :key="childItem.name" v-for="childItem in routeItem.children">
+                <!--              添加选择 hidden 不为 true 的菜单项-->
+                <template v-if="childItem.meta.hidden !== true">
+                  <el-menu-item
+                      :index="routeItem.path + '/' + childItem.path">
+                    <SvgIcon :icon="childItem.meta.icon || 'king-location'"/>
+                    <template #title>{{ childItem.meta.title }}</template>
+                  </el-menu-item>
+                </template>
+              </template>
 
 
-          </el-sub-menu>
+            </el-sub-menu>
 
-          <!--        菜单项不包含子菜单-->
-          <el-menu-item v-else
-                        :key="routeItem.name"
-                        :index="routeItem.path">
-            <SvgIcon :icon="routeItem.meta.icon || 'king-menu'"/>
-            <template #title>{{ routeItem.meta.title }}</template>
-          </el-menu-item>
+            <!--        菜单项不包含子菜单-->
+            <el-menu-item v-else
+                          :key="routeItem.name"
+                          :index="routeItem.path">
+              <SvgIcon :icon="routeItem.meta.icon || 'king-menu'"/>
+              <template #title>{{ routeItem.meta.title }}</template>
+            </el-menu-item>
+          </template>
+
         </template>
-
-      </template>
-    </el-menu>
+      </el-menu>
+    </el-scrollbar>
   </div>
 
 
@@ -108,12 +110,9 @@ const processRoutes = (routeList) => {
 <style lang="less" scoped>
 
 .side-bar-area {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
 
   &:deep(.side-bar) {
-    flex-grow: 1;
+    height: 100vh;
 
     // 设置侧边栏的最小宽度，不然内容会被侧边栏 menu-item撑开
     .el-sub-menu, .el-menu-item {

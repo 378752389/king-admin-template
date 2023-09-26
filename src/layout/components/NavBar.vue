@@ -81,7 +81,7 @@ const doToggle = () => {
 }
 
 .el-link {
-  margin-right: 30px;
+  margin-right: 40px;
 }
 
 
