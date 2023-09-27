@@ -110,10 +110,9 @@ const processRoutes = (routeList) => {
 <style lang="less" scoped>
 
 .side-bar-area {
+  height: 100%;
 
   &:deep(.side-bar) {
-    height: 100vh;
-
     // 设置侧边栏的最小宽度，不然内容会被侧边栏 menu-item撑开
     .el-sub-menu, .el-menu-item {
       min-width: v-bind(sidebarWidth);

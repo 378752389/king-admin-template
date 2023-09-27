@@ -12,7 +12,7 @@ const {menuList} = storeToRefs(useUserInfoStore());
 <template>
   <div class="view">
     <div class="side-bar-wrapper">
-      <SideBar :authed-route="menuList" />
+      <SideBar :authed-route="menuList"/>
     </div>
 
     <div class="main-wrapper">
@@ -21,6 +21,9 @@ const {menuList} = storeToRefs(useUserInfoStore());
       </div>
 
       <div class="content-wrapper">
+        <!--        <el-scrollbar>-->
+        <!--          <RouterView/>-->
+        <!--        </el-scrollbar>-->
         <RouterView/>
       </div>
     </div>
@@ -28,23 +31,27 @@ const {menuList} = storeToRefs(useUserInfoStore());
 
 </template>
 
-<style scoped>
+<style lang="less" scoped>
 .view {
   display: flex;
   width: 100vw;
-  height: 100vh;
-}
 
-.main-wrapper {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-}
+  .side-bar-wrapper {
+    min-height: 100vh;
+    background-color: #304156 !important;
+  }
 
-.content-wrapper {
-  padding: 10px 20px;
-  min-height: calc(100vh - 60px);
-  display: flex;
-  flex-direction: column;
+  .main-wrapper {
+    flex-grow: 1;
+    overflow-x: hidden;
+
+    .content-wrapper {
+      padding: 10px 30px 10px 20px;
+      min-height: calc(100% - 60px);
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
 }
 </style>

@@ -9,6 +9,7 @@ import * as Icons from '@element-plus/icons-vue'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import {authPlugin} from "@/directives/auth";
 import './permission'
+import './styles/main.less'
 
 const app = createApp(App)
 

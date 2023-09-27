@@ -124,44 +124,4 @@ const onSearch = () => {
 
 <style lang="less" scoped>
 
-.data-wrapper {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.search-card {
-  flex-shrink: 0;
-}
-
-.content-card {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-
-  &:deep(.el-card__body) {
-    position: relative;
-    flex-grow: 1;
-
-    .table-wrapper {
-      width: calc(100% - 40px);
-      position: absolute;
-    }
-
-    .page-wrapper {
-      width: calc(100% - 40px);
-      position: absolute;
-      bottom: 0;
-      padding: 10px 0;
-      background-color: white;
-      z-index: 10;
-
-      .el-pagination {
-        justify-content: right;
-      }
-    }
-  }
-}
-
-
 </style>

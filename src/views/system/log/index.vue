@@ -101,65 +101,30 @@ onMounted(() => {
     </template>
     <!--     todo 表格数据-->
     <!--      table-layout: 固定表格宽度，让表格撑满整个父元素-->
-    <div class="table-wrapper">
-      <el-table :data="tableData" max-height="500">
-        <el-table-column type="index" label="序号" />
-        <el-table-column prop="createBy" label="用户名"/>
-        <el-table-column prop="description" label="操作内容" show-overflow-tooltip/>
-        <el-table-column prop="createTime" label="创建时间"/>
-        <el-table-column label="管理" align="center">
-          <template #default="scope">
-            <el-button type="warning" size="small" @click="onEdit(scope.row)">编辑</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
+    <el-table :data="tableData">
+      <el-table-column type="index" label="序号" />
+      <el-table-column prop="createBy" label="用户名"/>
+      <el-table-column prop="description" label="操作内容" show-overflow-tooltip/>
+      <el-table-column prop="createTime" label="创建时间"/>
+      <el-table-column label="管理" align="center">
+        <template #default="scope">
+          <el-button type="warning" size="small" @click="onEdit(scope.row)">编辑</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
 
-    <div class="page-wrapper">
-      <!--      分页-->
-      <el-pagination background layout="prev, pager, jumper, next, total, sizes"
-                     v-model:current-page="pageData.pageNum"
-                     v-model:page-size="pageData.pageSize"
-                     :page-sizes="pageData.pageSizeList"
-                     :total="pageData.total"
-                     @current-change="pageNumChange"
-                     @size-change="pageSizeChange"/>
-    </div>
+    <!--      分页-->
+    <el-pagination background layout="prev, pager, jumper, next, total, sizes"
+                   v-model:current-page="pageData.pageNum"
+                   v-model:page-size="pageData.pageSize"
+                   :page-sizes="pageData.pageSizeList"
+                   :total="pageData.total"
+                   @current-change="pageNumChange"
+                   @size-change="pageSizeChange"/>
 
 
   </el-card>
 </template>
 
 <style lang="less" scoped>
-
-.content-card {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-
-  &:deep(.el-card__body) {
-    position: relative;
-    flex-grow: 1;
-
-    .table-wrapper {
-      width: calc(100% - 40px);
-      position: absolute;
-    }
-
-    .page-wrapper {
-      width: calc(100% - 40px);
-      position: absolute;
-      bottom: 0;
-      padding: 10px 0;
-      background-color: white;
-      z-index: 10;
-
-      .el-pagination {
-        justify-content: right;
-      }
-    }
-  }
-}
-
-
 </style>
