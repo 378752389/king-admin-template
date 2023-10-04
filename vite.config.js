@@ -23,7 +23,7 @@ export default defineConfig({
         viteMockServe({
             mockPath: 'mock',
             // todo 本地开发环境是否开启mock服务
-            localEnabled: true,
+            localEnabled: false,
             // 生成环境是否开启mock服务
             prodEnabled: false,
             injectCode: `
@@ -40,10 +40,10 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            [`import.meta.env.VITE_HTTP_BASE_URL`]: {
+            '/api': {
                 target: 'http://localhost:8080',
                 changeOrigin: true,
-                rewrite: (path) => path.replace(/^\/`import.meta.env.VITE_HTTP_BASE_URL`/, '')
+                rewrite: (path) => path.replace(/^\/api/, '')
             }
         }
     }

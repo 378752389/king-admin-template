@@ -1,11 +1,9 @@
 <script setup>
 import {ref, reactive} from 'vue';
-import {useRouter} from "vue-router";
 import SvgIcon from "@/components/SvgIcon.vue";
 import {useUserInfoStore} from "@/stores/userInfo";
 import {ElMessage} from "element-plus";
 
-const router = useRouter();
 const userInfoStore = useUserInfoStore();
 
 const loginData = ref({
@@ -47,18 +45,10 @@ const doLogin = () => {
     }
 
     // 登录
-    await userInfoStore.loadUserInfo({
+    await userInfoStore.doLogin({
       username: loginData.value.username,
       password: loginData.value.password
     });
-
-    ElMessage({
-      showClose: true,
-      message: '登录成功',
-      type: 'success',
-    })
-
-    await router.replace({path: '/'})
   })
 
 

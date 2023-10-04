@@ -7,7 +7,8 @@ import App from './App.vue'
 import router from './router'
 import * as Icons from '@element-plus/icons-vue'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-import {authPlugin} from "@/directives/auth";
+import {authPlugin} from '@/directives/auth'
+import'element-plus/dist/index.css'
 import './permission'
 import './styles/main.less'
 

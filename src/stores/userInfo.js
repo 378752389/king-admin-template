@@ -1,21 +1,20 @@
 import {defineStore} from 'pinia';
-import {ref, computed} from 'vue';
-import {loginByForm} from "@/api/system/login";
+import {ref} from 'vue';
+import {loginApi, menuApi} from "@/api/system/auth";
 import {ElMessage} from "element-plus";
+import {useRouter} from 'vue-router'
+
 
 export const useUserInfoStore = defineStore("userInfo", () => {
-    // {
-    //     uid: undefined,
-    //         username: '',
-    //     resourceList: []
-    // }
-    const userInfo = ref({})
+    const token = ref(null)
+    const menuList = ref([])
+    const router = useRouter()
 
-    const loadUserInfo = async ({username, password}) => {
+    const doLogin = async ({username, password}) => {
         // 分页获取用户列表数据
 
         try {
-            const result = await loginByForm({
+            const result = await loginApi({
                 username,
                 password
             })
@@ -23,43 +22,54 @@ export const useUserInfoStore = defineStore("userInfo", () => {
                 console.log(result)
                 ElMessage({
                     showClose: true,
-                    message: result.message || '用户名或密码错误1',
+                    message: result.message || '用户名或密码错误',
                     type: 'error',
                 })
                 return
             }
             if (result && result.code === 200) {
-                userInfo.value = result.data;
+                token.value = result.data.token;
+                localStorage.setItem('token', token.value);
+                ElMessage({
+                    showClose: true,
+                    message: '登录成功',
+                    type: 'success',
+                })
+                await router.replace({path: '/'})
+            } else {
+                ElMessage({
+                    message: result.message,
+                    type: 'warning',
+                })
             }
         } catch (e) {
             console.log(e);
         }
     }
 
-    // 获取按钮权限列表
-    const permissionList = computed(() => {
-        return userInfo.value.resourceList && userInfo.value.resourceList.filter(x => x.resourceType === 1).map(x => x.permission);
-    })
-
-    // 获取菜单权限列表
-    const menuList = computed(() => {
-        return userInfo.value.resourceList && userInfo.value.resourceList.filter(x => x.resourceType === 0).map(x => x.permission)
-    })
-
+    const getMenu = async () => {
+        const menuResult = await menuApi();
+        if (menuResult.code === 200) {
+            menuList.value = menuResult.data;
+        }
+    }
 
     // 清除用户信息
-    const clearUserInfo = function () {
-        userInfo.value = {};
+    const clearToken = function () {
+        token.value = {};
+        localStorage.setItem('token', '');
     }
 
     return {
-        userInfo,
-        permissionList,
+        token,
         menuList,
-        clearUserInfo,
-        loadUserInfo
+        clearToken,
+        doLogin,
+        getMenu
     }
-}, {persist: {
+}, {
+    persist: {
         storage: sessionStorage
-    }})
+    }
+})
 

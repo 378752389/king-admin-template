@@ -4,9 +4,17 @@ import NavBar from "@/layout/components/NavBar.vue";
 import {RouterView} from 'vue-router';
 import {useUserInfoStore} from "@/stores/userInfo";
 import {storeToRefs} from "pinia";
+import {onMounted} from "vue";
 
-const {menuList} = storeToRefs(useUserInfoStore());
+const userInfoStore = useUserInfoStore();
+const {menuList} = storeToRefs(userInfoStore);
 
+// 侧边栏挂载时如果路由为空，则加载菜单栏
+onMounted(() => {
+  if (menuList.value.length === 0) {
+    userInfoStore.getMenu();
+  }
+})
 </script>
 
 <template>
@@ -21,9 +29,6 @@ const {menuList} = storeToRefs(useUserInfoStore());
       </div>
 
       <div class="content-wrapper">
-        <!--        <el-scrollbar>-->
-        <!--          <RouterView/>-->
-        <!--        </el-scrollbar>-->
         <RouterView/>
       </div>
     </div>
