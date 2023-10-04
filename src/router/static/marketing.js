@@ -1,4 +1,5 @@
 export default {
+    order: 3,
     path: '/marketing',
     name: 'marketing',
     meta: {

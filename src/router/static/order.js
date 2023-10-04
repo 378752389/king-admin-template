@@ -1,4 +1,5 @@
 export default {
+    order: 2,
     path: '/order',
     name: 'order',
     meta: {

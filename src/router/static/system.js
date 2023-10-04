@@ -1,9 +1,10 @@
 export default {
+    order: 10,
     path: '/system',
     name: 'system',
     meta: {
         title: '系统管理',
-        permission: 'system'
+        // permission: 'system'
     },
     component: () => import('@/layout/index.vue'),
     children: [
@@ -13,7 +14,7 @@ export default {
             meta: {
                 title: '用户管理',
                 icon: '',
-                permission: 'system:user'
+                // permission: 'system:user'
             },
             component: () => import('@/views/system/user/index.vue')
         },
@@ -22,7 +23,7 @@ export default {
             name: 'role',
             meta: {
                 title: '角色管理',
-                permission: 'system:role'
+                // permission: 'system:role'
             },
             component: () => import('@/views/system/role/index.vue')
         },
@@ -31,7 +32,7 @@ export default {
             name: 'resource',
             meta: {
                 title: '资源管理',
-                permission: 'system:resource'
+                // permission: 'system:resource'
             },
             component: () => import('@/views/system/resource/index.vue')
         },
@@ -40,7 +41,7 @@ export default {
             name: 'log',
             meta: {
                 title: '日志管理',
-                permission: 'system:log'
+                // permission: 'system:log'
             },
             component: () => import('@/views/system/log/index.vue')
         },
@@ -49,7 +50,7 @@ export default {
             name: 'config',
             meta: {
                 title: '配置管理',
-                permission: 'system:config'
+                // permission: 'system:config'
             },
             component: () => import('@/views/system/config/index.vue')
         },

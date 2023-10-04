@@ -1,4 +1,5 @@
 export default {
+    order: 1,
     path: '/content',
     name: 'content',
     meta: {

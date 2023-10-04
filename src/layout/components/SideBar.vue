@@ -47,7 +47,11 @@ const processRoutes = (routeList) => {
       permittedRoutes.push(routeItem);
     }
   }
-  return permittedRoutes;
+  return permittedRoutes.sort((a, b) => {
+    let before = a.order === undefined ? 999 : a.order
+    let after = b.order === undefined ? 999 : b.order
+    return before - after
+  });
 }
 </script>
 

@@ -3,6 +3,7 @@ const routeSegments = import.meta.glob('./static/*.js', {eager: true})
 
 export const routes = [
     {
+        order: -99,
         path: '',
         name: 'home',
         meta: {
