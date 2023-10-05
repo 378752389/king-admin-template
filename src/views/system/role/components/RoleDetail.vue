@@ -8,6 +8,8 @@ const props = defineProps({
   }
 })
 
+const $emit = defineEmits(['onSubmit'])
+
 const initModel = {
   id: '',
   roleName: '',
@@ -43,6 +45,7 @@ const handleOpen = (row) => {
 
 const onSubmit= () => {
   // todo 提交表单
+  $emit('onSubmit', {...roleModel.value})
   handleClose()
 }
 
@@ -67,14 +70,8 @@ defineExpose({
         :rules="roleRules"
         style="max-width: 460px"
     >
-      <el-form-item label="角色id" prop="id">
-        <el-input :disabled="!addFlag" v-model="roleModel.id"/>
-      </el-form-item>
       <el-form-item label="角色名" prop="roleName">
         <el-input v-model="roleModel.roleName"/>
-      </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
-        <el-input :disabled="!addFlag" v-model="roleModel.createTime"/>
       </el-form-item>
     </el-form>
 

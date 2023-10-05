@@ -1,50 +1,61 @@
 <script setup>
 import SectionTitle from "@/components/SectionTitle.vue";
-import {reactive, onMounted, ref} from "vue";
+import {onMounted, ref} from "vue";
 import RoleDetail from "@/views/system/role/components/RoleDetail.vue";
-import {getRolePage} from "@/api/system/role";
+import {getRoleListApi, deleteRoleApi, addRoleApi, updateRoleApi} from "@/api/system/role";
 
 
-const searchForm = reactive({
-  id: '',
+const searchForm = ref({
   roleName: '',
-  createTime: '',
 })
 
-const pageData = reactive({
-  pageNum: 1,
-  pageSize: 10,
-  total: 100,
-  pageSizeList: [10, 20, 50, 100]
-})
 
 const tableData = ref([])
 
 const addFlag = ref(false);
 const roleDetailRef = ref(null);
+const searchFormRef = ref(null);
 
 const loadData = async () => {
-  const res = await getRolePage({pageNum: 1, pageSize: 10});
-  tableData.value = res.data.dataList;
+  const res = await getRoleListApi({...searchForm.value});
+  tableData.value = res.data;
 }
 
 onMounted(() => {
   loadData()
 })
 
-const editRole = (row) => {
+
+const onReset = () => {
+  searchFormRef.value.resetFields();
+  loadData()
+}
+const onEdit = (row) => {
   addFlag.value = false;
   roleDetailRef.value.handleOpen(row);
-  console.log(row);
 }
-
-const addRole = () => {
+const onDelete = async (row) => {
+  const id = row.id;
+  await deleteRoleApi(id)
+  await loadData()
+}
+const onAdd = () => {
   addFlag.value = true;
   roleDetailRef.value.handleOpen({});
 }
 
 const onSearch = () => {
-
+  loadData()
+}
+const doAddOrUpdate = async (role) => {
+  if (addFlag.value) {
+    const res = await addRoleApi({...role})
+    console.log(res)
+  } else {
+    const res = await updateRoleApi({...role})
+    console.log(res)
+  }
+  await loadData()
 }
 
 
@@ -58,30 +69,14 @@ const onSearch = () => {
       </template>
 
       <!--      todo 查询表单数据-->
-      <el-form :inline="true" :model="searchForm">
-        <el-form-item label="id">
-          <el-input v-model="searchForm.id" placeholder="角色id" clearable/>
-        </el-form-item>
-        <el-form-item label="角色名">
-          <el-select
-              v-model="searchForm.roleName"
-              placeholder="角色名称"
-              clearable
-          >
-            <el-option label="Zone one" value="shanghai"/>
-            <el-option label="Zone two" value="beijing"/>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="创建时间">
-          <el-date-picker
-              v-model="searchForm.createTime"
-              type="datetime"
-              placeholder="角色创建时间"
-              clearable
-          />
+      <el-form ref="searchFormRef" :inline="true" :model="searchForm">
+        <el-form-item label="角色名称" prop="roleName">
+          <el-input v-model="searchForm.roleName" placeholder="输入角色名称" clearable/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSearch">查询</el-button>
+          <el-button type="default" @click="onReset">重置</el-button>
+          <el-button type="success" @click="onAdd">创建</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -102,24 +97,28 @@ const onSearch = () => {
           <el-table-column prop="createTime" label="创建时间"/>
           <el-table-column label="管理" align="center">
             <template #default="scope">
-              <el-button type="warning" size="small" @click="editRole(scope.row)">编辑</el-button>
+              <el-button type="warning" size="small" @click="onEdit(scope.row)">编辑</el-button>
+
+              <el-popconfirm
+                  width="220"
+                  @confirm="onDelete(scope.row)"
+                  confirm-button-text="确定"
+                  cancel-button-text="取消"
+                  icon="king-question-filled"
+                  icon-color="#626AEF"
+                  title="请确认是否删除角色？">
+                <template #reference>
+                  <el-button type="danger" size="small">删除</el-button>
+                </template>
+              </el-popconfirm>
             </template>
           </el-table-column>
         </el-table>
       </div>
-
-      <div class="page-wrapper">
-        <!--      分页-->
-        <el-pagination background layout="prev, pager, jumper, next, total, sizes"
-                       v-model:current-page="pageData.pageNum"
-                       v-model:page-size="pageData.pageSize"
-                       :page-sizes="pageData.pageSizeList"
-                       :total="pageData.total"/>
-      </div>
     </el-card>
   </div>
 
-  <RoleDetail :add-flag="addFlag" ref="roleDetailRef"/>
+  <RoleDetail @on-submit="doAddOrUpdate" :add-flag="addFlag" ref="roleDetailRef"/>
 </template>
 
 <style lang="less" scoped>

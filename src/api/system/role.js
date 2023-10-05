@@ -5,7 +5,7 @@ export const roleReq = {
     roleName: '',
     resourceIds: [],
 }
-export const getRolePage = ({pageNum, pageSize, roleName}) => {
+export const getRolePageApi = ({pageNum, pageSize, roleName}) => {
     return request({
         url: '/role',
         method: 'get',
@@ -21,14 +21,17 @@ export const getRolePage = ({pageNum, pageSize, roleName}) => {
 /**
  * 获取所有角色列表
  */
-export const getRoleList = () => {
+export const getRoleListApi = ({roleName}) => {
     return request({
-        url: '/role/all',
-        method: 'get'
+        url: '/role/list',
+        method: 'get',
+        params: {
+            roleName
+        }
     })
 }
 
-export const addRole = (role) => {
+export const addRoleApi = (role) => {
     return request({
         url: '/role',
         method: 'post',
@@ -36,7 +39,7 @@ export const addRole = (role) => {
     })
 }
 
-export const updateRole = (role) => {
+export const updateRoleApi = (role) => {
     return request({
         url: '/role',
         method: 'put',
@@ -45,12 +48,9 @@ export const updateRole = (role) => {
 }
 
 // roleIds 为 数组（Array）
-export const removeRoles = (roleIds) => {
+export const deleteRoleApi = (roleId) => {
     return request({
-        url: '/role',
-        method: 'delete',
-        data: {
-            ids: roleIds
-        }
+        url: `/role/${roleId}`,
+        method: 'delete'
     })
 }
