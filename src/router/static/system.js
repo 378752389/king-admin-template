@@ -54,5 +54,23 @@ export default {
             },
             component: () => import('@/views/system/config/index.vue')
         },
+        {
+            path: 'user-add',
+            name: 'user-add',
+            meta: {
+                title: '添加用户',
+                hidden: true
+            },
+            component: () => import('@/views/system/user/add.vue')
+        },
+        {
+            path: 'user-update',
+            name: 'user-update',
+            meta: {
+                title: '修改用户',
+                hidden: true
+            },
+            component: () => import('@/views/system/user/update.vue')
+        }
     ]
 }

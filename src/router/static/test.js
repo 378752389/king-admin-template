@@ -14,6 +14,14 @@ export default {
                 title: '接口测试管理'
             },
             component: () => import('@/views/test/page1.vue')
+        },
+        {
+            path: 'page2',
+            name: 'page2',
+            meta: {
+                title: '表单测试页面'
+            },
+            component: () => import('@/views/test/page2.vue')
         }
     ]
 }
