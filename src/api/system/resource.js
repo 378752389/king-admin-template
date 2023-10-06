@@ -3,28 +3,24 @@ import request from "@/utils/request";
 export const resourceReq = {
 
 }
-export const getResourcePage = ({pageNum = 1, pageSize = 10}) => {
+export const getResourceTreeApi = () => {
     return request({
-        url: '/resource',
-        method: 'get',
-        params: {
-            pageNum,
-            pageSize
-        },
+        url: '/resource/tree',
+        method: 'get'
     })
 }
 
 /**
  * 获取所有资源列表，并且以树形结构返回
  */
-export const getResourceList = () => {
+export const getResourceListApi = () => {
     return request({
         url: '/resource/all',
         method: 'get'
     })
 }
 
-export const getResourceListByRoleId = (roleId) => {
+export const getResourceListByRoleIdApi = (roleId) => {
     return request({
         url: '/resource/all',
         method: 'get',
@@ -34,7 +30,7 @@ export const getResourceListByRoleId = (roleId) => {
     })
 }
 
-export const addResource = (resource) => {
+export const addResourceApi = (resource) => {
     return request({
         url: '/resource',
         method: 'post',
@@ -42,7 +38,7 @@ export const addResource = (resource) => {
     })
 }
 
-export const updateResource = (resource) => {
+export const updateResourceApi = (resource) => {
     return request({
         url: '/resource',
         method: 'put',
@@ -51,12 +47,9 @@ export const updateResource = (resource) => {
 }
 
 // roleIds 为 数组（Array）
-export const removeResource = (roleIds) => {
+export const deleteResourceApi = (resourceId) => {
     return request({
-        url: '/resource',
-        method: 'delete',
-        data: {
-            ids: roleIds
-        }
+        url: `/resource/${resourceId}`,
+        method: 'delete'
     })
 }
