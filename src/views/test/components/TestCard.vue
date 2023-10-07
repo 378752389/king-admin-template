@@ -28,6 +28,12 @@ const changeData = () => {
   data.value.head = count.value++
 }
 
+const resetData = () => {
+  data.value.head = ''
+  data.value.body = ''
+  data.value.foot = ''
+}
+
 </script>
 
 <template>
@@ -43,9 +49,11 @@ const changeData = () => {
 
     <span>{{ data }}</span>
 
+    <el-row>
+      <el-button @click="changeData">修改data</el-button>
+      <el-button @click="resetData">重置data</el-button>
+    </el-row>
   </div>
-
-  <el-button @click="changeData">修改data</el-button>
 </template>
 
 <style lang="less" scoped>
