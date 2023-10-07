@@ -1,8 +1,6 @@
 import request from "@/utils/request";
 
-export const resourceReq = {
-
-}
+export const resourceReq = {}
 export const getResourceTreeApi = () => {
     return request({
         url: '/resource/tree',
@@ -13,16 +11,9 @@ export const getResourceTreeApi = () => {
 /**
  * 获取所有资源列表，并且以树形结构返回
  */
-export const getResourceListApi = () => {
+export const getResourceListApi = (roleId) => {
     return request({
-        url: '/resource/all',
-        method: 'get'
-    })
-}
-
-export const getResourceListByRoleIdApi = (roleId) => {
-    return request({
-        url: '/resource/all',
+        url: '/resource/list',
         method: 'get',
         params: {
             roleId

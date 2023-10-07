@@ -3,7 +3,7 @@ import SectionTitle from "@/components/SectionTitle.vue";
 import {onMounted, ref} from "vue";
 import RoleDetail from "@/views/system/role/components/RoleDetail.vue";
 import {getRoleListApi, deleteRoleApi, addRoleApi, updateRoleApi} from "@/api/system/role";
-
+import {getResourceListApi} from "@/api/system/resource";
 
 const searchForm = ref({
   roleName: '',
@@ -15,14 +15,15 @@ const tableData = ref([])
 const addFlag = ref(false);
 const roleDetailRef = ref(null);
 const searchFormRef = ref(null);
+const roleModel = ref({})
 
 const loadData = async () => {
-  const res = await getRoleListApi({...searchForm.value});
-  tableData.value = res.data;
+  const roleRes = await getRoleListApi({...searchForm.value});
+  tableData.value = roleRes.data;
 }
 
-onMounted(() => {
-  loadData()
+onMounted(async () => {
+  await loadData()
 })
 
 
@@ -30,9 +31,17 @@ const onReset = () => {
   searchFormRef.value.resetFields();
   loadData()
 }
-const onEdit = (row) => {
+const onEdit = async (row) => {
   addFlag.value = false;
-  roleDetailRef.value.handleOpen(row);
+  getResourceListApi(row.id).then(res => {
+    let resourceIds = [];
+    res.data && (resourceIds = res.data.map(x => x.id))
+    row.resourceIds = resourceIds
+    roleModel.value = {...row, resourceIds}
+    console.log(roleModel.value)
+    roleDetailRef.value.handleOpen()
+  })
+
 }
 const onDelete = async (row) => {
   const id = row.id;
@@ -47,12 +56,19 @@ const onAdd = () => {
 const onSearch = () => {
   loadData()
 }
-const doAddOrUpdate = async (role) => {
+const doSubmit = async (role) => {
   if (addFlag.value) {
-    const res = await addRoleApi({...role})
+    const res = await addRoleApi({
+      roleName: role.roleName,
+      resourceIds: role.resourceIds
+    })
     console.log(res)
   } else {
-    const res = await updateRoleApi({...role})
+    const res = await updateRoleApi({
+      id: role.id,
+      roleName: role.roleName,
+      resourceIds: role.resourceIds
+    })
     console.log(res)
   }
   await loadData()
@@ -118,7 +134,10 @@ const doAddOrUpdate = async (role) => {
     </el-card>
   </div>
 
-  <RoleDetail @on-submit="doAddOrUpdate" :add-flag="addFlag" ref="roleDetailRef"/>
+  <RoleDetail @on-submit="doSubmit"
+              :add-flag="addFlag"
+              :role-model="roleModel"
+              ref="roleDetailRef"/>
 </template>
 
 <style lang="less" scoped>

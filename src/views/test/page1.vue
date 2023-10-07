@@ -1,6 +1,8 @@
 <script setup>
 import {createAdmin, updateAdmin, deleteAdmin, getAdminPage} from "@/api/system/admin";
+import {useUserInfoStore} from "@/stores/userInfo";
 
+const userInfoStore = useUserInfoStore();
 const query = () => {
   getAdminPage({pageNum: 1, pageSize: 10}).then(res => {
     console.log(res)
@@ -48,6 +50,9 @@ const remove = () => {
   })
 }
 
+const userInfo = () => {
+  console.log(userInfoStore.menuList);
+}
 </script>
 
 <template>
@@ -58,6 +63,7 @@ const remove = () => {
     <el-button type="success" @click="create">创建</el-button>
     <el-button type="warning" @click="update">修改</el-button>
     <el-button type="danger" @click="remove">删除</el-button>
+    <el-button type="default" @click="userInfo">获取UserInfo</el-button>
   </el-row>
 </template>
 

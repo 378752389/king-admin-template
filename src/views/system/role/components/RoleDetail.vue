@@ -1,20 +1,28 @@
 <script setup>
-import {ref, unref, computed, reactive} from "vue";
+import {ref, computed, reactive, onMounted} from "vue";
+import {getResourceTreeApi} from "@/api/system/resource";
 
 const props = defineProps({
   addFlag: {
     type: Boolean,
     required: true
+  },
+  roleModel: {
+    type: Object,
+    default: () => {
+      return {
+        id: '',
+        roleName: '',
+        createTime: '',
+        resourceIds: []
+      }
+    }
   }
 })
 
-const $emit = defineEmits(['onSubmit'])
+const model = ref(props.roleModel)
 
-const initModel = {
-  id: '',
-  roleName: '',
-  createTime: ''
-}
+const $emit = defineEmits(['onSubmit'])
 
 // 表单规则校验
 const roleRules = reactive({
@@ -23,8 +31,6 @@ const roleRules = reactive({
   createTime: []
 })
 
-const roleModel = ref(initModel)
-
 const showFlag = ref(false);
 
 const title = computed(() => {
@@ -32,22 +38,32 @@ const title = computed(() => {
 })
 
 const handleClose = () => {
-  roleModel.value = {};
+  model.value = {}
   showFlag.value = false;
 }
 
-const handleOpen = (row) => {
+const handleOpen = () => {
   // 解决修改表单但为提交数据，导致表格内容任然被修改，刷新后才能复原问题
   // roleModel.value = cloneDeep(unref(row));
-  roleModel.value = {...unref(row)};
   showFlag.value = true;
 }
 
-const onSubmit= () => {
-  // todo 提交表单
-  $emit('onSubmit', {...roleModel.value})
+const onSubmit = () => {
+  $emit('onSubmit', {...model.value})
   handleClose()
 }
+
+const handleCheck = (targetNode, checkedNode) => {
+  model.value.resourceIds = checkedNode.checkedKeys
+}
+
+const resourceTree = ref([])
+
+onMounted(async () => {
+  // 加载资源树
+  const resourceTreeRes = await getResourceTreeApi()
+  resourceTree.value = resourceTreeRes.data
+})
 
 // 暴露打开弹窗操作
 defineExpose({
@@ -66,13 +82,27 @@ defineExpose({
     <el-form
         label-position="right"
         label-width="100px"
-        :model="roleModel"
+        :model="model"
         :rules="roleRules"
         style="max-width: 460px"
     >
       <el-form-item label="角色名" prop="roleName">
-        <el-input v-model="roleModel.roleName"/>
+        <el-input v-model="model.roleName"/>
       </el-form-item>
+
+      <el-form-item label="资源绑定" prop="resourceIds">
+        <el-tree
+            ref="treeRef"
+            :data="resourceTree"
+            show-checkbox
+            node-key="id"
+            @check="handleCheck"
+            :default-checked-keys="model.resourceIds"
+            highlight-current
+            :props="{label: 'resourceName', children: 'children'}"/>
+
+      </el-form-item>
+
     </el-form>
 
     <template #footer>
