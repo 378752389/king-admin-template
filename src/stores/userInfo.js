@@ -43,6 +43,10 @@ export const useUserInfoStore = defineStore("userInfo", () => {
                 })
             }
         } catch (e) {
+            ElMessage({
+                type: 'error',
+                message: "登录失败，请联系开发人员"
+            })
             console.log(e);
         }
     }
