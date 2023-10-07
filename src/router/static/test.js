@@ -22,6 +22,14 @@ export default {
                 title: '表单测试页面'
             },
             component: () => import('@/views/test/page2.vue')
+        },
+        {
+            path: 'page3',
+            name: 'page3',
+            meta: {
+                title: '传参测试'
+            },
+            component: () => import('@/views/test/page3.vue')
         }
     ]
 }
