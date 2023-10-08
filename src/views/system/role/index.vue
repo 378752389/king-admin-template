@@ -15,7 +15,6 @@ const tableData = ref([])
 const addFlag = ref(false);
 const roleDetailRef = ref(null);
 const searchFormRef = ref(null);
-const roleModel = ref({})
 
 const loadData = async () => {
   const roleRes = await getRoleListApi({...searchForm.value});
@@ -36,10 +35,8 @@ const onEdit = async (row) => {
   getResourceListApi(row.id).then(res => {
     let resourceIds = [];
     res.data && (resourceIds = res.data.map(x => x.id))
-    row.resourceIds = resourceIds
-    roleModel.value = {...row, resourceIds}
-    console.log(roleModel.value)
-    roleDetailRef.value.handleOpen()
+    const formData = {...row, resourceIds}
+    roleDetailRef.value.handleOpen(formData)
   })
 
 }
@@ -136,7 +133,6 @@ const doSubmit = async (role) => {
 
   <RoleDetail @on-submit="doSubmit"
               :add-flag="addFlag"
-              :role-model="roleModel"
               ref="roleDetailRef"/>
 </template>
 

@@ -6,32 +6,19 @@ const props = defineProps({
   addFlag: {
     type: Boolean,
     required: true
-  },
-  roleModel: {
-    type: Object,
-    default: () => {
-      return {
-        id: '',
-        roleName: '',
-        createTime: '',
-        resourceIds: []
-      }
-    }
   }
 })
 
-const model = ref(props.roleModel)
-
 const $emit = defineEmits(['onSubmit'])
-
 // 表单规则校验
 const roleRules = reactive({
   id: [],
   roleName: [],
   createTime: []
 })
-
+const model = ref({})
 const showFlag = ref(false);
+const treeRef = ref(null);
 
 const title = computed(() => {
   return props.addFlag ? "添加角色" : "修改角色";
@@ -42,9 +29,8 @@ const handleClose = () => {
   showFlag.value = false;
 }
 
-const handleOpen = () => {
-  // 解决修改表单但为提交数据，导致表格内容任然被修改，刷新后才能复原问题
-  // roleModel.value = cloneDeep(unref(row));
+const handleOpen = (row) => {
+  model.value = {...row}
   showFlag.value = true;
 }
 
@@ -65,7 +51,16 @@ onMounted(async () => {
   resourceTree.value = resourceTreeRes.data
 })
 
-// 暴露打开弹窗操作
+const onOpen = () => {
+  // el-dialog是懒加载的，如果不添加监听事件，在 handleOpen 拿不到 treeRef
+  treeRef.value.setCheckedKeys(model.value.resourceIds)
+}
+
+const onClose = () => {
+  // el-dialog是懒加载的，如果不添加监听事件，在 handleOpen 拿不到 treeRef
+  treeRef.value.setCheckedKeys([])
+}
+
 defineExpose({
   handleOpen
 })
@@ -76,6 +71,8 @@ defineExpose({
   <el-dialog
       v-model="showFlag"
       :title="title"
+      @open="onOpen"
+      @close="onClose"
       width="30%"
       :before-close="handleClose">
     <!--   todo 表单内容-->
@@ -97,10 +94,8 @@ defineExpose({
             show-checkbox
             node-key="id"
             @check="handleCheck"
-            :default-checked-keys="model.resourceIds"
             highlight-current
             :props="{label: 'resourceName', children: 'children'}"/>
-
       </el-form-item>
 
     </el-form>

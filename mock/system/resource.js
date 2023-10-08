@@ -18,7 +18,7 @@ export default [
             return {
                 code: 200,
                 message: '请求成功',
-                'data|3': [
+                'data|10': [
                     {
                         'id|+1': 1,
                         'resourceName': '@title',
@@ -33,4 +33,21 @@ export default [
             }
         }
     },
+    {
+        url: '/api/resource/list',
+        method: 'get',
+        response: ({query}) => {
+            return {
+                code: 200,
+                message: '请求成功',
+                'data|10': [
+                    {
+                        'id|+1': 1,
+                        'resourceName': '@title',
+                        'roleId': query.roleId
+                    }
+                ]
+            }
+        }
+    }
 ]
