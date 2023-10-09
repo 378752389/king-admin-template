@@ -42,7 +42,7 @@ onMounted(() => {
   width: 100vw;
 
   .side-bar-wrapper {
-    min-height: 100vh;
+    height: 100vh;
     background-color: #304156 !important;
   }
 
