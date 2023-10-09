@@ -15,14 +15,16 @@ const tableData = ref([])
 const addFlag = ref(false);
 const roleDetailRef = ref(null);
 const searchFormRef = ref(null);
-
+const loadStatus = ref(false);
 const loadData = async () => {
+  loadStatus.value = true;
   const roleRes = await getRoleListApi({...searchForm.value});
   tableData.value = roleRes.data;
+  loadStatus.value = false;
 }
 
-onMounted(async () => {
-  await loadData()
+onMounted(() => {
+  loadData()
 })
 
 
@@ -104,7 +106,7 @@ const doSubmit = async (role) => {
       <div class="table-wrapper">
         <!--     todo 表格数据-->
         <!--      table-layout: 固定表格宽度，让表格撑满整个父元素-->
-        <el-table :data="tableData" table-layout="fixed" max-height="500px">
+        <el-table :data="tableData" table-layout="fixed" max-height="500px" v-loading="loadStatus">
           <el-table-column prop="id" label="角色id"/>
           <el-table-column prop="roleName" label="角色名称"/>
           <el-table-column prop="createTime" label="创建时间"/>

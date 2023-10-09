@@ -19,6 +19,14 @@ const pageData = reactive({
 
 const tableData = ref([])
 
+/**
+ * 页面挂载
+ */
+onMounted(() => {
+  loadData()
+})
+
+
 const pageNumChange = (pageNum) => {
   loadData({pageNum, pageSize: pageData.pageSize, ...searchForm.value})
 }
@@ -26,7 +34,9 @@ const pageSizeChange = (pageSize) => {
   loadData({pageSize, pageNum: pageData.pageNum, ...searchForm.value})
 }
 
+const loadStatus = ref(false)
 const loadData = () => {
+  loadStatus.value = true
   getAdminPage({
     pageNum: pageData.pageNum,
     pageSize: pageData.pageSize,
@@ -36,15 +46,9 @@ const loadData = () => {
     pageData.pageNum = resp.data.pageNum;
     pageData.pageSize = resp.data.pageSize;
     pageData.total = resp.data.total;
+    loadStatus.value = false
   })
 }
-
-/**
- * 页面挂载
- */
-onMounted(() => {
-  loadData()
-})
 
 /**
  * 表单搜索
@@ -133,7 +137,7 @@ const onDelete = (row) => {
     </template>
     <!--     todo 表格数据-->
     <!--      table-layout: 固定表格宽度，让表格撑满整个父元素-->
-    <el-table :data="tableData">
+    <el-table :data="tableData" v-loading="loadStatus">
       <el-table-column type="index" width="120" label="序号"/>
       <el-table-column label="头像">
 

@@ -49,13 +49,16 @@ const onDelete = async (row) => {
   await loadData()
 }
 
+const loadStatus = ref(false)
 const loadData = async () => {
+  loadStatus.value = true
   const res = await getResourceTreeApi()
   tableData.value = res.data
+  loadStatus.value = false
 }
 
-onMounted(async () => {
-  await loadData()
+onMounted(() => {
+  loadData()
 })
 
 </script>
@@ -68,6 +71,7 @@ onMounted(async () => {
     <el-table :data="tableData"
               max-height="500"
               row-key="id"
+              v-loading="loadStatus"
               border>
       <el-table-column prop="id" label="资源id"/>
       <el-table-column prop="resourceName" label="资源名称"/>

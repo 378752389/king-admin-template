@@ -1,5 +1,5 @@
 import axios from "axios";
-import router from "@/router";
+import router from '@/router';
 
 const request = axios.create({
     baseURL: import.meta.env.VITE_HTTP_BASE_URL,
@@ -7,10 +7,6 @@ const request = axios.create({
     headers: {
         'X-Customer-System': 'king-admin-template'
     },
-    // validateStatus: function (status) {
-    //     return status >= 200 && status < 300 || status === 302; // 默认值
-    // },
-
 })
 
 // 添加请求拦截器
@@ -32,11 +28,17 @@ request.interceptors.response.use(function (response) {
     // 对响应数据做点什么
     console.log(`[响应拦截器拦截] 请求路径: ${response.config.url}, 响应结果：`, response)
 
+    // token 失效，移除token
     const resp = response.data;
     if (resp.code === 401) {
         localStorage.removeItem('token');
         router.push({name: 'login'})
     }
+
+    if (resp.code === 403) {
+        router.push({name: '403'})
+    }
+
     // 返回接口的响应结果
     return response.data;
 }, function (error) {

@@ -6,7 +6,6 @@ import {useRouter} from 'vue-router'
 
 
 export const useUserInfoStore = defineStore("userInfo", () => {
-    const token = ref(null)
     const menuList = ref([])
     const router = useRouter()
 
@@ -28,8 +27,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
                 return
             }
             if (result && result.code === 200) {
-                token.value = result.data.token;
-                localStorage.setItem('token', token.value);
+                localStorage.setItem('token', result.data.token);
                 ElMessage({
                     showClose: true,
                     message: '登录成功',
@@ -60,12 +58,10 @@ export const useUserInfoStore = defineStore("userInfo", () => {
 
     // 清除用户信息
     const clearToken = function () {
-        token.value = {};
         localStorage.setItem('token', '');
     }
 
     return {
-        token,
         menuList,
         clearToken,
         doLogin,

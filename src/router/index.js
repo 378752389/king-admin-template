@@ -51,6 +51,16 @@ export const routes = [
                 component: () => import('@/views/common/401.vue')
             },
             {
+                path: '403',
+                name: '403',
+                meta: {
+                    title: '403',
+                    icon: '',
+                    hidden: true
+                },
+                component: () => import('@/views/common/403.vue')
+            },
+            {
                 path: '404',
                 name: '404',
                 meta: {
