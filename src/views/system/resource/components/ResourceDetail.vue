@@ -67,6 +67,7 @@ defineExpose({
 
 <template>
   <el-dialog
+      draggable
       v-model="showFlag"
       :title="title"
       width="30%"

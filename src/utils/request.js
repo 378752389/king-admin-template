@@ -32,11 +32,12 @@ request.interceptors.response.use(function (response) {
     const resp = response.data;
     if (resp.code === 401) {
         localStorage.removeItem('token');
-        router.push({name: 'login'})
+        // router.push 返回一个 promise对象， 结果为 undefined
+        return router.push({name: 'login'})
     }
 
     if (resp.code === 403) {
-        router.push({name: '403'})
+        return router.push({name: '403'})
     }
 
     // 返回接口的响应结果

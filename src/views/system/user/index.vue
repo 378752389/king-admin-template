@@ -42,10 +42,12 @@ const loadData = () => {
     pageSize: pageData.pageSize,
     ...searchForm.value
   }).then(resp => {
-    tableData.value = resp.data.dataList;
-    pageData.pageNum = resp.data.pageNum;
-    pageData.pageSize = resp.data.pageSize;
-    pageData.total = resp.data.total;
+    if (resp && resp.data) {
+      tableData.value = resp.data.dataList;
+      pageData.pageNum = resp.data.pageNum;
+      pageData.pageSize = resp.data.pageSize;
+      pageData.total = resp.data.total;
+    }
     loadStatus.value = false
   })
 }

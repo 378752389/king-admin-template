@@ -73,7 +73,6 @@ onMounted(() => {
               row-key="id"
               v-loading="loadStatus"
               border>
-      <el-table-column prop="id" label="资源id"/>
       <el-table-column prop="resourceName" label="资源名称"/>
       <el-table-column prop="path" label="资源路径"/>
       <el-table-column prop="resourceType" label="资源类型">
