@@ -88,6 +88,9 @@ defineExpose({
       <el-form-item label="资源权限" prop="permission">
         <el-input v-model="model.permission"/>
       </el-form-item>
+      <el-form-item label="菜单排序" prop="sort">
+        <el-input v-model="model.sort" />
+      </el-form-item>
       <el-form-item label="菜单级别" prop="level">
         <el-input v-model="model.level"/>
       </el-form-item>

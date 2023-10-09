@@ -53,7 +53,10 @@ const loadStatus = ref(false)
 const loadData = async () => {
   loadStatus.value = true
   const res = await getResourceTreeApi()
-  tableData.value = res.data
+  if (res && res.data) {
+    tableData.value = res.data
+  }
+
   loadStatus.value = false
 }
 
@@ -71,6 +74,7 @@ onMounted(() => {
     <el-table :data="tableData"
               max-height="500"
               row-key="id"
+              :default-sort="{prop: 'sort', order: 'descending'}"
               v-loading="loadStatus"
               border>
       <el-table-column prop="resourceName" label="资源名称"/>
@@ -82,6 +86,7 @@ onMounted(() => {
         </template>
       </el-table-column>
       <el-table-column prop="permission" label="资源权限"/>
+      <el-table-column prop="sort" label="排序"/>
       <el-table-column label="管理" align="center">
         <template #default="scope">
           <el-button v-if="scope.row.resourceType === 0" type="primary" size="small" @click="onAdd(scope.row)">添加
