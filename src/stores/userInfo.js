@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import {ref} from 'vue';
+import {ref, computed} from 'vue';
 import {loginApi, menuApi, logoutApi} from "@/api/system/auth";
 import {ElMessage} from "element-plus";
 import {useRouter} from 'vue-router'
@@ -66,8 +66,14 @@ export const useUserInfoStore = defineStore("userInfo", () => {
         }
     }
 
+    const permissionList = computed(() => {
+        return menuList.value.map(menu => menu.permission)
+    })
+
+
     return {
         menuList,
+        permissionList,
         doLogin,
         doLogout,
         getMenu
