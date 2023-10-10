@@ -36,7 +36,8 @@ request.interceptors.response.use(function (response) {
         return router.push({name: 'login'})
     }
 
-    if (resp.code === 403) {
+    // 有token才能进行后台管理页面
+    if (localStorage.getItem('token') && resp.code === 403) {
         return router.push({name: '403'})
     }
 

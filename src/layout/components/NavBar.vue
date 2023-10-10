@@ -5,8 +5,10 @@ import {useRouter} from "vue-router";
 import {useRoute} from "vue-router";
 import {storeToRefs} from "pinia";
 import {useAppStore} from "@/stores/app";
+import {useUserInfoStore} from "@/stores/userInfo";
 
 const appStore = useAppStore();
+const userInfoStore = useUserInfoStore();
 const {sidebarCollapse} = storeToRefs(appStore);
 
 const route = useRoute();
@@ -14,7 +16,7 @@ const route = useRoute();
 const router = useRouter();
 
 const logout = () => {
-  router.push("/login")
+  userInfoStore.doLogout()
 }
 
 const doToggle = () => {

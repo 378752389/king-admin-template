@@ -1,10 +1,5 @@
 import request from "@/utils/request";
 
-export const categoryReq = {
-    id: '',
-    categoryName: '',
-    resourceIds: [],
-}
 export const getCategoryPage = ({pageNum = 1, pageSize = 10}) => {
     return request({
         url: '/category',

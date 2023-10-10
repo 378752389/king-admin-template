@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia';
 import {ref} from 'vue';
-import {loginApi, menuApi} from "@/api/system/auth";
+import {loginApi, menuApi, logoutApi} from "@/api/system/auth";
 import {ElMessage} from "element-plus";
 import {useRouter} from 'vue-router'
 
@@ -17,15 +17,6 @@ export const useUserInfoStore = defineStore("userInfo", () => {
                 username,
                 password
             })
-            if (result && result.code !== 200) {
-                console.log(result)
-                ElMessage({
-                    showClose: true,
-                    message: result.message || '用户名或密码错误',
-                    type: 'error',
-                })
-                return
-            }
             if (result && result.code === 200) {
                 localStorage.setItem('token', result.data.token);
                 ElMessage({
@@ -33,11 +24,11 @@ export const useUserInfoStore = defineStore("userInfo", () => {
                     message: '登录成功',
                     type: 'success',
                 })
-                await router.replace({path: '/'})
+                router.replace({path: '/'})
             } else {
                 ElMessage({
-                    message: result.message,
-                    type: 'warning',
+                    message: result.message || '登录失败',
+                    type: 'error',
                 })
             }
         } catch (e) {
@@ -49,6 +40,25 @@ export const useUserInfoStore = defineStore("userInfo", () => {
         }
     }
 
+    const doLogout = async () => {
+        try {
+            const res = await logoutApi();
+            if (res && res.code === 200) {
+                ElMessage({
+                    type: 'success',
+                    message: res.message
+                })
+                localStorage.removeItem('token')
+                await router.push({name: 'login'})
+            }
+        } catch (e) {
+            ElMessage({
+                type: 'error',
+                message: e.message || '退出登录失败'
+            })
+        }
+    }
+
     const getMenu = async () => {
         const menuResult = await menuApi();
         if (menuResult.code === 200) {
@@ -56,15 +66,10 @@ export const useUserInfoStore = defineStore("userInfo", () => {
         }
     }
 
-    // 清除用户信息
-    const clearToken = function () {
-        localStorage.setItem('token', '');
-    }
-
     return {
         menuList,
-        clearToken,
         doLogin,
+        doLogout,
         getMenu
     }
 }, {

@@ -19,6 +19,7 @@ const pageData = reactive({
 
 
 const tableData = ref([])
+const tableDataLoading = ref(false)
 
 const searchFormRef = ref(null)
 
@@ -39,11 +40,13 @@ const onEdit = (row) => {
 }
 
 const loadData = async (page) => {
+  tableDataLoading.value = true;
   const pageDataResult = await getLogPage(page || {});
   tableData.value = pageDataResult.data.dataList;
   pageData.pageNum = pageDataResult.data.pageNum;
   pageData.pageSize = pageDataResult.data.pageSize;
   pageData.total = pageDataResult.data.total;
+  tableDataLoading.value = false;
 }
 
 const pageNumChange = (pageNum) => {
@@ -101,7 +104,7 @@ onMounted(() => {
     </template>
     <!--     todo 表格数据-->
     <!--      table-layout: 固定表格宽度，让表格撑满整个父元素-->
-    <el-table :data="tableData">
+    <el-table :data="tableData" v-loading="tableDataLoading">
       <el-table-column type="index" label="序号" />
       <el-table-column prop="createBy" label="用户名"/>
       <el-table-column prop="description" label="操作内容" show-overflow-tooltip/>
