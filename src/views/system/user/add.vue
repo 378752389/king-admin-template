@@ -7,7 +7,7 @@ const handleAdd = (obj) => {
 </script>
 
 <template>
-<UserDetail :model="{}" @onSubmit="handleAdd"/>
+<UserDetail :add-flag="true" @onSubmit="handleAdd"/>
 </template>
 
 <style scoped>

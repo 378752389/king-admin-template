@@ -1,23 +1,80 @@
 <script setup>
-import {reactive} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import router from "@/router";
+import {ElMessageBox, ElMessage} from 'element-plus';
+import {getRoleListApi} from "@/api/system/role";
+import {useRoute} from "vue-router";
+import SvgIcon from "@/components/SvgIcon.vue";
+import {getAdmin} from "@/api/system/admin";
 
+const uploadPath = import.meta.env.VITE_FILE_UPLOAD_PATH;
+const props = defineProps(['addFlag']);
+const route = useRoute();
+const userModel = ref({});
 
-const props = defineProps(['model']);
+const roleSelectList = ref([]);
+const genderSelectList = ref([
+  {
+    label: '男',
+    value: 1,
+  },
+  {
+    label: '女',
+    value: 0
+  }
+]);
 
 // 表单规则校验
-const roleRules = reactive({
-  id: [],
-  roleName: [],
-  createTime: []
+const userRules = reactive({});
+
+onMounted(async () => {
+  // 页面初始化公共操作
+  const res = await getRoleListApi({})
+  if (res && res.data) {
+    roleSelectList.value = res.data
+  }
+
+  if (!props.addFlag) {
+    // 修改页面初始化操作， 加载表单数据
+    const id = route.query.id;
+    const adminRes = await getAdmin(id);
+    if (adminRes && adminRes.data) {
+      userModel.value = {...adminRes.data, roleIds: []}
+    }
+  } else {
+    // 添加页面初始化操作
+    userModel.value = {};
+  }
+
 })
 
-const $emit = defineEmits(["onSubmit"])
+const $emit = defineEmits(["onSubmit"]);
 const handleSubmit = () => {
-  $emit('onSubmit', {...props.model})
+  ElMessageBox.confirm(
+      '请确认是否提交？',
+      '警告',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+  ).then(() => {
+    $emit('onSubmit', {...userModel.value})
+    ElMessage({
+      type: 'success',
+      message: '修改成功',
+    })
+  }).catch(() => {
+    ElMessage({
+      type: 'info',
+      message: '取消成功',
+    })
+  })
+
 }
 
 const handleCancel = () => {
+  userModel.value = {};
   router.back();
 }
 </script>
@@ -27,35 +84,70 @@ const handleCancel = () => {
     <el-form
         label-position="right"
         label-width="100px"
-        :model="model"
-        :rules="roleRules"
+        :model="userModel"
+        :rules="userRules"
     >
       <el-form-item label="用户名" prop="username">
-        <el-input v-model="model.username"/>
+        <el-input v-model="userModel.username" :disabled="!addFlag"/>
       </el-form-item>
       <el-form-item label="头像" prop="avatar">
-        <el-input v-model="model.avatar"/>
+
+        <el-upload
+            :action="uploadPath"
+            :show-file-list="false"
+            list-type="picture-card"
+        >
+          <el-image v-if="userModel.avatar" :src="userModel.avatar"/>
+          <el-icon v-else>
+            <SvgIcon icon="king-plus"/>
+          </el-icon>
+        </el-upload>
+
       </el-form-item>
       <el-form-item label="邮箱" prop="email">
-        <el-input v-model="model.email"/>
+        <el-input v-model="userModel.email"/>
       </el-form-item>
       <el-form-item label="性别" prop="gender">
-        <el-input v-model="model.gender"/>
+        <el-select
+            v-model="userModel.gender"
+            placeholder="选择性别">
+          <el-option
+              v-for="gender in genderSelectList"
+              :key="gender.value"
+              :label="gender.label"
+              :value="gender.value"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="手机号" prop="phone">
-        <el-input v-model="model.phone"/>
+        <el-input v-model="userModel.phone"/>
       </el-form-item>
       <el-form-item label="qq" prop="qq">
-        <el-input v-model="model.qq"/>
+        <el-input v-model="userModel.qq"/>
       </el-form-item>
       <el-form-item label="微信" prop="wechat">
-        <el-input v-model="model.wechat"/>
+        <el-input v-model="userModel.wechat"/>
       </el-form-item>
       <el-form-item label="职业" prop="occupation">
-        <el-input v-model="model.occupation"/>
+        <el-input v-model="userModel.occupation"/>
       </el-form-item>
       <el-form-item label="详情" prop="description">
-        <el-input v-model="model.description"/>
+        <el-input type="textarea" rows="3" v-model="userModel.description"/>
+      </el-form-item>
+
+      <el-form-item label="绑定角色" prop="roleIds">
+        <el-select
+            v-model="userModel.roleIds"
+            multiple
+            placeholder="选择角色"
+            style="width: 40%; min-width: 200px">
+          <el-option
+              v-for="role in roleSelectList"
+              :key="role.id"
+              :label="role.roleName"
+              :value="role.id"
+          />
+        </el-select>
       </el-form-item>
 
       <el-form-item>
@@ -66,6 +158,5 @@ const handleCancel = () => {
   </el-card>
 </template>
 
-<style scoped>
-
+<style lang="less" scoped>
 </style>

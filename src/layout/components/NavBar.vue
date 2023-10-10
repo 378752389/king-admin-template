@@ -1,7 +1,6 @@
 <script setup>
 
 import SvgIcon from "@/components/SvgIcon.vue";
-import {useRouter} from "vue-router";
 import {useRoute} from "vue-router";
 import {storeToRefs} from "pinia";
 import {useAppStore} from "@/stores/app";
@@ -12,9 +11,6 @@ const userInfoStore = useUserInfoStore();
 const {sidebarCollapse} = storeToRefs(appStore);
 
 const route = useRoute();
-
-const router = useRouter();
-
 const logout = () => {
   userInfoStore.doLogout()
 }

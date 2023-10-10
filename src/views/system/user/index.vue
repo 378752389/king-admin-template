@@ -81,11 +81,11 @@ const onAdd = () => {
 /**
  * 修改管理员
  */
-const onEdit = () => {
+const onEdit = (id) => {
   router.push({
     name: 'user-update',
     query: {
-      id: 1
+      id
     }
   })
 }
@@ -150,7 +150,7 @@ const onDelete = (row) => {
       <el-table-column prop="description" label="描述" show-overflow-tooltip/>
       <el-table-column label="管理" align="center">
         <template #default="scope">
-          <el-button type="warning" size="small" @click="onEdit">编辑</el-button>
+          <el-button type="warning" size="small" @click="onEdit(scope.row.id)">编辑</el-button>
 
           <el-popconfirm
               width="220"
