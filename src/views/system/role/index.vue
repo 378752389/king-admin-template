@@ -78,7 +78,7 @@ const doSubmit = async (role) => {
 
 <template>
   <div class="data-wrapper">
-    <el-card class="search-card">
+    <el-card class="search-card" shadow="never">
       <template #header>
         <SectionTitle title="查询搜索"/>
       </template>
@@ -96,14 +96,14 @@ const doSubmit = async (role) => {
       </el-form>
     </el-card>
 
-    <el-card class="content-card">
+    <el-card class="content-card" shadow="never">
       <template #header>
         <SectionTitle title="数据列表"/>
       </template>
       <div class="table-wrapper">
         <!--     todo 表格数据-->
         <!--      table-layout: 固定表格宽度，让表格撑满整个父元素-->
-        <el-table :data="tableData" table-layout="fixed" max-height="500px" v-loading="loadStatus">
+        <el-table :data="tableData" table-layout="fixed" max-height="500px" v-loading="loadStatus" border>
           <el-table-column prop="id" label="角色id"/>
           <el-table-column prop="roleName" label="角色名称"/>
           <el-table-column prop="createTime" label="创建时间"/>

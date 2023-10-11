@@ -67,7 +67,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <el-card class="content-card">
+  <el-card class="content-card" shadow="never">
     <template #header>
       <SectionTitle title="数据列表"/>
     </template>

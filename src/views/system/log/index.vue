@@ -63,7 +63,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <el-card class="search-card">
+  <el-card shadow="never">
     <template #header>
       <SectionTitle title="查询搜索"/>
     </template>
@@ -98,7 +98,7 @@ onMounted(() => {
 
   <el-divider/>
 
-  <el-card class="content-card">
+  <el-card shadow="never">
     <template #header>
       <SectionTitle title="数据列表"/>
     </template>
