@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import {ref} from 'vue';
+import {ref, computed} from 'vue';
 import {loginApi, menuApi, logoutApi} from "@/api/system/auth";
 import {ElMessage} from "element-plus";
 import {useRouter} from 'vue-router'
@@ -48,6 +48,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
                     type: 'success',
                     message: res.message
                 })
+                menuList.value.length = 0
                 localStorage.removeItem('token')
                 await router.push({name: 'login'})
             }
@@ -59,6 +60,10 @@ export const useUserInfoStore = defineStore("userInfo", () => {
         }
     }
 
+    const permissionList = computed(() => {
+        return menuList.value.map(x => x.permission)
+    })
+
     const getMenu = async () => {
         const menuResult = await menuApi();
         if (menuResult.code === 200) {
@@ -68,6 +73,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
 
     return {
         menuList,
+        permissionList,
         doLogin,
         doLogout,
         getMenu

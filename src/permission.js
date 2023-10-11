@@ -25,8 +25,8 @@ router.beforeEach(async (to, from, next) => {
     if (to.meta && to.meta.permission) {
         // 判断用户是否拥有对应的权限
         const userInfoStore = useUserInfoStore();
-        if (userInfoStore.menuList && userInfoStore.menuList.indexOf(to.meta.permission) !== -1) {
-            // 用户拥有对应权限
+        if (userInfoStore.permissionList && userInfoStore.permissionList.indexOf(to.meta.permission) !== -1) {
+            // 用户拥有对应菜单权限
             next()
         } else {
             // 用户没有权限，跳转到登录页

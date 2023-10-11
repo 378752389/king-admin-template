@@ -96,9 +96,6 @@ const doSubmit = async (role) => {
       </el-form>
     </el-card>
 
-    <el-divider/>
-
-
     <el-card class="content-card">
       <template #header>
         <SectionTitle title="数据列表"/>
@@ -139,5 +136,4 @@ const doSubmit = async (role) => {
 </template>
 
 <style lang="less" scoped>
-
 </style>

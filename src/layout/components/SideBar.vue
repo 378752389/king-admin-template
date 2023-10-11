@@ -28,14 +28,16 @@ const processRoutes = (routeList) => {
   // 1. 依据权限来筛选子菜单
   // 2. 筛选所有隐藏菜单
   const permittedRoutes = [];
+  const permissionList = props.authedRoute.map(x => x.permission);
   for (let i = 0; i < routeList.length; i++) {
     const routeItem = routeList[i];
     if (routeItem.meta
         && routeItem.meta.permission
         && routeItem.meta.permission.length > 0) {
 
+
       // 路由项有配置permission，需要有对应的权限才能访问
-      if (props.authedRoute.indexOf(routeItem.meta.permission) !== -1) {
+      if (permissionList.indexOf(routeItem.meta.permission) !== -1) {
         // 有对应的权限，进行渲染
         permittedRoutes.push(routeItem);
         if (routeItem.children && routeItem.children.length > 0) {
@@ -47,6 +49,8 @@ const processRoutes = (routeList) => {
       permittedRoutes.push(routeItem);
     }
   }
+  console.log("permissionList", permissionList)
+  console.log("permittedRoutes", permittedRoutes)
   return permittedRoutes.sort((a, b) => {
     let before = a.order === undefined ? 999 : a.order
     let after = b.order === undefined ? 999 : b.order

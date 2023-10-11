@@ -131,8 +131,6 @@ const onDelete = (row) => {
     </el-form>
   </el-card>
 
-  <el-divider/>
-
   <el-card class="content-card">
     <template #header>
       <SectionTitle title="数据列表"/>
@@ -182,5 +180,4 @@ const onDelete = (row) => {
 </template>
 
 <style scoped>
-
 </style>

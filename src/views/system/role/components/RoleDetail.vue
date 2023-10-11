@@ -19,7 +19,6 @@ const roleRules = reactive({
 const model = ref({})
 const showFlag = ref(false);
 const treeRef = ref(null);
-
 const title = computed(() => {
   return props.addFlag ? "添加角色" : "修改角色";
 })
@@ -35,7 +34,8 @@ const handleOpen = (row) => {
 }
 
 const onSubmit = () => {
-  $emit('onSubmit', {...model.value})
+  const pushData = {...model.value};
+  $emit('onSubmit', pushData)
   handleClose()
 }
 
@@ -94,6 +94,7 @@ defineExpose({
             show-checkbox
             node-key="id"
             @check="handleCheck"
+            :check-strictly="true"
             highlight-current
             :props="{label: 'resourceName', children: 'children'}"/>
       </el-form-item>
