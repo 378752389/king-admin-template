@@ -59,7 +59,8 @@ export default {
             name: 'user-add',
             meta: {
                 title: '添加用户',
-                hidden: true
+                hidden: true,
+                permission: 'system:user:add'
             },
             component: () => import('@/views/system/user/add.vue')
         },
@@ -68,7 +69,8 @@ export default {
             name: 'user-update',
             meta: {
                 title: '修改用户',
-                hidden: true
+                hidden: true,
+                permission: 'system:user:update'
             },
             component: () => import('@/views/system/user/update.vue')
         }

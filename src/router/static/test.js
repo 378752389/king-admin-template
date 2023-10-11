@@ -3,7 +3,8 @@ export default {
     path: '/test',
     name: 'test',
     meta: {
-        title: '测试管理'
+        title: '测试管理',
+        permission: ''
     },
     component: () => import('@/layout/index.vue'),
     children: [
@@ -11,7 +12,8 @@ export default {
             path: 'page1',
             name: 'page1',
             meta: {
-                title: '接口测试管理'
+                title: '接口测试管理',
+                permission: ''
             },
             component: () => import('@/views/test/page1.vue')
         },
@@ -19,7 +21,8 @@ export default {
             path: 'page2',
             name: 'page2',
             meta: {
-                title: '表单测试页面'
+                title: '表单测试页面',
+                permission: ''
             },
             component: () => import('@/views/test/page2.vue')
         },
@@ -27,7 +30,8 @@ export default {
             path: 'page3',
             name: 'page3',
             meta: {
-                title: '传参测试'
+                title: '传参测试',
+                permission: ''
             },
             component: () => import('@/views/test/page3.vue')
         },
@@ -35,7 +39,8 @@ export default {
             path: 'page4',
             name: 'page4',
             meta: {
-                title: '数据展示'
+                title: '数据展示',
+                permission: ''
             },
             component: () => import('@/views/test/page4.vue')
         }

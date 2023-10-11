@@ -1,12 +1,14 @@
 <script setup>
-import {watch, ref} from 'vue'
+import {watch, ref, onMounted} from 'vue'
 import SvgIcon from "@/components/SvgIcon.vue";
 import {routes} from "@/router";
 import {useRoute} from "vue-router";
 import {useAppStore} from "@/stores/app";
+import {useUserInfoStore} from "@/stores/userInfo";
 import {storeToRefs} from "pinia";
 
 const {sidebarCollapse} = storeToRefs(useAppStore());
+const {permissionList} = storeToRefs(useUserInfoStore());
 
 const props = defineProps({
   authedRoute: {
@@ -57,6 +59,11 @@ const processRoutes = (routeList) => {
     return before - after
   });
 }
+
+onMounted(() => {
+  console.log(routes)
+  console.log(permissionList.value)
+})
 </script>
 
 <template>
@@ -71,8 +78,10 @@ const processRoutes = (routeList) => {
           :default-active="currentRoute.path"
           :collapse="sidebarCollapse"
           router>
-        <template v-for="routeItem in processRoutes(routes)">
-          <template v-if="routeItem.meta.hidden !== true">
+        <template v-for="routeItem in routes">
+          <!--          ( permissionList.indexOf(routeItem.meta.permission) !== -1)-->
+          <template
+              v-if="!routeItem.meta.hidden && (routeItem.meta.permission === '' || permissionList.indexOf(routeItem.meta.permission) !== -1)">
             <!--        菜单项包含子菜单-->
             <el-sub-menu
                 v-if="routeItem.children && routeItem.children.length > 0"
@@ -86,7 +95,7 @@ const processRoutes = (routeList) => {
 
               <template :key="childItem.name" v-for="childItem in routeItem.children">
                 <!--              添加选择 hidden 不为 true 的菜单项-->
-                <template v-if="childItem.meta.hidden !== true">
+                <template v-if="!childItem.meta.hidden && (childItem.meta.permission === '' || permissionList.indexOf(childItem.meta.permission) !== -1)">
                   <el-menu-item
                       :index="routeItem.path + '/' + childItem.path">
                     <SvgIcon :icon="childItem.meta.icon || 'king-location'"/>
@@ -97,7 +106,6 @@ const processRoutes = (routeList) => {
 
 
             </el-sub-menu>
-
             <!--        菜单项不包含子菜单-->
             <el-menu-item v-else
                           :key="routeItem.name"

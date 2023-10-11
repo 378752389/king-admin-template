@@ -3,7 +3,8 @@ export default {
     path: '/order',
     name: 'order',
     meta: {
-        title: '订单管理'
+        title: '订单管理',
+        permission: 'order'
     },
     component: () => import('@/layout/index.vue'),
     children: [
@@ -11,7 +12,8 @@ export default {
             path: 'list',
             name: 'list',
             meta: {
-                title: '订单列表'
+                title: '订单列表',
+                permission: 'order:list'
             },
             component: () => import('@/views/order/list/index.vue')
         },
@@ -19,7 +21,8 @@ export default {
             path: 'setting',
             name: 'setting',
             meta: {
-                title: '退货申请管理'
+                title: '退货申请管理',
+                permission: 'order:setting'
             },
             component: () => import('@/views/order/setting/index.vue')
         },
@@ -27,7 +30,8 @@ export default {
             path: 'returnApply',
             name: 'returnApply',
             meta: {
-                title: '退货申请管理'
+                title: '退货申请管理',
+                permission: 'order:returnApply'
             },
             component: () => import('@/views/order/returnApply/index.vue')
         },
@@ -35,7 +39,8 @@ export default {
             path: 'returnReason',
             name: 'returnReason',
             meta: {
-                title: '退货原因管理'
+                title: '退货原因管理',
+                permission: 'order:returnReason'
             },
             component: () => import('@/views/order/returnReason/index.vue')
         },

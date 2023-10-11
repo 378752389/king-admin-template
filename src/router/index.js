@@ -1,4 +1,5 @@
 import {createRouter, createWebHistory} from 'vue-router'
+
 const routeSegments = import.meta.glob('./static/*.js', {eager: true})
 
 export const routes = [
@@ -76,6 +77,19 @@ export const routes = [
 Object.keys(routeSegments).forEach(key => {
     routes.push(routeSegments[key].default)
 })
+
+// 排序路由
+const sortRoute = (routes) => {
+    for (let i = 0; i < routes.length; i++) {
+        const route = routes[i];
+        if (routes.children && route.children.length > 0) {
+            sortRoute(routes[i].children);
+        }
+    }
+    routes.sort((a, b) => a.order - b.order)
+}
+
+sortRoute(routes)
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
