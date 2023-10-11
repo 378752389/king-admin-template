@@ -18,43 +18,35 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="view">
-    <div class="side-bar-wrapper">
-      <SideBar :authed-route="menuList"/>
-    </div>
-
-    <div class="main-wrapper">
-      <div class="nav-bar-wrapper">
-        <NavBar/>
-      </div>
-
-      <div class="content-wrapper">
-        <RouterView/>
+  <div class="view-port">
+    <SideBar class="side-bar" :authed-route="menuList"/>
+    <div class="main">
+      <NavBar/>
+      <div class="content">
+        <el-scrollbar>
+          <RouterView/>
+        </el-scrollbar>
       </div>
     </div>
   </div>
-
 </template>
 
 <style lang="less" scoped>
-.view {
+.view-port {
   display: flex;
   width: 100vw;
 
-  .side-bar-wrapper {
+  .side-bar {
     height: 100vh;
     background-color: #304156 !important;
   }
 
-  .main-wrapper {
+  .main {
     flex-grow: 1;
     overflow-x: hidden;
 
-    .content-wrapper {
-      padding: 10px 30px 10px 20px;
-      min-height: calc(100% - 60px);
-      display: flex;
-      flex-direction: column;
+    .content {
+      height: calc(100vh - 60px);
     }
   }
 
