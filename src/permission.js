@@ -11,14 +11,10 @@ router.beforeEach(async (to, from, next) => {
     // 白名单列表，所有用户都可访问
     if (whiteList.indexOf(to.path) !== -1) {
         next();
-        NProgress.done();
-        return
     }
     const token = localStorage.getItem("token");
     if (token == null || token === '') {
         next('/login');
-        NProgress.done();
-        return
     }
 
     // 判断目标路由是否有权限
@@ -36,8 +32,6 @@ router.beforeEach(async (to, from, next) => {
         // 页面没有权限，可以直接跳转
         next();
     }
-
-    NProgress.done();
 })
 
 router.afterEach(() => {

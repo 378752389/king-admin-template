@@ -81,7 +81,7 @@ onMounted(() => {
         <template v-for="routeItem in routes">
           <!--          ( permissionList.indexOf(routeItem.meta.permission) !== -1)-->
           <template
-              v-if="!routeItem.meta.hidden && (routeItem.meta.permission === '' || permissionList.indexOf(routeItem.meta.permission) !== -1)">
+              v-if="!routeItem.meta.hidden && (!routeItem.meta.permission || permissionList.indexOf(routeItem.meta.permission) !== -1)">
             <!--        菜单项包含子菜单-->
             <el-sub-menu
                 v-if="routeItem.children && routeItem.children.length > 0"
@@ -95,7 +95,7 @@ onMounted(() => {
 
               <template :key="childItem.name" v-for="childItem in routeItem.children">
                 <!--              添加选择 hidden 不为 true 的菜单项-->
-                <template v-if="!childItem.meta.hidden && (childItem.meta.permission === '' || permissionList.indexOf(childItem.meta.permission) !== -1)">
+                <template v-if="!childItem.meta.hidden && (!childItem.meta.permission || permissionList.indexOf(childItem.meta.permission) !== -1)">
                   <el-menu-item
                       :index="routeItem.path + '/' + childItem.path">
                     <SvgIcon :icon="childItem.meta.icon || 'king-location'"/>

@@ -39,7 +39,7 @@ onMounted(async () => {
     const id = route.query.id;
     const adminRes = await getAdmin(id);
     if (adminRes && adminRes.data) {
-      userModel.value = {...adminRes.data, roleIds: []}
+      userModel.value = {...adminRes.data, roleIds: adminRes.data.roleList.map(x => x.id)}
     }
   } else {
     // 添加页面初始化操作
