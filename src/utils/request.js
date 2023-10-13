@@ -1,5 +1,6 @@
 import axios from "axios";
 import router from '@/router';
+import lodash from 'lodash';
 
 const request = axios.create({
     baseURL: import.meta.env.VITE_HTTP_BASE_URL,
@@ -11,6 +12,8 @@ const request = axios.create({
 
 // 添加请求拦截器
 request.interceptors.request.use(function (config) {
+    // 去除为空的查询参数
+    config.params = lodash.pickBy(config.params, item => item)
     // 在发送请求之前做些什么
     let token = localStorage.getItem('token');
     if (token) {

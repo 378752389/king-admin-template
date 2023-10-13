@@ -55,6 +55,15 @@ export default {
             component: () => import('@/views/system/config/index.vue')
         },
         {
+            path: 'file',
+            name: 'file',
+            meta: {
+                title: '文件管理',
+                permission: ''
+            },
+            component: () => import('@/views/system/file/index.vue')
+        },
+        {
             path: 'user-add',
             name: 'user-add',
             meta: {

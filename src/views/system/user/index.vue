@@ -35,21 +35,28 @@ const pageSizeChange = (pageSize) => {
 }
 
 const loadStatus = ref(false)
-const loadData = () => {
+const loadData = async () => {
   loadStatus.value = true
-  getAdminPage({
-    pageNum: pageData.pageNum,
-    pageSize: pageData.pageSize,
-    ...searchForm.value
-  }).then(resp => {
+  try {
+    const resp = await getAdminPage({
+      pageNum: pageData.pageNum,
+      pageSize: pageData.pageSize,
+      ...searchForm.value
+    })
+
     if (resp && resp.data) {
       tableData.value = resp.data.dataList;
       pageData.pageNum = resp.data.pageNum;
       pageData.pageSize = resp.data.pageSize;
       pageData.total = resp.data.total;
     }
+  } catch (e) {
+    ElMessage.error(e.messages)
+  } finally {
     loadStatus.value = false
-  })
+  }
+
+
 }
 
 /**
