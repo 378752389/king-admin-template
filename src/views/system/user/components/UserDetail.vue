@@ -11,6 +11,10 @@ const uploadPath = import.meta.env.VITE_FILE_UPLOAD_PATH;
 const props = defineProps(['addFlag']);
 const route = useRoute();
 const userModel = ref({});
+const uploadProgress = ref({
+  showStatus: false,
+  percent: 0
+});
 
 const roleSelectList = ref([]);
 const genderSelectList = ref([
@@ -73,6 +77,30 @@ const handleSubmit = () => {
 
 }
 
+const onUploadSuccess = (resp) => {
+  resp.data && (userModel.value.avatar = Object.values(resp.data)[0])
+}
+
+const onBeforeUpload = (rawFile) => {
+  if (['image/jpeg', 'image/png'].indexOf(rawFile.type) === -1) {
+    ElMessage.error('头像文件必须为 jpg 或 png!')
+    return false
+  } else if (rawFile.size / 1024 / 1024 > 2) {
+    ElMessage.error('头像大小不能超过 2MB!')
+    return false
+  }
+  return true
+}
+const onUploadProgress = (e) => {
+  let p = Math.floor(e.percent * 10) / 10;
+  if (p === 100) {
+    uploadProgress.value.showStatus = false;
+  } else {
+    uploadProgress.value.showStatus = true;
+    uploadProgress.value.percent = p;
+  }
+}
+
 const handleCancel = () => {
   userModel.value = {};
   router.back();
@@ -93,13 +121,18 @@ const handleCancel = () => {
       <el-form-item label="头像" prop="avatar">
 
         <el-upload
-            :action="uploadPath"
+            name="files"
+            :action="uploadPath + '?type=avatar'"
             :show-file-list="false"
             list-type="picture-card"
+            :on-success="onUploadSuccess"
+            :before-upload="onBeforeUpload"
+            :on-progress="onUploadProgress"
         >
-          <el-image v-if="userModel.avatar" :src="userModel.avatar"/>
+          <el-image v-if="!uploadProgress.showStatus && userModel.avatar" :src="userModel.avatar"/>
           <el-icon v-else>
-            <SvgIcon icon="king-plus"/>
+            <el-progress v-if="uploadProgress.showStatus" :percentage="uploadProgress.percent"/>
+            <SvgIcon v-else icon="king-plus"/>
           </el-icon>
         </el-upload>
 
