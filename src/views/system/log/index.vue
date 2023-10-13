@@ -1,8 +1,9 @@
 <script setup>
 
 import SectionTitle from "@/components/SectionTitle.vue";
-import {reactive, ref, onMounted} from 'vue';
+import {onMounted, reactive, ref} from 'vue';
 import {getLogPage} from '@/api/system/log';
+import {ElMessage} from "element-plus";
 
 const searchForm = ref({
   id: '',
@@ -41,12 +42,19 @@ const onEdit = (row) => {
 
 const loadData = async (page) => {
   tableDataLoading.value = true;
-  const pageDataResult = await getLogPage(page || {});
-  tableData.value = pageDataResult.data.dataList;
-  pageData.pageNum = pageDataResult.data.pageNum;
-  pageData.pageSize = pageDataResult.data.pageSize;
-  pageData.total = pageDataResult.data.total;
-  tableDataLoading.value = false;
+  try {
+    const pageDataResult = await getLogPage(page || {});
+    tableData.value = pageDataResult.data.dataList;
+    pageData.pageNum = pageDataResult.data.pageNum;
+    pageData.pageSize = pageDataResult.data.pageSize;
+    pageData.total = pageDataResult.data.total;
+  } catch (e) {
+    ElMessage.error(e.message)
+  } finally {
+    tableDataLoading.value = false;
+  }
+
+
 }
 
 const pageNumChange = (pageNum) => {
@@ -64,9 +72,7 @@ onMounted(() => {
 
 <template>
   <el-card shadow="never">
-    <template #header>
-      <SectionTitle title="查询搜索"/>
-    </template>
+    <SectionTitle title="查询搜索"/>
 
     <!--      todo 查询表单数据-->
     <el-form ref="searchFormRef" :inline="true" :model="searchForm">
@@ -96,24 +102,16 @@ onMounted(() => {
     </el-form>
   </el-card>
 
-  <el-divider/>
-
   <el-card shadow="never">
-    <template #header>
-      <SectionTitle title="数据列表"/>
-    </template>
+    <SectionTitle title="数据列表"/>
     <!--     todo 表格数据-->
     <!--      table-layout: 固定表格宽度，让表格撑满整个父元素-->
-    <el-table :data="tableData" v-loading="tableDataLoading">
-      <el-table-column type="index" label="序号" />
+    <el-table :data="tableData" v-loading="tableDataLoading" height="530" border>
+      <el-table-column type="index" label="序号" width="120"/>
       <el-table-column prop="createBy" label="用户名"/>
-      <el-table-column prop="description" label="操作内容" show-overflow-tooltip/>
+      <el-table-column prop="log_type" label="日志类型"/>
+      <el-table-column prop="content" label="操作内容" show-overflow-tooltip/>
       <el-table-column prop="createTime" label="创建时间"/>
-      <el-table-column label="管理" align="center">
-        <template #default="scope">
-          <el-button type="warning" size="small" @click="onEdit(scope.row)">编辑</el-button>
-        </template>
-      </el-table-column>
     </el-table>
 
     <!--      分页-->

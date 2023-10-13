@@ -14,3 +14,10 @@ export const getFilePageApi = ({pageNum = 1, pageSize = 10, srcName, uploadTime,
         }
     })
 }
+
+export const getFileTypeApi = () => {
+    return request({
+        url: '/file/type',
+        method: 'get'
+    })
+}

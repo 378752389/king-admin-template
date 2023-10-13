@@ -1,11 +1,9 @@
 <script setup>
-import {getFilePageApi} from '@/api/system/file';
-import {ref, onMounted, reactive} from "vue";
+import {getFilePageApi, getFileTypeApi} from '@/api/system/file';
+import {onMounted, reactive, ref} from "vue";
 import SectionTitle from "@/components/SectionTitle.vue";
 import {ElMessage} from "element-plus";
-import {useRouter} from 'vue-router';
 
-const router = useRouter();
 const searchForm = ref({
   bizType: '',
   srcName: '',
@@ -21,6 +19,7 @@ const pageData = reactive({
 })
 
 const tableData = ref([])
+const bizTypeList = ref([])
 
 const shortcuts = [
   {
@@ -54,6 +53,12 @@ const shortcuts = [
  */
 onMounted(() => {
   loadData()
+
+  getFileTypeApi().then(resp => {
+    if (resp && resp.data) {
+      bizTypeList.value = resp.data;
+    }
+  })
 })
 
 
@@ -156,8 +161,7 @@ const onDelete = (row) => {
             v-model="searchForm.bizType"
             placeholder="请选择业务类型"
         >
-          <el-option key="avatar" value="avatar" label="头像"/>
-          <el-option key="food" value="food" label="商品"/>
+          <el-option :key="bizType" :label="bizType" :value="bizType"  v-for="bizType in bizTypeList" />
         </el-select>
       </el-form-item>
 
@@ -213,7 +217,7 @@ const onDelete = (row) => {
               icon-color="#626AEF"
               title="请确认是否删除管理员？">
             <template #reference>
-              <el-button  v-auth="'system:file:del'" type="danger" size="small">删除</el-button>
+              <el-button v-auth="'system:file:del'" type="danger" size="small">删除</el-button>
             </template>
           </el-popconfirm>
 
