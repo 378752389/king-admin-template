@@ -6,9 +6,8 @@ import {getLogPage} from '@/api/system/log';
 import {ElMessage} from "element-plus";
 
 const searchForm = ref({
-  id: '',
-  roleName: '',
-  createTime: ''
+  createBy: '',
+  content: ''
 });
 
 const pageData = reactive({
@@ -25,25 +24,21 @@ const tableDataLoading = ref(false)
 const searchFormRef = ref(null)
 
 const onSearch = () => {
-
+  loadData()
 }
 const onReset = () => {
   // 在模板中必须填写 prop 字段
   searchFormRef.value.resetFields();
 }
 
-const onAdd = () => {
-
-}
-
-const onEdit = (row) => {
-  console.log(row)
-}
-
-const loadData = async (page) => {
+const loadData = async () => {
   tableDataLoading.value = true;
   try {
-    const pageDataResult = await getLogPage(page || {});
+    const pageDataResult = await getLogPage({
+      pageNum: pageData.pageNum,
+      pageSize: pageData.pageSize,
+      ...searchForm.value
+    });
     tableData.value = pageDataResult.data.dataList;
     pageData.pageNum = pageDataResult.data.pageNum;
     pageData.pageSize = pageDataResult.data.pageSize;
@@ -58,10 +53,12 @@ const loadData = async (page) => {
 }
 
 const pageNumChange = (pageNum) => {
-  loadData({pageNum, pageSize: pageData.pageSize})
+  pageData.pageNum = pageNum;
+  loadData()
 }
 const pageSizeChange = (pageSize) => {
-  loadData({pageSize, pageNum: pageData.pageNum})
+  pageData.pageSize = pageSize;
+  loadData()
 }
 
 
@@ -76,28 +73,15 @@ onMounted(() => {
 
     <!--      todo 查询表单数据-->
     <el-form ref="searchFormRef" :inline="true" :model="searchForm">
-      <el-form-item label="用户名" prop="createBy">
-        <el-select
-            v-model="searchForm.roleName"
-            placeholder="角色名称"
-            clearable
-        >
-          <el-option label="Zone one" value="shanghai"/>
-          <el-option label="Zone two" value="beijing"/>
-        </el-select>
+      <el-form-item label="日志内容" prop="content">
+        <el-input v-model="searchForm.content" />
       </el-form-item>
-      <el-form-item label="操作时间" prop="createTime">
-        <el-date-picker
-            v-model="searchForm.createTime"
-            type="datetime"
-            placeholder="角色创建时间"
-            clearable
-        />
+      <el-form-item label="操作人" prop="createBy">
+        <el-input v-model="searchForm.createBy" />
       </el-form-item>
-      <el-form-item style="">
+      <el-form-item>
         <el-button type="primary" @click="onSearch">查询</el-button>
         <el-button type="default" @click="onReset">重置</el-button>
-        <el-button type="success" v-auth="'system:user:add'" @click="onAdd">创建</el-button>
       </el-form-item>
     </el-form>
   </el-card>
@@ -106,10 +90,9 @@ onMounted(() => {
     <SectionTitle title="数据列表"/>
     <!--     todo 表格数据-->
     <!--      table-layout: 固定表格宽度，让表格撑满整个父元素-->
-    <el-table :data="tableData" v-loading="tableDataLoading" height="530" border>
-      <el-table-column type="index" label="序号" width="120"/>
+    <el-table :data="tableData" v-loading="tableDataLoading" border>
+      <el-table-column type="index" label="序号"/>
       <el-table-column prop="createBy" label="用户名"/>
-      <el-table-column prop="log_type" label="日志类型"/>
       <el-table-column prop="content" label="操作内容" show-overflow-tooltip/>
       <el-table-column prop="createTime" label="创建时间"/>
     </el-table>

@@ -1,7 +1,7 @@
 import request from "@/utils/request";
 
 
-export const getLogPage = ({pageNum = 1, pageSize = 10, createTime, createBy}) => {
+export const getLogPage = ({pageNum = 1, pageSize = 10, content, createBy}) => {
     return request({
         url: '/log',
         method: 'get',
@@ -9,7 +9,7 @@ export const getLogPage = ({pageNum = 1, pageSize = 10, createTime, createBy}) =
             pageNum,
             pageSize,
             createBy,
-            createTime
+            content,
         },
         data: {
             name: 'test'
