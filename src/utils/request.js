@@ -1,6 +1,7 @@
 import axios from "axios";
 import router from '@/router';
 import lodash from 'lodash';
+import {ElMessage} from "element-plus";
 
 const request = axios.create({
     baseURL: import.meta.env.VITE_HTTP_BASE_URL,
@@ -42,6 +43,12 @@ request.interceptors.response.use(function (response) {
     // 有token才能进行后台管理页面
     if (localStorage.getItem('token') && resp.code === 403) {
         return router.push({name: '403'})
+    }
+
+    // 全局异常处理
+    if (resp.code !== 200) {
+        ElMessage.error(resp.message || '请求异常')
+        throw new Error(resp.message)
     }
 
     // 返回接口的响应结果

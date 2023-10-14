@@ -14,7 +14,7 @@ const profileModel = ref([
   {
     label: '用户名',
     prop: 'username',
-    icon: 'king-user',
+    icon: 'king-admin',
   },
   {
     label: '联系电话',

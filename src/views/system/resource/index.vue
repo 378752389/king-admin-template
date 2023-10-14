@@ -72,7 +72,6 @@ onMounted(() => {
       <SectionTitle title="数据列表"/>
     </template>
     <el-table :data="tableData"
-              height="700"
               row-key="id"
               :default-sort="{prop: 'sort', order: 'descending'}"
               v-loading="loadStatus"

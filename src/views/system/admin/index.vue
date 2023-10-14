@@ -80,7 +80,7 @@ const onReset = () => {
  */
 const onAdd = () => {
   router.push({
-    name: 'user-add'
+    name: 'admin-add'
   })
 }
 
@@ -90,7 +90,7 @@ const onAdd = () => {
  */
 const onEdit = (id) => {
   router.push({
-    name: 'user-update',
+    name: 'admin-update',
     query: {
       id
     }
@@ -142,11 +142,17 @@ const onDelete = (row) => {
 
       <!--     todo 表格数据-->
       <!--      table-layout: 固定表格宽度，让表格撑满整个父元素-->
-      <el-table :data="tableData" v-loading="loadStatus" border style="min-height: 530px">
+      <el-table :data="tableData" v-loading="loadStatus" border>
         <el-table-column type="index" width="120" label="序号"/>
-        <el-table-column label="头像">
+<!--        <el-table-column label="头像">-->
+<!--          <template #default="scope">-->
+<!--            <el-image :src="scope.row.avatar"-->
+<!--                      style="width: 30px;height: 30px;"-->
+<!--                      :preview-teleported="true"-->
+<!--                      :preview-src-list="[scope.row.avatar]"/>-->
 
-        </el-table-column>
+<!--          </template>-->
+<!--        </el-table-column>-->
         <el-table-column prop="username" label="用户名"/>
         <el-table-column prop="email" label="邮箱"/>
         <el-table-column prop="phone" label="手机号"/>

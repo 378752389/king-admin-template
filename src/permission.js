@@ -11,10 +11,12 @@ router.beforeEach(async (to, from, next) => {
     // 白名单列表，所有用户都可访问
     if (whiteList.indexOf(to.path) !== -1) {
         next();
+        return;
     }
     const token = localStorage.getItem("token");
     if (token == null || token === '') {
         next('/login');
+        return;
     }
 
     // 判断目标路由是否有权限

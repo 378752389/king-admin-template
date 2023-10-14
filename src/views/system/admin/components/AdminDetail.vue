@@ -64,14 +64,10 @@ const handleSubmit = () => {
       }
   ).then(() => {
     $emit('onSubmit', {...userModel.value})
-    ElMessage({
-      type: 'success',
-      message: '修改成功',
-    })
   }).catch(() => {
     ElMessage({
       type: 'info',
-      message: '取消成功',
+      message: '取消提交',
     })
   })
 
@@ -117,6 +113,10 @@ const handleCancel = () => {
     >
       <el-form-item label="用户名" prop="username">
         <el-input v-model="userModel.username" :disabled="!addFlag"/>
+      </el-form-item>
+
+      <el-form-item label="密码" prop="password" v-if="addFlag">
+        <el-input type="password" v-model="userModel.password"/>
       </el-form-item>
       <el-form-item label="头像" prop="avatar">
 

@@ -9,14 +9,13 @@ export default {
     component: () => import('@/layout/index.vue'),
     children: [
         {
-            path: 'user',
-            name: 'user',
+            path: 'admin',
+            name: 'admin',
             meta: {
                 title: '用户管理',
-                icon: '',
-                permission: 'system:user'
+                permission: 'system:admin'
             },
-            component: () => import('@/views/system/user/index.vue')
+            component: () => import('@/views/system/admin/index.vue')
         },
         {
             path: 'role',
@@ -59,29 +58,29 @@ export default {
             name: 'file',
             meta: {
                 title: '文件管理',
-                permission: ''
+                permission: 'system:file'
             },
             component: () => import('@/views/system/file/index.vue')
         },
         {
-            path: 'user-add',
-            name: 'user-add',
+            path: 'admin-add',
+            name: 'admin-add',
             meta: {
                 title: '添加用户',
                 hidden: true,
-                permission: 'system:user:add'
+                permission: 'system:admin:add'
             },
-            component: () => import('@/views/system/user/add.vue')
+            component: () => import('@/views/system/admin/add.vue')
         },
         {
-            path: 'user-update',
-            name: 'user-update',
+            path: 'admin-update',
+            name: 'admin-update',
             meta: {
                 title: '修改用户',
                 hidden: true,
-                permission: 'system:user:update'
+                permission: 'system:admin:update'
             },
-            component: () => import('@/views/system/user/update.vue')
+            component: () => import('@/views/system/admin/update.vue')
         }
     ]
 }

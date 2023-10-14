@@ -1,6 +1,7 @@
 <script setup>
 import {ref, computed, reactive, onMounted} from "vue";
 import {getResourceTreeApi} from "@/api/system/resource";
+import {ElMessage, ElMessageBox} from "element-plus";
 
 const props = defineProps({
   addFlag: {
@@ -34,9 +35,22 @@ const handleOpen = (row) => {
 }
 
 const onSubmit = () => {
-  const pushData = {...model.value};
-  $emit('onSubmit', pushData)
-  handleClose()
+  ElMessageBox.confirm(
+      '请确认是否提交？',
+      '警告',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+  ).then(() => {
+    $emit('onSubmit', {...model.value})
+  }).catch(() => {
+    ElMessage({
+      type: 'info',
+      message: '取消提交',
+    })
+  })
 }
 
 const handleCheck = (targetNode, checkedNode) => {
@@ -53,7 +67,7 @@ onMounted(async () => {
 
 const onOpen = () => {
   // el-dialog是懒加载的，如果不添加监听事件，在 handleOpen 拿不到 treeRef
-  treeRef.value.setCheckedKeys(model.value.resourceIds)
+  treeRef.value.setCheckedKeys(model.value.resourceIds || [])
 }
 
 const onClose = () => {
@@ -62,7 +76,8 @@ const onClose = () => {
 }
 
 defineExpose({
-  handleOpen
+  handleOpen,
+  handleClose
 })
 
 </script>

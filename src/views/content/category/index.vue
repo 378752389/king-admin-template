@@ -97,7 +97,7 @@ onMounted(() => {
   <!--      <el-form-item style="">-->
   <!--        <el-button type="primary" @click="onSearch">查询</el-button>-->
   <!--        <el-button type="default" @click="onReset">重置</el-button>-->
-  <!--        <el-button type="success" v-auth="'system:user:add'" @click="onAdd">创建</el-button>-->
+  <!--        <el-button type="success" v-auth="'system:admin:add'" @click="onAdd">创建</el-button>-->
   <!--      </el-form-item>-->
   <!--    </el-form>-->
   <!--  </el-card>-->

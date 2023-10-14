@@ -4,6 +4,7 @@ import {onMounted, ref} from "vue";
 import RoleDetail from "@/views/system/role/components/RoleDetail.vue";
 import {getRoleListApi, deleteRoleApi, addRoleApi, updateRoleApi} from "@/api/system/role";
 import {getResourceListApi} from "@/api/system/resource";
+import {ElMessage} from "element-plus";
 
 const searchForm = ref({
   roleName: '',
@@ -44,8 +45,13 @@ const onEdit = async (row) => {
 }
 const onDelete = async (row) => {
   const id = row.id;
-  await deleteRoleApi(id)
-  await loadData()
+  try {
+    const res = await deleteRoleApi(id)
+    ElMessage.success(res.message)
+    await loadData()
+  } catch (e) {
+    console.error(e)
+  }
 }
 const onAdd = () => {
   addFlag.value = true;
@@ -56,20 +62,27 @@ const onSearch = () => {
   loadData()
 }
 const doSubmit = async (role) => {
-  if (addFlag.value) {
-    const res = await addRoleApi({
-      roleName: role.roleName,
-      resourceIds: role.resourceIds
-    })
-    console.log(res)
-  } else {
-    const res = await updateRoleApi({
-      id: role.id,
-      roleName: role.roleName,
-      resourceIds: role.resourceIds
-    })
-    console.log(res)
+  let res;
+  try {
+    if (addFlag.value) {
+       res = await addRoleApi({
+        roleName: role.roleName,
+        resourceIds: role.resourceIds
+      })
+    } else {
+       res = await updateRoleApi({
+        id: role.id,
+        roleName: role.roleName,
+        resourceIds: role.resourceIds
+      })
+    }
+    ElMessage.success(res.message)
+  } catch (e) {
+    console.error(e)
+  } finally {
+    roleDetailRef.value.handleClose()
   }
+
   await loadData()
 }
 
@@ -86,7 +99,7 @@ const doSubmit = async (role) => {
       <!--      todo 查询表单数据-->
       <el-form ref="searchFormRef" :inline="true" :model="searchForm">
         <el-form-item label="角色名称" prop="roleName">
-          <el-input v-model="searchForm.roleName" placeholder="输入角色名称" clearable/>
+          <el-input v-model="searchForm.roleName" placeholder="输入角色名称" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSearch">查询</el-button>
@@ -103,7 +116,7 @@ const doSubmit = async (role) => {
       <div class="table-wrapper">
         <!--     todo 表格数据-->
         <!--      table-layout: 固定表格宽度，让表格撑满整个父元素-->
-        <el-table :data="tableData" table-layout="fixed" max-height="500px" v-loading="loadStatus" border>
+        <el-table :data="tableData" table-layout="fixed" v-loading="loadStatus" border>
           <el-table-column prop="id" label="角色id"/>
           <el-table-column prop="roleName" label="角色名称"/>
           <el-table-column prop="createTime" label="创建时间"/>

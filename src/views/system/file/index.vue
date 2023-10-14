@@ -110,13 +110,6 @@ const onReset = () => {
   loadData()
 }
 
-/**
- * 添加管理员
- */
-const onAdd = () => {
-  // todo
-}
-
 
 /**
  * 修改管理员
@@ -186,7 +179,6 @@ const onDelete = (row) => {
       <el-form-item style="">
         <el-button type="primary" @click="onSearch">查询</el-button>
         <el-button type="default" @click="onReset">重置</el-button>
-        <el-button type="success" @click="onAdd">创建</el-button>
       </el-form-item>
     </el-form>
   </el-card>
@@ -196,7 +188,7 @@ const onDelete = (row) => {
 
     <!--     todo 表格数据-->
     <!--      table-layout: 固定表格宽度，让表格撑满整个父元素-->
-    <el-table :data="tableData" v-loading="loadStatus" border style="min-height: 530px">
+    <el-table :data="tableData" v-loading="loadStatus" border>
       <el-table-column type="index" width="120" label="序号"/>
       <el-table-column prop="srcName" label="原文件名称" show-overflow-tooltip/>
       <el-table-column prop="mimeType" label="文件类型"/>
