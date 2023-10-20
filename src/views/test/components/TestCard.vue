@@ -1,74 +1,67 @@
 <script setup>
-import {toRef, ref} from "vue";
+import {ref} from 'vue'
 
-const props = defineProps({
-  title: {
-    type: String,
-    default: '测试卡片'
-  },
-  content: {
-    type: Object,
-    default: () => {
-      return {
-        head: 'Section One',
-        body: ['Start', 'Middle', 'End'],
-        foot: {
-          top: 1,
-          bottom: 2
-        }
-      }
-    }
+defineProps({
+  modelValue: {
+    type: Array,
   }
 })
-
-const data = toRef(props, 'content')
-
-const count = ref(0)
-const changeData = () => {
-  data.value.head = count.value++
+const $emit = defineEmits(['update:modelValue'])
+const checkList = ref([])
+const entityArr = ref([
+  {
+    id: 1,
+    pic: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+  },
+  {
+    id: 2,
+    pic: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+  },
+  {
+    id: 3,
+    pic: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+  },
+])
+const onChange = () => {
+  $emit('update:modelValue', checkList.value)
 }
-
-const resetData = () => {
-  data.value.head = ''
-  data.value.body = ''
-  data.value.foot = ''
-}
-
 </script>
 
 <template>
-  <div class="test-card">
-    <div v-pre>{{ this will display ${title} by source }} </div>
-    <h1>{{ title }}</h1>
-
-    <div class="card-body">
-      <div>{{ data.head }}</div>
-      <div>{{ data.body }}</div>
-      <div>{{ data.foot }}</div>
-    </div>
-
-    <span>{{ data }}</span>
-
-    <el-row>
-      <el-button @click="changeData">修改data</el-button>
-      <el-button @click="resetData">重置data</el-button>
-    </el-row>
-  </div>
+  <div style="height: 100px"></div>
+  <el-checkbox-group v-model="checkList">
+    <el-checkbox
+        @change="onChange"
+        :key="entity.id"
+        :label="entity.id"
+        v-for="entity in entityArr">
+      <template #default>
+        <el-image style="width: 100px; height: 100px;" :src="entity.pic"/>
+      </template>
+    </el-checkbox>
+  </el-checkbox-group>
 </template>
 
 <style lang="less" scoped>
-.test-card {
-  height: 200px;
-  border: 1px solid;
+.el-checkbox-group {
+  display: flex;
 
-  .card-body {
+  .el-checkbox {
+    display: block;
+    position: relative;
     height: 100px;
-    display: flex;
-    flex-direction: column;
-  }
+    margin: 10px;
 
-  .card-body > div {
-    flex: 1;
+    &:deep(.el-checkbox__label) {
+      padding: 0;
+    }
+
+    &:deep(.el-checkbox__input) {
+      display: block;
+      position: absolute;
+      left: 5px;
+      top: 5px;
+    }
   }
 }
 </style>

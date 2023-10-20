@@ -4,7 +4,7 @@ export default {
     name: 'content',
     meta: {
         title: '内容管理',
-        permission: 'content',
+        // permission: 'content',
     },
     component: () => import('@/layout/index.vue'),
     children: [
@@ -13,27 +13,47 @@ export default {
             name: 'category',
             meta: {
                 title: '目录管理',
-                permission: 'content:category',
+                // permission: 'content:category',
             },
             component: () => import('@/views/content/category/index.vue')
         },
         {
-            path: 'food',
-            name: 'food',
+            path: 'product',
+            name: 'product',
             meta: {
                 title: '食品管理',
-                permission: 'content:food',
+                // permission: 'content:product',
             },
-            component: () => import('@/views/content/food/index.vue')
+            component: () => import('@/views/content/product/index.vue')
         },
         {
             path: 'material',
             name: 'material',
             meta: {
                 title: '物料管理',
-                permission: 'content:material',
+                // permission: 'content:material',
             },
             component: () => import('@/views/content/material/index.vue')
+        },
+        {
+            path: 'product-add',
+            name: 'product-add',
+            meta: {
+                title: '添加产品',
+                // hidden: true,
+                // permission: 'content:material',
+            },
+            component: () => import('@/views/content/product/add.vue')
+        },
+        {
+            path: 'product-update',
+            name: 'product-update',
+            meta: {
+                title: '修改产品',
+                hidden: true,
+                // permission: 'content:material',
+            },
+            component: () => import('@/views/content/product/update.vue')
         },
     ]
 }

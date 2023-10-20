@@ -41,6 +41,32 @@ export default [
             }
         }
     },
+    {
+        url: `${prefix}/all`,
+        method: 'get',
+        response: () => {
+            let i = 1;
+            return {
+                code: 200,
+                message: '请求成功',
+                'data|10': [
+                    {
+                        'description': '@title',
+                        'id|+1': 1,
+                        parentId: 0,
+                        'order|+1': 0,
+                        categoryName: '@title',
+                        level: 1,
+                        count: '@natural(1, 20)',
+                        enable: true,
+                        icon: function () {
+                            return `https://picsum.photos/id/${i++}/600/600`
+                        },
+                    }
+                ],
+            }
+        }
+    },
     // 提交请求
     {
         url: prefix,
