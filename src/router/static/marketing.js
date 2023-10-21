@@ -31,14 +31,16 @@ export default {
             name: 'advertise-add',
             meta: {
                 title: '添加广告',
+                hidden: true
             },
             component: () => import('@/views/marketing/advertise/add.vue')
         },
         {
-            path: 'advertise-add',
+            path: 'advertise-update',
             name: 'advertise-update',
             meta: {
                 title: '修改广告',
+                hidden: true
             },
             component: () => import('@/views/marketing/advertise/update.vue')
         },

@@ -39,7 +39,7 @@ export const updateCategory = (category) => {
 }
 
 // categoryIds 为 数组（Array）
-export const removeCategorys = (categoryIds) => {
+export const removeCategories = (categoryIds) => {
     return request({
         url: '/category',
         method: 'delete',

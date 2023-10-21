@@ -2,7 +2,7 @@
 
 import SectionTitle from "@/components/SectionTitle.vue";
 import {reactive, ref, onMounted} from 'vue';
-import {getCategoryPage, removeCategorys} from '@/api/content/category';
+import {getCategoryPage, removeCategories} from '@/api/content/category';
 import CategoryDetail from "@/views/content/category/components/CategoryDetail.vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 
@@ -75,7 +75,7 @@ const onEdit = (row) => {
 }
 
 const onDelete = (row) => {
-  removeCategorys([row.id])
+  removeCategories([row.id])
   console.log(row)
 }
 
