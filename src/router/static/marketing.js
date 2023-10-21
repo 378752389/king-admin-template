@@ -26,5 +26,21 @@ export default {
             },
             component: () => import('@/views/marketing/advertise/index.vue')
         },
+        {
+            path: 'advertise-add',
+            name: 'advertise-add',
+            meta: {
+                title: '添加广告',
+            },
+            component: () => import('@/views/marketing/advertise/add.vue')
+        },
+        {
+            path: 'advertise-add',
+            name: 'advertise-update',
+            meta: {
+                title: '修改广告',
+            },
+            component: () => import('@/views/marketing/advertise/update.vue')
+        },
     ]
 }

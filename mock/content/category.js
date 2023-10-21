@@ -28,7 +28,7 @@ export default [
                             categoryName: '@title',
                             level: 1,
                             count: '@natural(1, 20)',
-                            enable: true,
+                            'enable|1': true,
                             icon: function () {
                                 return `https://picsum.photos/id/${i++}/600/600`
                             },
@@ -106,4 +106,16 @@ export default [
             }
         }
     },
+    {
+        url: `${prefix}/public`,
+        method: 'post',
+        response: ({query}) => {
+            console.log("【修改数据状态成功】，查询参数：", query)
+            return {
+                code: 200,
+                message: '修改数据状态成功',
+                data: null
+            }
+        }
+    }
 ]

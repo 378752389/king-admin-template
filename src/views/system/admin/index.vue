@@ -22,8 +22,8 @@ const tableData = ref([])
 /**
  * 页面挂载
  */
-onMounted(() => {
-  loadData()
+onMounted(async () => {
+  await loadData()
 })
 
 
@@ -101,17 +101,15 @@ const onEdit = (id) => {
  * 删除管理员
  * @param row
  */
-const onDelete = (row) => {
+const onDelete = async (row) => {
   const id = row.id;
-  deleteAdmin(id).then(res => {
-    // 删除成功后重新加载
-    ElMessage({
-      message: res.message,
-      type: 'success'
-    })
-
-    loadData()
-  })
+  try {
+    const res = await deleteAdmin(id)
+    ElMessage.success(res.message)
+    await loadData()
+  } catch (e) {
+    ElMessage.error(e)
+  }
 }
 
 
@@ -194,15 +192,5 @@ const onDelete = (row) => {
 </template>
 
 <style lang="less" scoped>
-.section-title {
-  margin-bottom: 20px;
-}
 
-.wrapper {
-  height: 100%;
-}
-
-.el-pagination {
-
-}
 </style>

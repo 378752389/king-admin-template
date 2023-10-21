@@ -4,7 +4,7 @@ import SectionTitle from "@/components/SectionTitle.vue";
 import {reactive, ref, onMounted} from 'vue';
 import {getCategoryPage, removeCategorys} from '@/api/content/category';
 import CategoryDetail from "@/views/content/category/components/CategoryDetail.vue";
-import {ElMessage} from "element-plus";
+import {ElMessage, ElMessageBox} from "element-plus";
 
 const searchForm = ref({
   categoryName: '',
@@ -34,6 +34,36 @@ const onReset = () => {
   searchFormRef.value.resetFields();
 }
 
+const onStatusInput = (row) => {
+  ElMessageBox.confirm(
+      '请确定是否修改发布状态？',
+      '警告',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+  ).then(() => {
+    row.switchLoading = true;
+    return new Promise((resolve) => {
+      getCategoryPage({}).then(res => {
+        // 正常处理
+        // todo
+        row.enable = !row.enable;
+        ElMessage.success(res.message);
+        resolve(true);
+      }).catch(e => {
+        // 错误异常处理， 异常进行打印，不进行抛出
+        ElMessage.error(e.message)
+      }).finally(() => {
+        row.switchLoading = false;
+      })
+    })
+
+  }).catch(() => {
+    ElMessage.info("取消操作")
+  })
+}
 
 const onAdd = () => {
   addFlag.value = true;
@@ -62,8 +92,6 @@ const loadData = async (page) => {
   } finally {
     tableDataLoading.value = false;
   }
-
-
 }
 
 const pageNumChange = (pageNum) => {
@@ -74,8 +102,8 @@ const pageSizeChange = (pageSize) => {
 }
 
 
-onMounted(() => {
-  loadData(pageData.value)
+onMounted(async () => {
+  await loadData(pageData.value)
 })
 </script>
 
@@ -110,7 +138,7 @@ onMounted(() => {
         <el-button type="success" plain @click="onAdd">添加</el-button>
       </template>
     </SectionTitle>
-    <el-table :load="tableDataLoading" :data="tableData" max-height="700">
+    <el-table :loading="tableDataLoading" :data="tableData" max-height="700">
       <el-table-column type="index" label="序号" width="120"/>
       <el-table-column prop="icon" label="目录图标">
         <template #default="scope">
@@ -123,7 +151,15 @@ onMounted(() => {
       <el-table-column prop="categoryName" label="分类名称" show-overflow-tooltip/>
       <el-table-column prop="level" label="级别"/>
       <el-table-column prop="count" label="商品数量"/>
-      <el-table-column prop="enable" label="发布状态"/>
+      <el-table-column label="发布状态">
+        <template #default="scope">
+          <el-switch
+              :model-value="scope.row.enable"
+              @input="onStatusInput(scope.row)"
+              :loading="!!scope.row.switchLoading"
+          />
+        </template>
+      </el-table-column>
       <el-table-column prop="description" label="目录描述" show-overflow-tooltip/>
       <el-table-column prop="order" label="发布排序顺序"/>
 
