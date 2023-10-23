@@ -9,6 +9,12 @@ export const useUserInfoStore = defineStore("userInfo", () => {
     const menuList = ref([])
     const router = useRouter()
 
+    const uploadHeaders = computed(() => {
+        return {
+            Authorization: localStorage.getItem('token') ? 'Bearer ' + localStorage.getItem('token') : ''
+        }
+    })
+
     const doLogin = async ({username, password}) => {
         // 分页获取用户列表数据
 
@@ -74,6 +80,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
     return {
         menuList,
         permissionList,
+        uploadHeaders,
         doLogin,
         doLogout,
         getMenu

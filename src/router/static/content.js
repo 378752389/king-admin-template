@@ -36,6 +36,32 @@ export default {
             component: () => import('@/views/content/material/index.vue')
         },
         {
+            path: 'package',
+            name: 'package',
+            meta: {
+                title: '套餐管理'
+            },
+            component: () => import('@/views/content/package/index.vue')
+        },
+        {
+            path: 'package-add',
+            name: 'package-add',
+            meta: {
+                title: '添加套餐',
+                hidden: true,
+            },
+            component: () => import('@/views/content/package/add.vue')
+        },
+        {
+            path: 'package-update',
+            name: 'package-update',
+            meta: {
+                title: '修改套餐',
+                hidden: true,
+            },
+            component: () => import('@/views/content/package/update.vue')
+        },
+        {
             path: 'product-add',
             name: 'product-add',
             meta: {

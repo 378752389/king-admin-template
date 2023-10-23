@@ -20,7 +20,7 @@ const pageData = reactive({
 
 const tableData = ref([])
 const bizTypeList = ref([])
-
+const downloadPath = import.meta.env.VITE_FILE_DOWNLOAD_PATH
 const shortcuts = [
   {
     text: '一周前',
@@ -120,7 +120,7 @@ const onDownload = (row) => {
   let ele = document.createElement("a");
   ele.download = row.srcName;
   ele.target = '_blank';
-  ele.href = "http://localhost:8999/1/avatar/6dc90cae6df1c4f91ac293aabccaf25b.jpg";
+  ele.href = downloadPath + row.relativePath;
   ele.click();
 }
 
@@ -154,7 +154,7 @@ const onDelete = (row) => {
             v-model="searchForm.bizType"
             placeholder="请选择业务类型"
         >
-          <el-option :key="bizType" :label="bizType" :value="bizType"  v-for="bizType in bizTypeList" />
+          <el-option :key="bizType" :label="bizType" :value="bizType" v-for="bizType in bizTypeList"/>
         </el-select>
       </el-form-item>
 

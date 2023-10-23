@@ -1,17 +1,16 @@
 <script setup>
-import {ref, onMounted, computed} from 'vue';
+import {ref, onMounted} from 'vue';
 import {useRouter} from "vue-router";
+import {useUserInfoStore} from "@/stores/userInfo";
+import {storeToRefs} from "pinia";
 
-const uploadPath = import.meta.env.VITE_FILE_UPLOAD_PATH + '?type=advertise';
-const uploadHeaders = computed(() => {
-  return {
-    Authorization: 'Bearer ' + localStorage.getItem('token') || ''
-  }
-})
-const advertiseModel = ref({})
-const router = useRouter()
 defineProps(['addFlag'])
 
+const uploadPath = import.meta.env.VITE_FILE_UPLOAD_PATH + '?type=advertise';
+const advertiseModel = ref({})
+const router = useRouter()
+
+const {uploadHeaders} = storeToRefs(useUserInfoStore())
 const advertiseRules = ref([])
 const previewDialog = ref(false)
 const previewImageUrl = ref('')
