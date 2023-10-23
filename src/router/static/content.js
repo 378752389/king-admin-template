@@ -11,6 +11,7 @@ export default {
         {
             path: 'category',
             name: 'category',
+            order: 1,
             meta: {
                 title: '目录管理',
                 // permission: 'content:category',
@@ -20,15 +21,37 @@ export default {
         {
             path: 'product',
             name: 'product',
+            order: 3,
             meta: {
-                title: '食品管理',
+                title: '商品管理',
                 // permission: 'content:product',
             },
             component: () => import('@/views/content/product/index.vue')
         },
         {
+            path: 'product-add',
+            name: 'product-add',
+            meta: {
+                title: '添加商品',
+                hidden: true,
+                // permission: 'content:material',
+            },
+            component: () => import('@/views/content/product/add.vue')
+        },
+        {
+            path: 'product-update',
+            name: 'product-update',
+            meta: {
+                title: '修改商品',
+                hidden: true,
+                // permission: 'content:material',
+            },
+            component: () => import('@/views/content/product/update.vue')
+        },
+        {
             path: 'material',
             name: 'material',
+            order: 4,
             meta: {
                 title: '物料管理',
                 // permission: 'content:material',
@@ -38,6 +61,7 @@ export default {
         {
             path: 'package',
             name: 'package',
+            order: 2,
             meta: {
                 title: '套餐管理'
             },
@@ -60,26 +84,6 @@ export default {
                 hidden: true,
             },
             component: () => import('@/views/content/package/update.vue')
-        },
-        {
-            path: 'product-add',
-            name: 'product-add',
-            meta: {
-                title: '添加产品',
-                // hidden: true,
-                // permission: 'content:material',
-            },
-            component: () => import('@/views/content/product/add.vue')
-        },
-        {
-            path: 'product-update',
-            name: 'product-update',
-            meta: {
-                title: '修改产品',
-                hidden: true,
-                // permission: 'content:material',
-            },
-            component: () => import('@/views/content/product/update.vue')
         },
     ]
 }

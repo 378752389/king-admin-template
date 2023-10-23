@@ -2,19 +2,30 @@
 import {ref, onMounted} from 'vue';
 import SvgIcon from "@/components/SvgIcon.vue";
 import TabSelect from "@/components/TabSelect.vue";
+import {useVModel} from "@vueuse/core";
 
-const uploadPath = import.meta.env.VITE_FILE_UPLOAD_PATH;
+// 模型数据双向绑定
+const props = defineProps({
+  addFlag: {
+    type: Boolean
+  },
+  modelValue: {
+    type: Object
+  }
+})
+const emit = defineEmits(['update:modelValue', 'onSubmit'])
+const modelObj = useVModel(props, 'modelValue', emit)
+
 // 商品图片上传
-
+const uploadPath = import.meta.env.VITE_FILE_UPLOAD_PATH;
 const onUploadSuccess = (resp) => {
-  resp.data && (productModel.value.pic = Object.values(resp.data)[0])
+  resp.data && (modelObj.value.pic = Object.values(resp.data)[0])
 }
 
-const productModel = ref({});
 
 // 加载初始值
 onMounted(() => {
-  productModel.value = {
+  modelObj.value = {
     categoryId: 1,
     name: '巨无霸',
     description: '',
@@ -91,7 +102,7 @@ const handleCancel = () => {
 
     <el-form label-width="120">
       <el-form-item label="商品分类">
-        <el-select v-model="productModel.categoryId">
+        <el-select v-model="modelObj.categoryId">
           <el-option :label="'饮料'" :key="1" :value="1"/>
           <el-option :label="'炸鸡'" :key="2" :value="2"/>
           <el-option :label="'汉堡'" :key="3" :value="3"/>
@@ -99,11 +110,11 @@ const handleCancel = () => {
       </el-form-item>
 
       <el-form-item label="商品名称">
-        <el-input v-model="productModel.name"/>
+        <el-input v-model="modelObj.name"/>
       </el-form-item>
 
       <el-form-item label="商品介绍">
-        <el-input type="textarea" v-model="productModel.description"/>
+        <el-input type="textarea" v-model="modelObj.description"/>
       </el-form-item>
 
       <el-form-item label="头像" prop="avatar">
@@ -115,7 +126,7 @@ const handleCancel = () => {
             list-type="picture-card"
             :on-success="onUploadSuccess"
         >
-          <el-image v-if="productModel.pic" :src="productModel.pic"/>
+          <el-image v-if="modelObj.pic" :src="modelObj.pic"/>
           <el-icon v-else>
             <SvgIcon icon="king-plus"/>
           </el-icon>
@@ -124,36 +135,36 @@ const handleCancel = () => {
       </el-form-item>
 
       <el-form-item label="发布状态">
-        <el-switch active-text="发布" inactive-text="取消" v-model="productModel.publish"/>
+        <el-switch active-text="发布" inactive-text="取消" v-model="modelObj.publish"/>
       </el-form-item>
 
       <el-form-item label="库存量">
-        <el-input-number v-model="productModel.stock"/>
+        <el-input-number v-model="modelObj.stock"/>
       </el-form-item>
 
       <el-form-item label="低库存报警">
-        <el-input-number v-model="productModel.lowStock"/>
+        <el-input-number v-model="modelObj.lowStock"/>
       </el-form-item>
 
       <el-form-item label="市场价">
-        <el-input v-model="productModel.marketPrice"/>
+        <el-input v-model="modelObj.marketPrice"/>
       </el-form-item>
 
       <el-form-item label="商品售价">
-        <el-input v-model="productModel.price"/>
+        <el-input v-model="modelObj.price"/>
       </el-form-item>
 
       <el-form-item label="排序">
-        <el-input-number v-model="productModel.sort"/>
+        <el-input-number v-model="modelObj.sort"/>
       </el-form-item>
 
-      <el-form-item label="商品选择">
-        <TabSelect :data="tabList" v-model="productModel.materialIds">
-          <template #default>
-            <el-table-column label="id" prop="id"/>
-          </template>
-        </TabSelect>
-      </el-form-item>
+<!--      <el-form-item label="物料配置">-->
+<!--        <TabSelect :data="tabList" v-model="modelObj.materialIds">-->
+<!--          <template #default>-->
+<!--            <el-table-column label="id" prop="id"/>-->
+<!--          </template>-->
+<!--        </TabSelect>-->
+<!--      </el-form-item>-->
 
       <el-form-item>
         <el-button type="default" @click="handleCancel">取消</el-button>
