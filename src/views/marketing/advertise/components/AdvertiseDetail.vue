@@ -101,6 +101,11 @@ const onRemovePic = () => {
       <el-form-item label="排序" prop="sort">
         <el-input-number v-model="advertiseModel.sort"/>
       </el-form-item>
+      <el-form-item label="广告类型" prop="type">
+        <el-select
+          v-model="advertiseModel.type">
+        </el-select>
+      </el-form-item>
       <el-form-item label="图片链接" prop="href">
         <el-input v-model="advertiseModel.href"/>
       </el-form-item>

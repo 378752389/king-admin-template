@@ -1,5 +1,5 @@
 <script setup>
-import {getAdminPage, deleteAdmin} from "@/api/system/admin";
+import {getAdvertisePage, deleteAdvertise} from "@/api/marketing/advertise";
 import {ref, onMounted, reactive} from "vue";
 import SectionTitle from "@/components/SectionTitle.vue";
 import {ElMessage} from "element-plus";
@@ -7,7 +7,9 @@ import {useRouter} from 'vue-router';
 
 const router = useRouter();
 const searchForm = ref({
-  username: ''
+  name: '',
+  startTime: '',
+  endTime: ''
 });
 
 const pageData = reactive({
@@ -38,7 +40,7 @@ const loadStatus = ref(false)
 const loadData = async () => {
   loadStatus.value = true
   try {
-    const resp = await getAdminPage({
+    const resp = await getAdvertisePage({
       pageNum: pageData.pageNum,
       pageSize: pageData.pageSize,
       ...searchForm.value
@@ -106,7 +108,7 @@ const onDelete = async (row) => {
   const id = row.id;
 
   try {
-    const res = await deleteAdmin(id)
+    const res = await deleteAdvertise(id)
     ElMessage.success(res.message)
     await loadData()
   } catch (e) {
@@ -122,10 +124,22 @@ const onDelete = async (row) => {
 
       <!--      todo 查询表单数据-->
       <el-form ref="searchFormRef" :inline="true" :model="searchForm">
-        <el-form-item label="用户名" prop="username">
+        <el-form-item label="广告名" prop="name">
           <el-input
-              v-model="searchForm.username"
-              placeholder="用户名"/>
+              v-model="searchForm.name"
+              placeholder="输入广告名"/>
+        </el-form-item>
+        <el-form-item label="开始时间" prop="startTime">
+          <el-date-picker
+              placeholder="选择广告开始时间"
+              value-format="YYYY-MM-DD"
+              v-model="searchForm.startTime"/>
+        </el-form-item>
+        <el-form-item label="结束时间" prop="endTime">
+          <el-date-picker
+              placeholder="选择广告结束时间"
+              value-format="YYYY-MM-DD"
+              v-model="searchForm.endTime"/>
         </el-form-item>
         <el-form-item style="">
           <el-button type="primary" @click="onSearch">查询</el-button>
@@ -143,16 +157,17 @@ const onDelete = async (row) => {
       <!--      table-layout: 固定表格宽度，让表格撑满整个父元素-->
       <el-table :data="tableData" v-loading="loadStatus" border>
         <el-table-column type="index" width="120" label="序号"/>
-        <el-table-column prop="username" label="用户名"/>
-        <el-table-column prop="email" label="邮箱"/>
-        <el-table-column prop="phone" label="手机号"/>
-        <el-table-column prop="description" label="描述" show-overflow-tooltip/>
+        <el-table-column prop="name" label="广告名"/>
+        <el-table-column prop="startTime" label="开始时间"/>
+        <el-table-column prop="endTime" label="结束时间"/>
+        <el-table-column prop="sort" label="排序"/>
         <el-table-column label="发布状态">
           <template #default="scope">
             <el-switch style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
                        v-model="scope.row.publicStatus" />
           </template>
         </el-table-column>
+        <el-table-column prop="description" label="描述" show-overflow-tooltip/>
         <el-table-column label="管理" align="center">
           <template #default="scope">
             <el-button type="warning" size="small" @click="onEdit(scope.row.id)">编辑</el-button>

@@ -11,19 +11,19 @@ export const getProductPage = ({pageNum = 1, pageSize = 10}) => {
     })
 }
 
-export const addProduct = ({pkg}) => {
+export const addProduct = ({product}) => {
     return request({
         url: '/product',
         method: 'post',
-        data: {...pkg}
+        data: {...product}
     })
 }
 
-export const updateProduct = (pkg) => {
+export const updateProduct = (product) => {
     return request({
         url: '/product',
         method: 'put',
-        data: {...pkg}
+        data: {...product}
     })
 }
 
