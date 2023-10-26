@@ -1,103 +1,73 @@
 <script setup>
-import {ref, unref, computed, reactive} from "vue";
+import {onMounted, ref} from 'vue';
 
-// const props = defineProps({
-//   addFlag: {
-//     type: Boolean,
-//     required: true
-//   }
-// })
+const boxRef = ref(null)
+const contextMenuRef = ref(null)
 
+onMounted(() => {
+  // boxRef.value.addEventListener("contextmenu", function (e) {
+  //   e.preventDefault()
+  //   const x = e.clientX;
+  //   const y = e.clientY;
+  //   console.log(x, y)
+  //   contextMenuRef.value.openMenu()
+  // })
 
-const addFlag = ref(true)
-
-const initModel = {
-  id: 4,
-  username: '',
-  password: '',
-  avatar: '',
-  email: '',
-  gender: '',
-  phone: '',
-  qq: '',
-  wechat: '',
-  occupation: '',
-  description: ''
-}
-
-// 表单规则校验
-const roleRules = reactive({
-  id: [],
-  roleName: [],
-  createTime: []
+  arr.value = [1, 2, 3, 4, 5]
 })
 
-const roleModel = ref(initModel)
+const arr = ref([])
 
-const showFlag = ref(true);
-
-const title = computed(() => {
-  return addFlag.value ? "添加角色" : "修改角色";
-})
-
-const handleClose = () => {
-  roleModel.value = {};
-  showFlag.value = false;
+const onBeforeEnter = (el) => {
+  console.log(el)
+}
+const onEnter = (el) => {
+  console.log(el)
+}
+const onAfterEnter = (el) => {
+  console.log(el)
 }
 
-const handleOpen = (row) => {
-  // 解决修改表单但为提交数据，导致表格内容任然被修改，刷新后才能复原问题
-  // roleModel.value = cloneDeep(unref(row));
-  roleModel.value = {...unref(row)};
-  showFlag.value = true;
+const show = ref(false)
+const btnClick = () => {
+  show.value = !show.value;
 }
-
-const onSubmit= () => {
-  // todo 提交表单
-  handleClose()
-}
-
-// 暴露打开弹窗操作
-defineExpose({
-  handleOpen
-})
-
 </script>
 
 <template>
-  <el-dialog
-      v-model="showFlag"
-      :title="title"
-      width="30%"
-      :before-close="handleClose">
-    <!--   todo 表单内容-->
-    <el-form
-        label-position="right"
-        label-width="100px"
-        :model="roleModel"
-        :rules="roleRules"
-        style="max-width: 460px"
-    >
-      <el-form-item label="角色id" prop="id">
-        <el-input :disabled="!addFlag" v-model="roleModel.id"/>
-      </el-form-item>
-      <el-form-item label="角色名" prop="roleName">
-        <el-input v-model="roleModel.roleName"/>
-      </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
-        <el-input :disabled="!addFlag" v-model="roleModel.createTime"/>
-      </el-form-item>
-    </el-form>
+  <div class="page2">
+    <div ref="boxRef" class="box"></div>
 
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="handleClose">取消</el-button>
-        <el-button type="primary" @click="onSubmit">确认</el-button>
-      </span>
-    </template>
-  </el-dialog>
+    <el-button @click="btnClick">Toggle</el-button>
+    <Transition
+        @before-enter="onBeforeEnter"
+        @enter="onEnter"
+        @after-enter="onAfterEnter">
+      <div v-if="show" class="rect">
+        <div class="item" :key="x" v-for="x in arr"></div>
+      </div>
+    </Transition>
+  </div>
+
 </template>
 
 <style scoped>
+.box {
+  height: 300px;
+  width: 300px;
+  background-color: #13ce66;
+}
+
+.rect {
+  width: 100px;
+}
+
+.item {
+  width: 100px;
+  height: 100px;
+  background-color: deepskyblue;
+  margin: 5px;
+}
+
 
 </style>

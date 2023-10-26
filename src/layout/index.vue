@@ -24,7 +24,11 @@ onMounted(() => {
       <NavBar/>
       <div class="content">
         <el-scrollbar>
-          <RouterView/>
+          <RouterView v-slot="{Component}">
+            <Transition name="fade" mode="out-in">
+              <component :is="Component"/>
+            </Transition>
+          </RouterView>
         </el-scrollbar>
       </div>
     </div>
@@ -32,6 +36,18 @@ onMounted(() => {
 </template>
 
 <style lang="less" scoped>
+
+// fade styles!
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 .view-port {
   display: flex;
   width: 100vw;

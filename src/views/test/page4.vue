@@ -71,56 +71,58 @@ const pageSizeChange = () => {
 
 <template>
 
-  <el-form ref="searchFormRef" :inline="true" :model="searchForm">
-    <el-form-item label="项目一" prop="item1">
-      <el-input
-          v-model="searchForm.item1"
-          placeholder="项目一"/>
-    </el-form-item>
+  <div class="page4">
+    <el-form ref="searchFormRef" :inline="true" :model="searchForm">
+      <el-form-item label="项目一" prop="item1">
+        <el-input
+            v-model="searchForm.item1"
+            placeholder="项目一"/>
+      </el-form-item>
 
-    <el-form-item style="">
-      <el-button type="primary" @click="onSearch">查询</el-button>
-      <el-button type="default" @click="onReset">重置</el-button>
-      <el-button type="success" @click="onAdd">创建</el-button>
-    </el-form-item>
-  </el-form>
+      <el-form-item style="">
+        <el-button type="primary" @click="onSearch">查询</el-button>
+        <el-button type="default" @click="onReset">重置</el-button>
+        <el-button type="success" @click="onAdd">创建</el-button>
+      </el-form-item>
+    </el-form>
 
-  <el-table :data="tableData" border table-layout="fixed">
-    <el-table-column prop="item1" label="展示项一"/>
-    <el-table-column prop="item2" label="展示项二"/>
-    <el-table-column prop="item3" label="展示项三"/>
-    <el-table-column prop="item4" label="展示项四"/>
-    <el-table-column prop="item5" label="展示项五"/>
-    <el-table-column label="管理" align="center">
-      <template #default="scope">
-        <el-button type="warning" @click="onEdit(scope.row)">编辑</el-button>
+    <el-table :data="tableData" border table-layout="fixed">
+      <el-table-column prop="item1" label="展示项一"/>
+      <el-table-column prop="item2" label="展示项二"/>
+      <el-table-column prop="item3" label="展示项三"/>
+      <el-table-column prop="item4" label="展示项四"/>
+      <el-table-column prop="item5" label="展示项五"/>
+      <el-table-column label="管理" align="center">
+        <template #default="scope">
+          <el-button type="warning" @click="onEdit(scope.row)">编辑</el-button>
 
-        <el-popconfirm
-            width="220"
-            @confirm="onDelete(scope.row)"
-            confirm-button-text="确定"
-            cancel-button-text="取消"
-            icon="king-question-filled"
-            icon-color="#626AEF"
-            title="请确认是否删除角色？">
-          <template #reference>
-            <el-button type="danger">删除</el-button>
-          </template>
-        </el-popconfirm>
-      </template>
-    </el-table-column>
-  </el-table>
+          <el-popconfirm
+              width="220"
+              @confirm="onDelete(scope.row)"
+              confirm-button-text="确定"
+              cancel-button-text="取消"
+              icon="king-question-filled"
+              icon-color="#626AEF"
+              title="请确认是否删除角色？">
+            <template #reference>
+              <el-button type="danger">删除</el-button>
+            </template>
+          </el-popconfirm>
+        </template>
+      </el-table-column>
+    </el-table>
 
-  <el-pagination background layout="prev, pager, jumper, next, total, sizes"
-                 v-model:current-page="pageData.pageNum"
-                 v-model:page-size="pageData.pageSize"
-                 :page-sizes="pageData.pageSizeList"
-                 :total="pageData.total"
-                 @current-change="pageNumChange"
-                 @size-change="pageSizeChange"/>
+    <el-pagination background layout="prev, pager, jumper, next, total, sizes"
+                   v-model:current-page="pageData.pageNum"
+                   v-model:page-size="pageData.pageSize"
+                   :page-sizes="pageData.pageSizeList"
+                   :total="pageData.total"
+                   @current-change="pageNumChange"
+                   @size-change="pageSizeChange"/>
 
-  <!--  <Page4Detail ref="page4DetailRef" :model="model" :add-flag="addFlag"/>-->
-  <Page4DetailV2 ref="page4DetailRef" :model="model" :add-flag="addFlag"/>
+    <!--  <Page4Detail ref="page4DetailRef" :model="model" :add-flag="addFlag"/>-->
+    <Page4DetailV2 ref="page4DetailRef" :model="model" :add-flag="addFlag"/>
+  </div>
 </template>
 
 <style lang="less" scoped>

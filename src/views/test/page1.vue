@@ -56,15 +56,17 @@ const userInfo = () => {
 </script>
 
 <template>
-  <h1>接口测试页面</h1>
+  <div class="page1">
+    <h1>接口测试页面</h1>
 
-  <el-row>
-    <el-button type="primary" @click="query">查询</el-button>
-    <el-button type="success" @click="create">创建</el-button>
-    <el-button type="warning" @click="update">修改</el-button>
-    <el-button type="danger" @click="remove">删除</el-button>
-    <el-button type="default" @click="userInfo">获取UserInfo</el-button>
-  </el-row>
+    <el-row>
+      <el-button type="primary" @click="query">查询</el-button>
+      <el-button type="success" @click="create">创建</el-button>
+      <el-button type="warning" @click="update">修改</el-button>
+      <el-button type="danger" @click="remove">删除</el-button>
+      <el-button type="default" @click="userInfo">获取UserInfo</el-button>
+    </el-row>
+  </div>
 </template>
 
 <style scoped>

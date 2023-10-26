@@ -65,12 +65,12 @@ const doSubmit = async (role) => {
   let res;
   try {
     if (addFlag.value) {
-       res = await addRoleApi({
+      res = await addRoleApi({
         roleName: role.roleName,
         resourceIds: role.resourceIds
       })
     } else {
-       res = await updateRoleApi({
+      res = await updateRoleApi({
         id: role.id,
         roleName: role.roleName,
         resourceIds: role.resourceIds
@@ -90,7 +90,7 @@ const doSubmit = async (role) => {
 </script>
 
 <template>
-  <div class="data-wrapper">
+  <div class="role-page">
     <el-card class="search-card" shadow="never">
       <template #header>
         <SectionTitle title="查询搜索"/>
@@ -99,7 +99,7 @@ const doSubmit = async (role) => {
       <!--      todo 查询表单数据-->
       <el-form ref="searchFormRef" :inline="true" :model="searchForm">
         <el-form-item label="角色名称" prop="roleName">
-          <el-input v-model="searchForm.roleName" placeholder="输入角色名称" />
+          <el-input v-model="searchForm.roleName" placeholder="输入角色名称"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSearch">查询</el-button>
@@ -141,11 +141,12 @@ const doSubmit = async (role) => {
         </el-table>
       </div>
     </el-card>
+
+    <RoleDetail @on-submit="doSubmit"
+                :add-flag="addFlag"
+                ref="roleDetailRef"/>
   </div>
 
-  <RoleDetail @on-submit="doSubmit"
-              :add-flag="addFlag"
-              ref="roleDetailRef"/>
 </template>
 
 <style lang="less" scoped>

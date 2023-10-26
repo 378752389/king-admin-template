@@ -2,6 +2,7 @@
 import {ref, onMounted} from 'vue';
 import {ElMessage, ElMessageBox} from "element-plus";
 import {getCategoryPage} from "@/api/content/category";
+
 const onInput = (row) => {
   ElMessageBox.confirm(
       '请确定是否修改发布状态？',
@@ -46,19 +47,21 @@ onMounted(async () => {
 
 <template>
 
-  <el-table :data="tableData">
-    <el-table-column label="id" prop="id"/>
-    <el-table-column label="目录名称" prop="categoryName"/>
-    <el-table-column label="发布状态">
-      <template #default="scope">
-        <el-switch
-            :model-value="scope.row.enable"
-            @input="onInput(scope.row)"
-            :loading="!!scope.row.switchLoading"
-        />
-      </template>
-    </el-table-column>
-  </el-table>
+  <div class="page3">
+    <el-table :data="tableData">
+      <el-table-column label="id" prop="id"/>
+      <el-table-column label="目录名称" prop="categoryName"/>
+      <el-table-column label="发布状态">
+        <template #default="scope">
+          <el-switch
+              :model-value="scope.row.enable"
+              @input="onInput(scope.row)"
+              :loading="!!scope.row.switchLoading"
+          />
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
 
 
 </template>

@@ -116,7 +116,7 @@ const onDelete = async (row) => {
 </script>
 
 <template>
-  <div class="wrapper">
+  <div class="admin-page">
     <el-card class="search-card" shadow="never">
       <SectionTitle title="查询搜索"/>
 

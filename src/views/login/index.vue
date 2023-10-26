@@ -57,7 +57,7 @@ const doLogin = () => {
 
 <template>
 
-  <div class="login">
+  <div class="login-page">
     <el-form class="login-form"
              ref="loginFormRef"
              :model="loginData"

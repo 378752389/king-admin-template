@@ -3,7 +3,6 @@ export default [
         url: `/api/product`,
         method: 'get',
         response: ({query}) => {
-            let i = 1;
             return {
                 code: 200,
                 message: '请求成功',
@@ -16,9 +15,7 @@ export default [
                             'description': '@csentence(20)',
                             'publish': '@pick([0, 1])',
                             'categoryId': 0,
-                            pic: function () {
-                                return `https://picsum.photos/id/${i++}/600/600`
-                            },
+                            pic: '@image("300x300")'
                         }
                     ],
                     'pageNum': parseInt(query.pageNum),

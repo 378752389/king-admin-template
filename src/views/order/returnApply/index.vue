@@ -3,7 +3,9 @@
 </script>
 
 <template>
-  <h1>退货申请</h1>
+  <div class="return-apply-page">
+    <h1>退货申请</h1>
+  </div>
 </template>
 
 <style scoped>

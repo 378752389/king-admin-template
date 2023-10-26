@@ -42,26 +42,28 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1>这是一个profiler页面</h1>
+  <div class="dashboard-page">
+    <h1>这是一个profiler页面</h1>
 
-  <el-descriptions
-      title="面板信息"
-      :column="2"
-      :size="'large'"
-      border
-  >
+    <el-descriptions
+        title="面板信息"
+        :column="2"
+        :size="'large'"
+        border
+    >
 
-    <el-descriptions-item :key="item.prop" v-for="item in profileModel">
-      <template #label>
-        <div class="cell-item">
-          <SvgIcon :icon="item.icon"/>
-          <span class="text">{{ item.label }}</span>
-        </div>
-      </template>
-      {{ item.value }}
-    </el-descriptions-item>
+      <el-descriptions-item :key="item.prop" v-for="item in profileModel">
+        <template #label>
+          <div class="cell-item">
+            <SvgIcon :icon="item.icon"/>
+            <span class="text">{{ item.label }}</span>
+          </div>
+        </template>
+        {{ item.value }}
+      </el-descriptions-item>
 
-  </el-descriptions>
+    </el-descriptions>
+  </div>
 </template>
 
 <style lang="less" scoped>
