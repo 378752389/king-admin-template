@@ -104,91 +104,93 @@ const handleCancel = () => {
 </script>
 
 <template>
-  <el-card>
-    <el-form
-        label-position="right"
-        label-width="100px"
-        :model="userModel"
-        :rules="userRules"
-    >
-      <el-form-item label="用户名" prop="username">
-        <el-input v-model="userModel.username" :disabled="!addFlag"/>
-      </el-form-item>
+  <div class="admin-detail-page">
+    <el-card>
+      <el-form
+          label-position="right"
+          label-width="100px"
+          :model="userModel"
+          :rules="userRules"
+      >
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="userModel.username" :disabled="!addFlag"/>
+        </el-form-item>
 
-      <el-form-item label="密码" prop="password" v-if="addFlag">
-        <el-input type="password" v-model="userModel.password"/>
-      </el-form-item>
-      <el-form-item label="头像" prop="avatar">
+        <el-form-item label="密码" prop="password" v-if="addFlag">
+          <el-input type="password" v-model="userModel.password"/>
+        </el-form-item>
+        <el-form-item label="头像" prop="avatar">
 
-        <el-upload
-            name="files"
-            :action="uploadPath + '?type=avatar'"
-            :show-file-list="false"
-            list-type="picture-card"
-            :on-success="onUploadSuccess"
-            :before-upload="onBeforeUpload"
-            :on-progress="onUploadProgress"
-        >
-          <el-image v-if="!uploadProgress.showStatus && userModel.avatar" :src="userModel.avatar"/>
-          <el-icon v-else>
-            <el-progress v-if="uploadProgress.showStatus" :percentage="uploadProgress.percent"/>
-            <SvgIcon v-else icon="king-plus"/>
-          </el-icon>
-        </el-upload>
+          <el-upload
+              name="files"
+              :action="uploadPath + '?type=avatar'"
+              :show-file-list="false"
+              list-type="picture-card"
+              :on-success="onUploadSuccess"
+              :before-upload="onBeforeUpload"
+              :on-progress="onUploadProgress"
+          >
+            <el-image v-if="!uploadProgress.showStatus && userModel.avatar" :src="userModel.avatar"/>
+            <el-icon v-else>
+              <el-progress v-if="uploadProgress.showStatus" :percentage="uploadProgress.percent"/>
+              <SvgIcon v-else icon="king-plus"/>
+            </el-icon>
+          </el-upload>
 
-      </el-form-item>
-      <el-form-item label="邮箱" prop="email">
-        <el-input v-model="userModel.email"/>
-      </el-form-item>
-      <el-form-item label="性别" prop="gender">
-        <el-select
-            v-model="userModel.gender"
-            placeholder="选择性别">
-          <el-option
-              v-for="gender in genderSelectList"
-              :key="gender.value"
-              :label="gender.label"
-              :value="gender.value"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="手机号" prop="phone">
-        <el-input v-model="userModel.phone"/>
-      </el-form-item>
-      <el-form-item label="qq" prop="qq">
-        <el-input v-model="userModel.qq"/>
-      </el-form-item>
-      <el-form-item label="微信" prop="wechat">
-        <el-input v-model="userModel.wechat"/>
-      </el-form-item>
-      <el-form-item label="职业" prop="occupation">
-        <el-input v-model="userModel.occupation"/>
-      </el-form-item>
-      <el-form-item label="详情" prop="description">
-        <el-input type="textarea" rows="3" v-model="userModel.description"/>
-      </el-form-item>
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="userModel.email"/>
+        </el-form-item>
+        <el-form-item label="性别" prop="gender">
+          <el-select
+              v-model="userModel.gender"
+              placeholder="选择性别">
+            <el-option
+                v-for="gender in genderSelectList"
+                :key="gender.value"
+                :label="gender.label"
+                :value="gender.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="手机号" prop="phone">
+          <el-input v-model="userModel.phone"/>
+        </el-form-item>
+        <el-form-item label="qq" prop="qq">
+          <el-input v-model="userModel.qq"/>
+        </el-form-item>
+        <el-form-item label="微信" prop="wechat">
+          <el-input v-model="userModel.wechat"/>
+        </el-form-item>
+        <el-form-item label="职业" prop="occupation">
+          <el-input v-model="userModel.occupation"/>
+        </el-form-item>
+        <el-form-item label="详情" prop="description">
+          <el-input type="textarea" rows="3" v-model="userModel.description"/>
+        </el-form-item>
 
-      <el-form-item label="绑定角色" prop="roleIds">
-        <el-select
-            v-model="userModel.roleIds"
-            multiple
-            placeholder="选择角色"
-            style="width: 40%; min-width: 200px">
-          <el-option
-              v-for="role in roleSelectList"
-              :key="role.id"
-              :label="role.roleName"
-              :value="role.id"
-          />
-        </el-select>
-      </el-form-item>
+        <el-form-item label="绑定角色" prop="roleIds">
+          <el-select
+              v-model="userModel.roleIds"
+              multiple
+              placeholder="选择角色"
+              style="width: 40%; min-width: 200px">
+            <el-option
+                v-for="role in roleSelectList"
+                :key="role.id"
+                :label="role.roleName"
+                :value="role.id"
+            />
+          </el-select>
+        </el-form-item>
 
-      <el-form-item>
-        <el-button type="default" @click="handleCancel">取消</el-button>
-        <el-button type="primary" @click="handleSubmit">提交</el-button>
-      </el-form-item>
-    </el-form>
-  </el-card>
+        <el-form-item>
+          <el-button type="default" @click="handleCancel">取消</el-button>
+          <el-button type="primary" @click="handleSubmit">提交</el-button>
+        </el-form-item>
+      </el-form>
+    </el-card>
+  </div>
 </template>
 
 <style lang="less" scoped>
