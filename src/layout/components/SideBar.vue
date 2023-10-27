@@ -10,55 +10,14 @@ import {storeToRefs} from "pinia";
 const {sidebarCollapse} = storeToRefs(useAppStore());
 const {permissionList} = storeToRefs(useUserInfoStore());
 
-const props = defineProps({
-  authedRoute: {
-    type: Array,
-    default: () => []
-  }
-})
-
 const currentRoute = useRoute();
 
 // 监听侧边栏宽度变化
 const sidebarWidth = ref('0');
 
 watch(sidebarCollapse, (n) => {
-  sidebarWidth.value = n ? '0' : '230px';
+  sidebarWidth.value = n ? '0' : '200px';
 }, {immediate: true})
-
-const processRoutes = (routeList) => {
-  // 1. 依据权限来筛选子菜单
-  // 2. 筛选所有隐藏菜单
-  const permittedRoutes = [];
-  const permissionList = props.authedRoute.map(x => x.permission);
-  for (let i = 0; i < routeList.length; i++) {
-    const routeItem = routeList[i];
-    if (routeItem.meta
-        && routeItem.meta.permission
-        && routeItem.meta.permission.length > 0) {
-
-
-      // 路由项有配置permission，需要有对应的权限才能访问
-      if (permissionList.indexOf(routeItem.meta.permission) !== -1) {
-        // 有对应的权限，进行渲染
-        permittedRoutes.push(routeItem);
-        if (routeItem.children && routeItem.children.length > 0) {
-          routeItem.children = processRoutes(routeItem.children);
-        }
-      }
-    } else {
-      // 路由项没有配置 permission，默认都可以访问
-      permittedRoutes.push(routeItem);
-    }
-  }
-  console.log("permissionList", permissionList)
-  console.log("permittedRoutes", permittedRoutes)
-  return permittedRoutes.sort((a, b) => {
-    let before = a.order === undefined ? 999 : a.order
-    let after = b.order === undefined ? 999 : b.order
-    return before - after
-  });
-}
 
 onMounted(() => {
   console.log(routes)
@@ -71,6 +30,7 @@ onMounted(() => {
   <div class="side-bar-area">
     <el-scrollbar height="100%">
       <el-menu
+          :collapse-transition="false"
           active-text-color="#409eff"
           background-color="#304156"
           text-color="#bfcbd9"
@@ -95,7 +55,8 @@ onMounted(() => {
 
               <template :key="childItem.name" v-for="childItem in routeItem.children">
                 <!--              添加选择 hidden 不为 true 的菜单项-->
-                <template v-if="!childItem.meta.hidden && (!childItem.meta.permission || permissionList.indexOf(childItem.meta.permission) !== -1)">
+                <template
+                    v-if="!childItem.meta.hidden && (!childItem.meta.permission || permissionList.indexOf(childItem.meta.permission) !== -1)">
                   <el-menu-item
                       :index="routeItem.path + '/' + childItem.path">
                     <SvgIcon :icon="childItem.meta.icon || 'king-location'"/>
@@ -131,7 +92,7 @@ onMounted(() => {
   &:deep(.side-bar) {
     // 设置侧边栏的最小宽度，不然内容会被侧边栏 menu-item撑开
     .el-sub-menu, .el-menu-item {
-      min-width: v-bind(sidebarWidth);
+      width: v-bind(sidebarWidth);
     }
 
     .el-sub-menu__title:hover {

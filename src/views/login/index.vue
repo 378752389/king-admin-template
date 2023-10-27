@@ -84,10 +84,11 @@ const doLogin = () => {
       </el-form-item>
     </el-form>
   </div>
+
 </template>
 
 <style scoped>
-.login {
+.login-page {
   height: 100vh;
   background: url("@/assets/images/login-backgroud.png");
   background-size: 100vw 100vh;

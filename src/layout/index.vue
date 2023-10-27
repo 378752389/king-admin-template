@@ -3,23 +3,22 @@ import SideBar from '@/layout/components/SideBar.vue'
 import NavBar from "@/layout/components/NavBar.vue";
 import {RouterView} from 'vue-router';
 import {useUserInfoStore} from "@/stores/userInfo";
-import {storeToRefs} from "pinia";
 import {onMounted} from "vue";
 
 const userInfoStore = useUserInfoStore();
-const {menuList} = storeToRefs(userInfoStore);
 
 // 侧边栏挂载时如果路由为空，则加载菜单栏
-onMounted(() => {
-  if (menuList.value.length === 0) {
-    userInfoStore.getMenu();
-  }
+onMounted(async () => {
+  // 加载用户基本信息
+  await userInfoStore.getInfo();
+  // 加载菜单信息
+  await userInfoStore.getMenu();
 })
 </script>
 
 <template>
   <div class="view-port">
-    <SideBar class="side-bar" :authed-route="menuList"/>
+    <SideBar class="side-bar"/>
     <div class="main">
       <NavBar/>
       <div class="content">

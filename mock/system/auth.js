@@ -1,3 +1,5 @@
+import {nowStr} from "@/utils/timeUtil";
+
 /**
  * response 返回的对象四个属性：
  *  headers：请求头，对象；eg: {Content-Type: "application/json"}
@@ -17,6 +19,30 @@ export default [
                 message: '请求成功',
                 data: {
                     token: "hello, world!"
+                }
+            }
+        }
+    },
+    {
+        url: '/api/auth/info',
+        method: 'get',
+        response: () => {
+            return {
+                code: 200,
+                message: '请求成功',
+                data: {
+                    username: '用户名',
+                    phone: '18312344321',
+                    address: '深圳',
+                    email: '1807431780@qq.com',
+                    avatar: 'https://avatars.githubusercontent.com/u/39339029?v=4',
+                    gender: 1,
+                    qq: '1807431780',
+                    weChat: '1807431780',
+                    occupation: '程序员',
+                    description: '这是系统管理员',
+                    lastLoginIp: '127.0.0.1',
+                    lastLoginTime: nowStr()
                 }
             }
         }
@@ -492,6 +518,17 @@ export default [
                         "sort": 4
                     }
                 ]
+            }
+        }
+    },
+    {
+        url: '/api/auth/logout',
+        method: 'post',
+        response: () => {
+            return {
+                code: 200,
+                message: '登出成功',
+                data: null
             }
         }
     }

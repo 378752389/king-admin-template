@@ -1,12 +1,13 @@
 import {defineStore} from 'pinia';
 import {ref, computed} from 'vue';
-import {loginApi, menuApi, logoutApi} from "@/api/system/auth";
+import {loginApi, menuApi, logoutApi, infoApi} from "@/api/system/auth";
 import {ElMessage} from "element-plus";
 import {useRouter} from 'vue-router'
 
 
 export const useUserInfoStore = defineStore("userInfo", () => {
     const menuList = ref([])
+    const info = ref({})
     const router = useRouter()
 
     const uploadHeaders = computed(() => {
@@ -54,7 +55,8 @@ export const useUserInfoStore = defineStore("userInfo", () => {
                     type: 'success',
                     message: res.message
                 })
-                menuList.value.length = 0
+                menuList.value = []
+                info.value = {}
                 localStorage.removeItem('token')
                 await router.push({name: 'login'})
             }
@@ -71,19 +73,37 @@ export const useUserInfoStore = defineStore("userInfo", () => {
     })
 
     const getMenu = async () => {
-        const menuResult = await menuApi();
-        if (menuResult.code === 200) {
-            menuList.value = menuResult.data;
+        try {
+            const menuResult = await menuApi();
+            if (menuResult.code === 200) {
+                menuList.value = menuResult.data;
+            }
+        } catch (e) {
+            ElMessage.error(e.message)
+        }
+
+    }
+
+    const getInfo = async () => {
+        try {
+            const infoResult = await infoApi();
+            if (infoResult.code === 200) {
+                info.value = infoResult.data;
+            }
+        } catch (e) {
+            ElMessage.error(e.message)
         }
     }
 
     return {
         menuList,
+        info,
         permissionList,
         uploadHeaders,
         doLogin,
         doLogout,
-        getMenu
+        getMenu,
+        getInfo
     }
 }, {
     persist: {

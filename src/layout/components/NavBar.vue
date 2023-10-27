@@ -38,7 +38,7 @@ const doToggle = () => {
 
     <el-dropdown placement="bottom-start">
       <el-link :underline="false">
-        <el-avatar shape="square" src="https://avatars.githubusercontent.com/u/39339029?v=4"/>
+        <el-avatar shape="square" :src="userInfoStore.info.avatar"/>
       </el-link>
       <template #dropdown>
         <el-dropdown-menu>
