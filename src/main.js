@@ -13,7 +13,7 @@ import './permission'
 import './styles/main.less'
 
 // vue3 Added non-passive event listener to a scroll-blocking 'wheel' event. 处理 滚动条 警告问题
-import 'default-passive-events'
+// import 'default-passive-events'
 
 const app = createApp(App)
 

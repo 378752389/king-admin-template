@@ -18,6 +18,24 @@ export default {
             component: () => import('@/views/marketing/coupon/index.vue')
         },
         {
+            path: 'coupon-add',
+            name: 'coupon-add',
+            meta: {
+                title: '添加优惠券',
+                hidden: true
+            },
+            component: () => import('@/views/marketing/coupon/add.vue')
+        },
+        {
+            path: 'coupon-update',
+            name: 'coupon-update',
+            meta: {
+                title: '修改优惠券',
+                hidden: true
+            },
+            component: () => import('@/views/marketing/coupon/update.vue')
+        },
+        {
             path: 'advertise',
             name: 'advertise',
             meta: {

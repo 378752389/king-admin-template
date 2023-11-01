@@ -1,12 +1,15 @@
 import request from "@/utils/request";
 
-export const getAdvertisePage = ({pageNum = 1, pageSize = 10}) => {
+export const getAdvertisePage = ({pageNum = 1, pageSize = 10, name, startTime, endTime}) => {
     return request({
         url: '/advertise',
         method: 'get',
         params: {
             pageNum,
-            pageSize
+            pageSize,
+            name,
+            startTime,
+            endTime
         },
     })
 }
