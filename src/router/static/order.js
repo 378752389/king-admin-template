@@ -27,13 +27,23 @@ export default {
             component: () => import('@/views/order/setting/index.vue')
         },
         {
-            path: 'returnApply',
-            name: 'returnApply',
+            path: 'return-apply',
+            name: 'return-apply',
             meta: {
                 title: '退货申请管理',
                 permission: 'order:returnApply'
             },
             component: () => import('@/views/order/returnApply/index.vue')
+        },
+        {
+            path: 'return-apply-detail',
+            name: 'return-apply-detail',
+            meta: {
+                title: '退货申请详情',
+                hidden: true
+                // permission: 'order:returnApply'
+            },
+            component: () => import('@/views/order/returnApply/ReturnApplyDetail.vue')
         },
         {
             path: 'returnReason',
