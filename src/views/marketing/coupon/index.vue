@@ -184,7 +184,7 @@ onMounted(async () => {
                 cancel-button-text="取消"
                 icon="king-question-filled"
                 icon-color="#626AEF"
-                title="请确认是否删除管理员？">
+                title="请确认是否删除？">
               <template #reference>
                 <el-button type="danger" size="small">删除</el-button>
               </template>
