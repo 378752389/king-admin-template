@@ -21,7 +21,7 @@ export default {
             path: 'setting',
             name: 'setting',
             meta: {
-                title: '退货申请管理',
+                title: '订单设置',
                 permission: 'order:setting'
             },
             component: () => import('@/views/order/setting/index.vue')
