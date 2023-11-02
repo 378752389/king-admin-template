@@ -1,9 +1,16 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import SectionTitle from "@/components/SectionTitle.vue";
-import {ElMessage} from "element-plus";
-import {getReturnReasonList, deleteReturnReason, addReturnReason, updateReturnReason} from "@/api/order/returnReason";
+import {ElMessage, ElMessageBox} from "element-plus";
+import {
+  getReturnReasonListApi,
+  deleteReturnReasonApi,
+  addReturnReasonApi,
+  updateReturnReasonApi,
+  switchReturnReasonStatusApi
+} from "@/api/order/returnReason";
 import ReturnReasonDetail from "@/views/order/returnReason/components/ReturnReasonDetail.vue";
+import {getCategoryPage} from "@/api/content/category";
 
 // ============================== 属性 =======================================
 
@@ -30,7 +37,7 @@ const onDelete = async (row) => {
   const id = row.id;
 
   try {
-    const res = await deleteReturnReason(id)
+    const res = await deleteReturnReasonApi(id)
     ElMessage.success(res.message)
     await loadData()
   } catch (e) {
@@ -38,13 +45,14 @@ const onDelete = async (row) => {
   }
 }
 
+// -------添加或修改 提交--------
 const onSubmit = async (model) => {
   try {
     let resp;
     if (addFlag.value) {
-      resp = await addReturnReason(model)
+      resp = await addReturnReasonApi(model)
     } else {
-      resp = await updateReturnReason(model)
+      resp = await updateReturnReasonApi(model)
     }
     if (resp) {
       ElMessage.success(resp.message)
@@ -55,13 +63,46 @@ const onSubmit = async (model) => {
   }
 }
 
+// --------修改状态-------
+const onStatusInput = (row) => {
+  ElMessageBox.confirm(
+      '请确定是否修改发布状态？',
+      '警告',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+  ).then(() => {
+    row.switchLoading = true;
+    const newStatus = !row.enable;
+    return new Promise((resolve) => {
+      switchReturnReasonStatusApi(newStatus).then(res => {
+        // 正常处理
+        // todo
+        row.enable = newStatus;
+        ElMessage.success(res.message);
+        resolve(true);
+      }).catch(e => {
+        // 错误异常处理， 异常进行打印，不进行抛出
+        ElMessage.error(e.message)
+      }).finally(() => {
+        row.switchLoading = false;
+      })
+    })
+
+  }).catch(() => {
+    ElMessage.info("取消操作")
+  })
+}
+
 // ==============================  方法 =======================================
 
 // -------加载分页数据--------
 const loadData = async () => {
   loadStatus.value = true
   try {
-    const resp = await getReturnReasonList()
+    const resp = await getReturnReasonListApi()
     if (resp) tableData.value = resp.data;
   } catch (e) {
     ElMessage.error(e.messages)
@@ -93,7 +134,16 @@ onMounted(async () => {
         <el-table-column type="index" width="120" label="序号"/>
         <el-table-column prop="reason" label="退货原因" show-overflow-tooltip/>
         <el-table-column prop="sort" label="排序"/>
-        <el-table-column prop="enable" label="状态"/>
+        <el-table-column prop="enable" label="状态">
+          <template #default="scope">
+            <el-switch
+                :model-value="scope.row.enable"
+                @input="onStatusInput(scope.row)"
+                active-color="#13ce66"
+                :loading="!!scope.row.switchLoading"
+            />
+          </template>
+        </el-table-column>
 
         <el-table-column prop="createTime" label="开始时间"/>
 

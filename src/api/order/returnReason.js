@@ -1,13 +1,13 @@
 import request from "@/utils/request";
 
-export const getReturnReasonList = () => {
+export const getReturnReasonListApi = () => {
     return request({
         url: '/returnReason',
         method: 'get',
     })
 }
 
-export const addReturnReason = (returnReason) => {
+export const addReturnReasonApi = (returnReason) => {
     return request({
         url: '/returnReason',
         method: 'post',
@@ -15,7 +15,7 @@ export const addReturnReason = (returnReason) => {
     })
 }
 
-export const updateReturnReason = (returnReason) => {
+export const updateReturnReasonApi = (returnReason) => {
     return request({
         url: '/returnReason',
         method: 'put',
@@ -24,12 +24,22 @@ export const updateReturnReason = (returnReason) => {
 }
 
 // returnReasonIds 为 数组（Array）
-export const deleteReturnReason = (returnReasonId) => {
+export const deleteReturnReasonApi = (returnReasonId) => {
     return request({
         url: '/returnReason',
         method: 'delete',
         data: {
             id: returnReasonId
+        }
+    })
+}
+
+export const switchReturnReasonStatusApi = (enable) => {
+    return request({
+        url: '/returnReason/status',
+        method: 'post',
+        data: {
+            enable
         }
     })
 }

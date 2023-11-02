@@ -15,5 +15,17 @@ export default [
                 }]
             }
         }
+    },
+    {
+        url: '/api/returnReason/status',
+        method: 'post',
+        timeout: 1000,
+        response: () => {
+            return {
+                code: 200,
+                message: '请求成功',
+                data: null
+            }
+        }
     }
 ]
