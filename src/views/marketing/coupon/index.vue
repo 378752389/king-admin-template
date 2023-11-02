@@ -1,9 +1,9 @@
 <script setup>
-import {ref, reactive, onMounted} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import SectionTitle from "@/components/SectionTitle.vue";
-import {getAdvertisePage} from "@/api/marketing/advertise";
 import {ElMessage} from "element-plus";
 import {useRouter} from "vue-router";
+import {getCouponPage} from "@/api/marketing/coupon";
 
 // ============================== 属性 =======================================
 
@@ -91,7 +91,7 @@ const loadData = async () => {
   loadStatus.value = true
   try {
     // todo getPageApi
-    const resp = await getAdvertisePage({
+    const resp = await getCouponPage({
       pageNum: pageData.pageNum,
       pageSize: pageData.pageSize,
       ...searchForm
@@ -172,15 +172,6 @@ onMounted(async () => {
         <el-table-column prop="effectiveTime" label="开始时间"/>
         <el-table-column prop="expireTime" label="结束时间"/>
 
-        <el-table-column prop="expireTime" label="状态"/>
-
-        <el-table-column prop="sort" label="排序"/>
-        <el-table-column label="发布状态">
-          <template #default="scope">
-            <el-switch style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
-                       v-model="scope.row.publicStatus"/>
-          </template>
-        </el-table-column>
         <el-table-column prop="description" label="描述" show-overflow-tooltip/>
         <el-table-column label="管理" align="center">
           <template #default="scope">

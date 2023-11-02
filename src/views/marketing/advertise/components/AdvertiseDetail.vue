@@ -49,7 +49,7 @@ const onRemovePic = () => {
 
 <template>
   <div class="advertise-detail-page">
-    <el-card shadow="never">
+    <el-card class="form-card" shadow="never">
       <el-form
           label-position="right"
           label-width="100px"
