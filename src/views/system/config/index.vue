@@ -2,10 +2,8 @@
 import {ref, reactive} from "vue";
 
 // 表单规则校验
-const roleRules = reactive({
+const rules = reactive({
   id: [],
-  roleName: [],
-  createTime: []
 })
 
 const configModel = ref({
@@ -20,18 +18,15 @@ const onSubmit = () => {
 <template>
   <div class="config-page">
     <!--   todo 表单内容-->
-    <el-card>
+    <el-card class="form-card" shadow="never">
       <el-form
-          label-position="right"
           label-width="100px"
           :model="configModel"
-          :rules="roleRules"
+          :rules="rules"
       >
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="configModel.email"/>
         </el-form-item>
-
-        <el-divider/>
 
         <el-form-item>
           <el-button class="submit-btn" type="primary" @click="onSubmit">提交</el-button>
@@ -42,12 +37,7 @@ const onSubmit = () => {
 </template>
 
 <style lang="less" scoped>
-.el-card {
-  width: 800px;
-  margin: 0 auto;
-
-  .submit-btn {
-    width: 100%;
-  }
+.submit-btn {
+  width: 100%;
 }
 </style>
