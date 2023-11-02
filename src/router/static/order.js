@@ -18,6 +18,16 @@ export default {
             component: () => import('@/views/order/list/index.vue')
         },
         {
+            path: 'order-detail',
+            name: 'order-detail',
+            meta: {
+                title: '订单详情',
+                permission: 'order:list',
+                hidden: true,
+            },
+            component: () => import('@/views/order/list/OrderDetail.vue')
+        },
+        {
             path: 'setting',
             name: 'setting',
             meta: {
