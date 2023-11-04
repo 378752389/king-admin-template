@@ -1,28 +1,26 @@
 import request from "@/utils/request";
 
-export const getCategoryPage = ({pageNum = 1, pageSize = 10}) => {
+export const getCategoryPageApi = ({pageNum = 1, pageSize = 10, type, name}) => {
     return request({
         url: '/category',
         method: 'get',
         params: {
             pageNum,
-            pageSize
+            pageSize,
+            name,
+            type
         },
     })
 }
 
-
-/**
- * 获取所有角色列表
- */
-export const getCategoryList = () => {
+export const getCategoryListApi = () => {
     return request({
         url: '/category/all',
         method: 'get'
     })
 }
 
-export const addCategory = (category) => {
+export const addCategoryApi = (category) => {
     return request({
         url: '/category',
         method: 'post',
@@ -30,7 +28,7 @@ export const addCategory = (category) => {
     })
 }
 
-export const updateCategory = (category) => {
+export const updateCategoryApi = (category) => {
     return request({
         url: '/category',
         method: 'put',
@@ -39,12 +37,20 @@ export const updateCategory = (category) => {
 }
 
 // categoryIds 为 数组（Array）
-export const removeCategories = (categoryIds) => {
+export const removeCategoriesApi = (id) => {
     return request({
-        url: '/category',
+        url: `/category/${id}`,
         method: 'delete',
+    })
+}
+
+export const switchCategoryPublicStatusApi = ({id, publish}) => {
+    return request({
+        url: '/category/status',
+        method: 'post',
         data: {
-            ids: categoryIds
+            id,
+            publish
         }
     })
 }

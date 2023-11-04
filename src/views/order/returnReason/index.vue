@@ -10,7 +10,7 @@ import {
   switchReturnReasonStatusApi
 } from "@/api/order/returnReason";
 import ReturnReasonDetail from "@/views/order/returnReason/components/ReturnReasonDetail.vue";
-import {getCategoryPage} from "@/api/content/category";
+import {getCategoryPageApi} from "@/api/content/category";
 
 // ============================== 属性 =======================================
 
