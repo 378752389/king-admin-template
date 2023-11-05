@@ -1,17 +1,27 @@
 import request from "@/utils/request";
 
-export const getProductPage = ({pageNum = 1, pageSize = 10}) => {
+export const getProductPageApi = ({pageNum = 1, pageSize = 10, categoryId, name}) => {
     return request({
         url: '/product',
         method: 'get',
         params: {
             pageNum,
-            pageSize
+            pageSize,
+
+            name,
+            categoryId
         },
     })
 }
 
-export const addProduct = ({product}) => {
+export const getProductDetailApi = (id) => {
+    return request({
+        url: `/product/${id}`,
+        method: 'get',
+    })
+}
+
+export const addProductApi = ({product}) => {
     return request({
         url: '/product',
         method: 'post',
@@ -19,7 +29,7 @@ export const addProduct = ({product}) => {
     })
 }
 
-export const updateProduct = (product) => {
+export const updateProductApi = (product) => {
     return request({
         url: '/product',
         method: 'put',
@@ -28,7 +38,7 @@ export const updateProduct = (product) => {
 }
 
 // productIds 为 数组（Array）
-export const deleteProduct = (productIds) => {
+export const deleteProductApi = (productIds) => {
     return request({
         url: '/product',
         method: 'delete',
@@ -38,7 +48,7 @@ export const deleteProduct = (productIds) => {
     })
 }
 
-export const switchProductPublishStatus = (status) => {
+export const switchProductPublishStatusApi = (status) => {
     return request({
         url: '/product/status',
         method: 'post',

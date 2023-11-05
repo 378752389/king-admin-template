@@ -1,16 +1,24 @@
 <script setup>
-// import {getPackagePage, deletePackage, switchPackagePublishStatus} from "@/api/content/package";
-import {getProductPage, deleteProduct} from "@/api/content/product";
+import {getProductPageApi, deleteProductApi} from "@/api/content/product";
 import {ref, onMounted, reactive} from "vue";
 import SectionTitle from "@/components/SectionTitle.vue";
 import {ElMessage} from "element-plus";
 import {useRouter} from 'vue-router';
+import {getCategoryListApi} from "@/api/content/category";
 
-const router = useRouter();
-const searchForm = ref({
+// ============================== 钩子 =======================================
+
+const searchForm = reactive({
   name: '',
   categoryId: ''
 });
+const searchFormRef = ref(null)
+
+const categorySelect = ref([])
+
+const loadStatus = ref(false)
+
+const tableData = ref([])
 
 const pageData = reactive({
   pageNum: 1,
@@ -19,48 +27,8 @@ const pageData = reactive({
   pageSizeList: [10, 20, 50, 100]
 })
 
-const tableData = ref([])
-
-/**
- * 页面挂载
- */
-onMounted(async () => {
-  await loadData()
-})
-
-
-const pageNumChange = (pageNum) => {
-  loadData({pageNum, pageSize: pageData.pageSize, ...searchForm.value})
-}
-const pageSizeChange = (pageSize) => {
-  loadData({pageSize, pageNum: pageData.pageNum, ...searchForm.value})
-}
-
-const loadStatus = ref(false)
-const loadData = async () => {
-  loadStatus.value = true
-  try {
-    const resp = await getProductPage({
-      pageNum: pageData.pageNum,
-      pageSize: pageData.pageSize,
-      ...searchForm.value
-    })
-
-    if (resp && resp.data) {
-      // todo
-      tableData.value = resp.data.dataList;
-      pageData.pageNum = resp.data.pageNum;
-      pageData.pageSize = resp.data.pageSize;
-      pageData.total = resp.data.total;
-    }
-  } catch (e) {
-    ElMessage.error(e.messages)
-  } finally {
-    loadStatus.value = false
-  }
-
-
-}
+const router = useRouter();
+// ============================== 事件 =======================================
 
 /**
  * 表单搜索
@@ -69,7 +37,7 @@ const onSearch = () => {
   loadData()
 }
 
-const searchFormRef = ref(null)
+
 /**
  * 重制搜索表单
  */
@@ -107,14 +75,59 @@ const onEdit = (id) => {
 const onDelete = async (row) => {
   const id = row.id;
 
+  const res = await deleteProductApi(id)
+  ElMessage.success(res.message)
+  await loadData()
+}
+
+
+const pageNumChange = (pageNum) => {
+  loadData({pageNum, pageSize: pageData.pageSize, ...searchForm})
+}
+const pageSizeChange = (pageSize) => {
+  loadData({pageSize, pageNum: pageData.pageNum, ...searchForm})
+}
+
+// ============================== 加载数据 =======================================
+
+const loadData = async () => {
+  loadStatus.value = true
   try {
-    const res = await deleteProduct(id)
-    ElMessage.success(res.message)
-    await loadData()
-  } catch (e) {
-    ElMessage.error(e)
+    const resp = await getProductPageApi({
+      pageNum: pageData.pageNum,
+      pageSize: pageData.pageSize,
+      ...searchForm
+    })
+
+    if (resp && resp.data) {
+      // todo
+      tableData.value = resp.data.dataList;
+      pageData.pageNum = resp.data.pageNum;
+      pageData.pageSize = resp.data.pageSize;
+      pageData.total = resp.data.total;
+    }
+  } finally {
+    loadStatus.value = false
+  }
+
+
+}
+
+const loadCategorySelect = async () => {
+  const resp = await getCategoryListApi({type: 2})
+  if (resp && resp.code === 200) {
+    categorySelect.value = resp.data
   }
 }
+
+// ============================== 钩子 =======================================
+/**
+ * 页面挂载
+ */
+onMounted(async () => {
+  await loadData()
+  await loadCategorySelect()
+})
 
 </script>
 
@@ -128,12 +141,17 @@ const onDelete = async (row) => {
         <el-form-item label="套餐名称" prop="name">
           <el-input
               v-model="searchForm.name"
-              placeholder="套餐名称"/>
+              placeholder="商品名称"/>
         </el-form-item>
-        <el-form-item label="套餐分类" prop="categoryId">
+        <el-form-item label="商品分类" prop="categoryId">
           <el-select
               v-model="searchForm.categoryId"
-              placeholder="套餐分类"/>
+              placeholder="商品分类">
+            <el-option :key="category.id"
+                       :label="category.name"
+                       :value="category.id"
+                       v-for="category in categorySelect"/>
+          </el-select>
         </el-form-item>
         <el-form-item style="">
           <el-button type="primary" @click="onSearch">查询</el-button>
@@ -152,7 +170,7 @@ const onDelete = async (row) => {
       <el-table :data="tableData" v-loading="loadStatus" border>
         <el-table-column type="index" width="120" label="序号"/>
         <el-table-column prop="name" label="套餐名" show-overflow-tooltip/>
-        <el-table-column prop="categoryId" label="所属分类"/>
+        <el-table-column prop="categoryName" label="所属分类"/>
         <el-table-column prop="price" label="售价"/>
         <el-table-column prop="description" label="套餐介绍" show-overflow-tooltip/>
         <el-table-column label="管理" align="center">

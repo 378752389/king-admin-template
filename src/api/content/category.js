@@ -13,10 +13,13 @@ export const getCategoryPageApi = ({pageNum = 1, pageSize = 10, type, name}) => 
     })
 }
 
-export const getCategoryListApi = () => {
+export const getCategoryListApi = ({type}) => {
     return request({
-        url: '/category/all',
-        method: 'get'
+        url: '/category/list',
+        method: 'get',
+        params: {
+            type
+        }
     })
 }
 
