@@ -20,9 +20,13 @@ export default [
                 data: {
                     [`dataList|${query.pageSize}`]: [
                         {
-                            'description': '@title',
-                            'createBy': query.createBy || '@cname',
-                            'createTime': '@datetime(yyyy-MM-dd HH:mm:ss)',
+                            'srcName': '@title',
+                            mimeType: '@pick(["image/jpg", "image/png", "text/plain"])',
+                            bizType: '@pick(["default", "商品", "套餐", "分类"])',
+                            fileSizeReadable: '@float(10, 30, 2, 2) + "MB"',
+                            uploadTime: '@datetime(yyyy-MM-dd HH:mm:ss)',
+                            uploadBy: query.uploadBy || '@cname',
+                            link: '@image("300x300")',
                         }
                     ],
                     'pageNum': parseInt(query.pageNum),

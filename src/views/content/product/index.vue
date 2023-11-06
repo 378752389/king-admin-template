@@ -169,10 +169,10 @@ onMounted(async () => {
       <!--      table-layout: 固定表格宽度，让表格撑满整个父元素-->
       <el-table :data="tableData" v-loading="loadStatus" border>
         <el-table-column type="index" width="120" label="序号"/>
-        <el-table-column prop="name" label="套餐名" show-overflow-tooltip/>
+        <el-table-column prop="name" label="商品名" show-overflow-tooltip/>
         <el-table-column prop="categoryName" label="所属分类"/>
         <el-table-column prop="price" label="售价"/>
-        <el-table-column prop="description" label="套餐介绍" show-overflow-tooltip/>
+        <el-table-column prop="description" label="商品介绍" show-overflow-tooltip/>
         <el-table-column label="管理" align="center">
           <template #default="scope">
             <el-button type="warning" size="small" @click="onEdit(scope.row.id)">编辑</el-button>

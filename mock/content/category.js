@@ -24,14 +24,13 @@ export default [
                             'description': '@title',
                             'id|+1': 1,
                             parentId: 0,
-                            'order|+1': 0,
-                            categoryName: '@title',
+                            'sort|+1': 0,
+                            type: '@pick([1, 2])',
+                            name: '@cword(5, 12)',
                             level: 1,
                             count: '@natural(1, 20)',
-                            'enable|1': true,
-                            icon: function () {
-                                return `https://picsum.photos/id/${i++}/600/600`
-                            },
+                            'publish|1': 1,
+                            icon: '@pick(["menu", "location", "user"])',
                         }
                     ],
                     'pageNum': parseInt(query.pageNum),
@@ -42,26 +41,25 @@ export default [
         }
     },
     {
-        url: `${prefix}/all`,
+        url: `${prefix}/list`,
         method: 'get',
         response: () => {
             let i = 1;
             return {
                 code: 200,
                 message: '请求成功',
-                'data|10': [
+                'data|5': [
                     {
                         'description': '@title',
                         'id|+1': 1,
                         parentId: 0,
                         'order|+1': 0,
-                        categoryName: '@title',
+                        name: '@cword(5, 12)',
                         level: 1,
+                        type: '@pick([1, 2])',
                         count: '@natural(1, 20)',
-                        enable: true,
-                        icon: function () {
-                            return `https://picsum.photos/id/${i++}/600/600`
-                        },
+                        'publish|1': 1,
+                        icon: '@pick(["menu", "location", "user"])',
                     }
                 ],
             }

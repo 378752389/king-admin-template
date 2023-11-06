@@ -47,8 +47,7 @@ request.interceptors.response.use(function (response) {
 
     // 全局异常处理
     if (resp.code !== 200) {
-        ElMessage.error(resp.message || '请求异常')
-        throw new Error(resp.message)
+        throw new Error(resp.message || '请求异常')
     }
 
     // 返回接口的响应结果

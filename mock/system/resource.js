@@ -1,5 +1,4 @@
 const BASE_URL = '/api';
-const prefix = `${BASE_URL}/resource`
 /**
  * response 返回的对象四个属性：
  *  headers：请求头，对象；eg: {Content-Type: "application/json"}

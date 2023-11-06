@@ -3,6 +3,9 @@ import {ref, onMounted} from 'vue';
 import SvgIcon from "@/components/SvgIcon.vue";
 import TabSelect from "@/components/TabSelect.vue";
 import {useVModel} from "@vueuse/core";
+import {UPLOAD_PATH} from '@/config/settings';
+import {ElMessage} from "element-plus";
+import {useRouter} from "vue-router";
 
 // 模型数据双向绑定
 const props = defineProps({
@@ -17,9 +20,9 @@ const emit = defineEmits(['update:modelValue', 'onSubmit'])
 const modelObj = useVModel(props, 'modelValue', emit)
 
 // 商品图片上传
-const uploadPath = import.meta.env.VITE_FILE_UPLOAD_PATH;
 const onUploadSuccess = (resp) => {
   resp.data && (modelObj.value.pic = Object.values(resp.data)[0])
+  ElMessage.success("文件上传成功")
 }
 
 
@@ -88,11 +91,12 @@ const tabList = ref([
 ])
 
 const handleSubmit = () => {
-
+  emit('onSubmit')
 }
 
+const router = useRouter()
 const handleCancel = () => {
-
+  router.back()
 }
 
 </script>
@@ -118,11 +122,11 @@ const handleCancel = () => {
           <el-input type="textarea" v-model="modelObj.description"/>
         </el-form-item>
 
-        <el-form-item label="头像" prop="avatar">
+        <el-form-item label="商品图片" prop="pic">
 
           <el-upload
               name="files"
-              :action="uploadPath + '?type=avatar'"
+              :action="UPLOAD_PATH + '?type=product'"
               :show-file-list="false"
               list-type="picture-card"
               :on-success="onUploadSuccess"
