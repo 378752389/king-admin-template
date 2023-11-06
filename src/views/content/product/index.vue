@@ -125,8 +125,17 @@ const loadCategorySelect = async () => {
  * 页面挂载
  */
 onMounted(async () => {
-  await loadData()
-  await loadCategorySelect()
+  try {
+    await loadCategorySelect()
+  } catch (e) {
+    ElMessage.error(e.message)
+  }
+
+  try {
+    await loadData()
+  } catch (e) {
+    ElMessage.error(e.message)
+  }
 })
 
 </script>

@@ -100,6 +100,7 @@ const onSubmit = async (entity) => {
   }
   if (resp && resp.code === 200) {
     ElMessage.success(resp.message)
+    await loadData()
   }
 }
 

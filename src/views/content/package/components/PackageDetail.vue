@@ -6,6 +6,7 @@ import {storeToRefs} from 'pinia';
 import {useUserInfoStore} from "@/stores/userInfo";
 import {useVModel} from "@vueuse/core";
 import {useRouter} from "vue-router";
+import {getCategoryProductApi} from "@/api/content/category";
 
 // 模型数据双向绑定
 const props = defineProps({
@@ -31,53 +32,11 @@ const onUploadSuccess = (resp) => {
 }
 
 // 加载初始值
-onMounted(() => {
-  tabList.value = [
-    {
-      id: 1,
-      name: '饮料',
-      children: [
-        {
-          id: 1,
-          pic: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        },
-        {
-          id: 2,
-          pic: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        },
-        {
-          id: 3,
-          pic: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        },
-        {
-          id: 4,
-          pic: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        },
-        {
-          id: 5,
-          pic: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        },
-      ]
-    },
-    {
-      id: 2,
-      name: '汉堡',
-      children: [
-        {
-          id: 6,
-          pic: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        },
-        {
-          id: 7,
-          pic: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        },
-        {
-          id: 8,
-          pic: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        },
-      ]
-    },
-  ]
+onMounted(async () => {
+  const resp = await getCategoryProductApi()
+  if (resp.data) {
+    tabList.value = resp.data
+  }
 })
 
 const handleSubmit = () => {
@@ -104,7 +63,7 @@ const handleCancel = () => {
         </el-form-item>
 
         <el-form-item label="套餐名称">
-          <el-input v-model="modelObj.name" />
+          <el-input v-model="modelObj.name"/>
         </el-form-item>
 
         <el-form-item label="套餐介绍">
@@ -130,7 +89,11 @@ const handleCancel = () => {
         </el-form-item>
 
         <el-form-item label="发布状态">
-          <el-switch active-text="发布" inactive-text="取消" v-model="modelObj.publish"/>
+          <el-switch active-text="发布"
+                     inactive-text="取消"
+                     :active-value="1"
+                     :inactive-value="0"
+                     v-model="modelObj.publish"/>
         </el-form-item>
 
         <el-form-item label="套餐售价">
@@ -145,6 +108,9 @@ const handleCancel = () => {
           <TabSelect :data="tabList" v-model="modelObj.productIds">
             <template #default>
               <el-table-column label="id" prop="id"/>
+              <el-table-column label="商品名称" prop="name"/>
+              <el-table-column label="单价" prop="price"/>
+              <el-table-column label="描述" prop="description" show-overflow-tooltip/>
             </template>
           </TabSelect>
         </el-form-item>

@@ -2,31 +2,50 @@
 
 import PackageDetail from "@/views/content/package/components/PackageDetail.vue";
 import {reactive, onMounted} from 'vue';
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
+import {getPackageDetailApi, updatePackageApi} from "@/api/content/package";
+import {ElMessage} from "element-plus";
 
 const route = useRoute()
+const router = useRouter()
 
 const packageModel = reactive({
-  categoryId: 1,
-  name: '巨无霸',
+  id: 0,
+  categoryId: 0,
+  name: '',
   description: '',
   publish: 0,
-  sort: 2,
-  price: 28,
+  sort: 0,
+  price: 0,
   pic: '',
-  productIds: [1, 2, 3]
+  productIds: []
 })
 
-const onSubmit = () => {
+const onSubmit = async () => {
   // 修改表单回调
-  console.log(packageModel)
-  // todo 根据表单，提交数据
+  const resp = await updatePackageApi(packageModel)
+  if (resp && resp.code) {
+    ElMessage.success(resp.message)
+    router.back()
+  }
 }
 
-onMounted(() => {
+
+onMounted(async () => {
   const id = route.query.id;
-  console.log(id)
-  // todo 根据id 加载数据
+  const resp = await getPackageDetailApi(id)
+  if (resp.data) {
+    let data = resp.data
+    packageModel.id = data.id
+    packageModel.categoryId = data.categoryId
+    packageModel.name = data.name
+    packageModel.description = data.description
+    packageModel.publish = data.publish
+    packageModel.sort = data.sort
+    packageModel.price = data.price
+    packageModel.pic = data.pic
+    packageModel.productIds = data.productIds
+  }
 })
 
 </script>

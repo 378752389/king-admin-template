@@ -1,9 +1,12 @@
 <script setup>
 
 import PackageDetail from "@/views/content/package/components/PackageDetail.vue";
-import {ref} from 'vue';
+import {reactive} from 'vue';
+import {addPackageApi} from "@/api/content/package";
+import {ElMessage} from "element-plus";
+import {useRouter} from "vue-router";
 
-const packageModel = ref({
+const packageModel = reactive({
   categoryId: 1,
   name: '巨无霸',
   description: '',
@@ -14,8 +17,14 @@ const packageModel = ref({
   productIds: [1, 2, 3]
 })
 
-const onSubmit = () => {
-  console.log(packageModel)
+const router = useRouter()
+
+const onSubmit = async () => {
+  const resp = await addPackageApi(packageModel)
+  if (resp && resp.code === 200) {
+    ElMessage.success(resp.message)
+    router.back()
+  }
 }
 </script>
 

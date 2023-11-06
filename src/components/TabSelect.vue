@@ -13,8 +13,11 @@
  *   }
  * ]
  */
-import {ref, onMounted} from 'vue';
+import {ref, onMounted, watch, toRef} from 'vue';
 import SvgIcon from "@/components/SvgIcon.vue";
+import {useVModel} from "@vueuse/core";
+
+// ============================== 传参 =======================================
 
 const props = defineProps({
   width: {
@@ -34,39 +37,49 @@ const props = defineProps({
 })
 
 const $emit = defineEmits(['update:modelValue'])
-const checkList = ref(props.modelValue || [])
+
+// ============================== 属性 =======================================
+
+// ------ 组件属性双向绑定 -----
+const idArr = useVModel(props, "modelValue", $emit)
 
 const currentTab = ref(1)
+
 const tableData = ref([])
+
+
+// ============================== 事件 =======================================
 
 const onDelete = (row) => {
   const id = row.id
-  const idx1 = checkList.value.indexOf(id)
-  checkList.value.splice(idx1, 1)
-  const idx2 = tableData.value.findIndex(x => x.id === id)
-  tableData.value.splice(idx2, 1)
+
+  // 移除组件双向绑定模型数据
+  const idx1 = idArr.value.indexOf(id)
+  idArr.value.splice(idx1, 1)
+
+  // 移除表格绑定模型数据
+  tableData.value = tableData.value.filter(item => item.id !== id)
 }
 
-const renderTableData = () => {
+/**
+ * watch 只能侦听 函数、ref、reactvie 中的一种，因此需要将 props 转化为函数才能侦听到
+ */
+watch([idArr, () => props.data], ([arr, data]) => {
   const res = []
-  for (let category of props.data) {
+  for (let category of data) {
     for (let item of category.children) {
-      if (checkList.value.indexOf(item.id) !== -1) {
+      if (arr.indexOf(item.id) !== -1) {
         res.push(item)
       }
     }
   }
   tableData.value = res
-}
+}, {immediate: true})
 
-const onChange = () => {
-  renderTableData()
-  $emit('update:modelValue', checkList.value)
-}
 
-onMounted(async () => {
-  console.log(checkList.value)
-  renderTableData()
+
+onMounted(() => {
+
 })
 
 </script>
@@ -82,9 +95,8 @@ onMounted(async () => {
           :label="item.name"
           :name="item.id">
         <!--          name 和 currentTab 会进行绑定-->
-        <el-checkbox-group v-model="checkList">
+        <el-checkbox-group v-model="idArr">
           <el-checkbox
-              @change="onChange"
               :key="product.id"
               :label="product.id"
               v-for="product in item.children">

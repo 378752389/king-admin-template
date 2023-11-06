@@ -1,9 +1,10 @@
 <script setup>
-import {getPackagePage, deletePackage, switchPackagePublishStatus} from "@/api/content/package";
+import {getPackagePageApi, deletePackageApi, switchPackagePublishStatusApi} from "@/api/content/package";
 import {ref, onMounted, reactive} from "vue";
 import SectionTitle from "@/components/SectionTitle.vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {useRouter} from 'vue-router';
+import {getCategoryListApi} from "@/api/content/category";
 
 const router = useRouter();
 const searchForm = ref({
@@ -19,12 +20,18 @@ const pageData = reactive({
 })
 
 const tableData = ref([])
-
+const categorySelect = ref([])
+const loadCategorySelect = async () => {
+  const resp = await getCategoryListApi({type: 1})
+  categorySelect.value = resp.data
+}
 /**
  * 页面挂载
  */
 onMounted(async () => {
   await loadData()
+
+  await loadCategorySelect()
 })
 
 
@@ -39,7 +46,7 @@ const loadStatus = ref(false)
 const loadData = async () => {
   loadStatus.value = true
   try {
-    const resp = await getPackagePage({
+    const resp = await getPackagePageApi({
       pageNum: pageData.pageNum,
       pageSize: pageData.pageSize,
       ...searchForm.value
@@ -107,7 +114,7 @@ const onDelete = async (row) => {
   const id = row.id;
 
   try {
-    const res = await deletePackage(id)
+    const res = await deletePackageApi(id)
     ElMessage.success(res.message)
     await loadData()
   } catch (e) {
@@ -146,7 +153,7 @@ const onPublishInput = (row) => {
       const currentStatus = row.publish
       // 修改后的状态
       const newStatus = (currentStatus === 1 ? 0 : 1)
-      switchPackagePublishStatus(newStatus).then(res => {
+      switchPackagePublishStatusApi(newStatus).then(res => {
         // 正常处理
         ElMessage.success(res.message);
         row.publish = newStatus
@@ -181,7 +188,12 @@ const onPublishInput = (row) => {
         <el-form-item label="套餐分类" prop="categoryId">
           <el-select
               v-model="searchForm.categoryId"
-              placeholder="套餐分类"/>
+              placeholder="套餐分类">
+            <el-option :key="category.id"
+                       :label="category.name"
+                       :value="category.id"
+                       v-for="category in categorySelect"/>
+          </el-select>
         </el-form-item>
         <el-form-item style="">
           <el-button type="primary" @click="onSearch">查询</el-button>

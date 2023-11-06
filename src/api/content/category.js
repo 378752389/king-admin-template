@@ -57,3 +57,17 @@ export const switchCategoryPublicStatusApi = ({id, publish}) => {
         }
     })
 }
+
+export const getCategoryProductApi = () => {
+    return request({
+        url: '/category/product',
+        method: 'get',
+    })
+}
+
+export const getCategoryPackageApi = () => {
+    return request({
+        url: '/category/category',
+        method: 'get',
+    })
+}
