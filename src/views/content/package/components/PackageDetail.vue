@@ -6,7 +6,7 @@ import {storeToRefs} from 'pinia';
 import {useUserInfoStore} from "@/stores/userInfo";
 import {useVModel} from "@vueuse/core";
 import {useRouter} from "vue-router";
-import {getCategoryProductApi} from "@/api/content/category";
+import {getCategoryListApi, getCategoryProductApi} from "@/api/content/category";
 
 // 模型数据双向绑定
 const props = defineProps({
@@ -19,6 +19,7 @@ const props = defineProps({
 })
 const emit = defineEmits(['update:modelValue', 'onSubmit'])
 const modelObj = useVModel(props, 'modelValue', emit)
+const categorySelect = ref([])
 
 const router = useRouter()
 const tabList = ref([])
@@ -33,9 +34,14 @@ const onUploadSuccess = (resp) => {
 
 // 加载初始值
 onMounted(async () => {
-  const resp = await getCategoryProductApi()
-  if (resp.data) {
-    tabList.value = resp.data
+  const tabListResp = await getCategoryProductApi()
+  if (tabListResp.data) {
+    tabList.value = tabListResp.data
+  }
+
+  const categoryResp = await getCategoryListApi({type: 1})
+  if (categoryResp.data) {
+    categorySelect.value = categoryResp.data
   }
 })
 
@@ -56,9 +62,7 @@ const handleCancel = () => {
       <el-form label-width="120">
         <el-form-item label="套餐分类">
           <el-select v-model="modelObj.categoryId">
-            <el-option :label="'饮料'" :key="1" :value="1"/>
-            <el-option :label="'炸鸡'" :key="2" :value="2"/>
-            <el-option :label="'汉堡'" :key="3" :value="3"/>
+            <el-option :label="item.name" :key="item.id" :value="item.id" v-for="item in categorySelect"/>
           </el-select>
         </el-form-item>
 

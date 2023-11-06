@@ -44,7 +44,7 @@ onMounted(async () => {
     packageModel.sort = data.sort
     packageModel.price = data.price
     packageModel.pic = data.pic
-    packageModel.productIds = data.productIds
+    packageModel.productIds = data.productList.map(p => p.id)
   }
 })
 
