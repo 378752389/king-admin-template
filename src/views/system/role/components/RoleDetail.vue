@@ -3,6 +3,8 @@ import {ref, computed, reactive, onMounted} from "vue";
 import {getResourceTreeApi} from "@/api/system/resource";
 import {ElMessage, ElMessageBox} from "element-plus";
 
+// ============================== 传参 =======================================
+
 const props = defineProps({
   addFlag: {
     type: Boolean,
@@ -11,6 +13,9 @@ const props = defineProps({
 })
 
 const $emit = defineEmits(['onSubmit'])
+
+// ============================== 属性 =======================================
+
 // 表单规则校验
 const roleRules = reactive({
   id: [],
@@ -18,20 +23,28 @@ const roleRules = reactive({
   createTime: []
 })
 const model = ref({})
-const showFlag = ref(false);
-const treeRef = ref(null);
+const showFlag = ref(false)
+const treeRef = ref(null)
+const resourceTree = ref([])
+
 const title = computed(() => {
   return props.addFlag ? "添加角色" : "修改角色";
 })
 
-const handleClose = () => {
-  model.value = {}
-  showFlag.value = false;
+// ============================== 事件 =======================================
+
+const onOpen = () => {
+  // el-dialog是懒加载的，如果不添加监听事件，在 handleOpen 拿不到 treeRef
+  treeRef.value.setCheckedKeys(model.value.resourceIds || [])
 }
 
-const handleOpen = (row) => {
-  model.value = {...row}
-  showFlag.value = true;
+const onClose = () => {
+  // el-dialog是懒加载的，如果不添加监听事件，在 handleOpen 拿不到 treeRef
+  treeRef.value.setCheckedKeys([])
+}
+
+const handleCheck = (targetNode, checkedNode) => {
+  model.value.resourceIds = checkedNode.checkedKeys
 }
 
 const onSubmit = () => {
@@ -53,11 +66,7 @@ const onSubmit = () => {
   })
 }
 
-const handleCheck = (targetNode, checkedNode) => {
-  model.value.resourceIds = checkedNode.checkedKeys
-}
-
-const resourceTree = ref([])
+// ============================== 钩子 =======================================
 
 onMounted(async () => {
   // 加载资源树
@@ -65,14 +74,16 @@ onMounted(async () => {
   resourceTree.value = resourceTreeRes.data
 })
 
-const onOpen = () => {
-  // el-dialog是懒加载的，如果不添加监听事件，在 handleOpen 拿不到 treeRef
-  treeRef.value.setCheckedKeys(model.value.resourceIds || [])
+// ============================== 开放接口 =======================================
+
+const handleClose = () => {
+  model.value = {}
+  showFlag.value = false;
 }
 
-const onClose = () => {
-  // el-dialog是懒加载的，如果不添加监听事件，在 handleOpen 拿不到 treeRef
-  treeRef.value.setCheckedKeys([])
+const handleOpen = (row) => {
+  model.value = {...row}
+  showFlag.value = true;
 }
 
 defineExpose({

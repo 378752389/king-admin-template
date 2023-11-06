@@ -6,34 +6,26 @@ import {getRoleListApi, deleteRoleApi, addRoleApi, updateRoleApi} from "@/api/sy
 import {getResourceListApi} from "@/api/system/resource";
 import {ElMessage} from "element-plus";
 
+// ============================== 属性 =======================================
+
 const searchForm = ref({
   roleName: '',
 })
-
-
 const tableData = ref([])
 
 const addFlag = ref(false);
 const roleDetailRef = ref(null);
 const searchFormRef = ref(null);
+
 const loadStatus = ref(false);
-const loadData = async () => {
-  loadStatus.value = true;
-  const roleRes = await getRoleListApi({...searchForm.value});
-  tableData.value = roleRes.data;
-  loadStatus.value = false;
-}
 
-onMounted(() => {
-  loadData()
-})
-
+// ==============================  事件 =======================================
 
 const onReset = () => {
   searchFormRef.value.resetFields();
-  loadData()
 }
 const onEdit = async (row) => {
+  // todo
   addFlag.value = false;
   getResourceListApi(row.id).then(res => {
     let resourceIds = [];
@@ -43,6 +35,7 @@ const onEdit = async (row) => {
   })
 
 }
+
 const onDelete = async (row) => {
   const id = row.id;
   try {
@@ -58,8 +51,8 @@ const onAdd = () => {
   roleDetailRef.value.handleOpen({});
 }
 
-const onSearch = () => {
-  loadData()
+const onSearch = async () => {
+  await loadData()
 }
 const doSubmit = async (role) => {
   let res;
@@ -86,6 +79,24 @@ const doSubmit = async (role) => {
   await loadData()
 }
 
+// ==============================  网络 =======================================
+
+const loadData = async () => {
+  try {
+    loadStatus.value = true;
+    const roleRes = await getRoleListApi({...searchForm.value});
+    tableData.value = roleRes.data;
+  } finally {
+    loadStatus.value = false;
+  }
+
+}
+
+// ==============================  钩子 =======================================
+
+onMounted(async () => {
+  await loadData()
+})
 
 </script>
 
