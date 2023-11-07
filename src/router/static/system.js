@@ -27,6 +27,16 @@ export default {
             component: () => import('@/views/system/role/index.vue')
         },
         {
+            path: 'alloc-permission',
+            name: 'alloc-permission',
+            meta: {
+                title: '权限分配管理',
+                hidden: true,
+                permission: 'system:role'
+            },
+            component: () => import('@/views/system/role/components/AllocPermission.vue')
+        },
+        {
             path: 'resource',
             name: 'resource',
             meta: {

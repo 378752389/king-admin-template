@@ -1,10 +1,13 @@
 import request from "@/utils/request";
 
 export const resourceReq = {}
-export const getResourceTreeApi = () => {
+export const getResourceTreeApi = (roleId) => {
     return request({
         url: '/resource/tree',
-        method: 'get'
+        method: 'get',
+        params: {
+            roleId
+        }
     })
 }
 

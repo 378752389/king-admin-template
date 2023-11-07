@@ -1,6 +1,5 @@
 <script setup>
-import {ref, computed, reactive, onMounted} from "vue";
-import {getResourceTreeApi} from "@/api/system/resource";
+import {ref, computed, reactive} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 
 // ============================== 传参 =======================================
@@ -22,30 +21,14 @@ const roleRules = reactive({
   roleName: [],
   createTime: []
 })
-const model = ref({})
+const modelObj = ref({})
 const showFlag = ref(false)
-const treeRef = ref(null)
-const resourceTree = ref([])
 
 const title = computed(() => {
   return props.addFlag ? "添加角色" : "修改角色";
 })
 
 // ============================== 事件 =======================================
-
-const onOpen = () => {
-  // el-dialog是懒加载的，如果不添加监听事件，在 handleOpen 拿不到 treeRef
-  treeRef.value.setCheckedKeys(model.value.resourceIds || [])
-}
-
-const onClose = () => {
-  // el-dialog是懒加载的，如果不添加监听事件，在 handleOpen 拿不到 treeRef
-  treeRef.value.setCheckedKeys([])
-}
-
-const handleCheck = (targetNode, checkedNode) => {
-  model.value.resourceIds = checkedNode.checkedKeys
-}
 
 const onSubmit = () => {
   ElMessageBox.confirm(
@@ -57,7 +40,7 @@ const onSubmit = () => {
         type: 'warning',
       }
   ).then(() => {
-    $emit('onSubmit', {...model.value})
+    $emit('onSubmit', {...modelObj.value})
   }).catch(() => {
     ElMessage({
       type: 'info',
@@ -66,23 +49,16 @@ const onSubmit = () => {
   })
 }
 
-// ============================== 钩子 =======================================
-
-onMounted(async () => {
-  // 加载资源树
-  const resourceTreeRes = await getResourceTreeApi()
-  resourceTree.value = resourceTreeRes.data
-})
 
 // ============================== 开放接口 =======================================
 
 const handleClose = () => {
-  model.value = {}
+  modelObj.value = {}
   showFlag.value = false;
 }
 
 const handleOpen = (row) => {
-  model.value = {...row}
+  modelObj.value = {...row}
   showFlag.value = true;
 }
 
@@ -97,32 +73,18 @@ defineExpose({
   <el-dialog
       v-model="showFlag"
       :title="title"
-      @open="onOpen"
-      @close="onClose"
       width="30%"
       :before-close="handleClose">
     <!--   todo 表单内容-->
     <el-form
         label-position="right"
         label-width="100px"
-        :model="model"
+        :model="modelObj"
         :rules="roleRules"
         style="max-width: 460px"
     >
       <el-form-item label="角色名" prop="roleName">
-        <el-input v-model="model.roleName"/>
-      </el-form-item>
-
-      <el-form-item label="资源绑定" prop="resourceIds">
-        <el-tree
-            ref="treeRef"
-            :data="resourceTree"
-            show-checkbox
-            node-key="id"
-            @check="handleCheck"
-            :check-strictly="true"
-            highlight-current
-            :props="{label: 'resourceName', children: 'children'}"/>
+        <el-input v-model="modelObj.roleName"/>
       </el-form-item>
 
     </el-form>

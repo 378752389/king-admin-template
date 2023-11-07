@@ -17,6 +17,12 @@ export const getRolePageApi = ({pageNum, pageSize, roleName}) => {
     })
 }
 
+export const getRoleDetailApi = (id) => {
+    return request({
+        url: `/role/${id}`,
+        method: 'get'
+    })
+}
 
 /**
  * 获取所有角色列表

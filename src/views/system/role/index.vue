@@ -5,6 +5,7 @@ import RoleDetail from "@/views/system/role/components/RoleDetail.vue";
 import {getRoleListApi, deleteRoleApi, addRoleApi, updateRoleApi} from "@/api/system/role";
 import {getResourceListApi} from "@/api/system/resource";
 import {ElMessage} from "element-plus";
+import {useRouter} from "vue-router";
 
 // ============================== 属性 =======================================
 
@@ -16,6 +17,7 @@ const tableData = ref([])
 const addFlag = ref(false);
 const roleDetailRef = ref(null);
 const searchFormRef = ref(null);
+const router = useRouter();
 
 const loadStatus = ref(false);
 
@@ -24,16 +26,19 @@ const loadStatus = ref(false);
 const onReset = () => {
   searchFormRef.value.resetFields();
 }
-const onEdit = async (row) => {
-  // todo
+const onEdit = (row) => {
   addFlag.value = false;
-  getResourceListApi(row.id).then(res => {
-    let resourceIds = [];
-    res.data && (resourceIds = res.data.map(x => x.id))
-    const formData = {...row, resourceIds}
-    roleDetailRef.value.handleOpen(formData)
-  })
+  roleDetailRef.value.handleOpen({...row})
+}
 
+const onEditPermission = async (row) => {
+  const id = row.id
+  await router.push({
+    name: 'alloc-permission',
+    query: {
+      id,
+    }
+  })
 }
 
 const onDelete = async (row) => {
@@ -133,6 +138,7 @@ onMounted(async () => {
           <el-table-column prop="createTime" label="创建时间"/>
           <el-table-column label="管理" align="center">
             <template #default="scope">
+              <el-button type="primary" size="small" @click="onEditPermission(scope.row)">分配权限</el-button>
               <el-button type="warning" size="small" @click="onEdit(scope.row)">编辑</el-button>
 
               <el-popconfirm
