@@ -1,6 +1,6 @@
 <script setup>
 
-import {ref, onMounted} from "vue";
+import {ref, onMounted, computed} from "vue";
 import {getResourceTreeApi} from "@/api/system/resource";
 import SectionTitle from "@/components/SectionTitle.vue";
 import {updateRoleApi} from "@/api/system/role";
@@ -14,7 +14,22 @@ const route = useRoute()
 const router = useRouter()
 
 // 一级菜单勾选项
-const rootCheckedList = ref([])
+const rootCheckedList = computed(() => {
+  const res = []
+  const tree = resourceTreeData.value
+
+  tree.forEach(x => {
+    if (x.checked.length > 0) {
+      // 添加
+      res.push(x.id)
+    } else {
+      // 删除
+      res.filter(item => item !== x.id)
+    }
+  })
+
+  return res
+})
 
 const loadData = async () => {
   const id = route.query.id
@@ -60,18 +75,6 @@ const isIndeterminate = (nodeData) => {
 
 
 // ============================== 事件 =======================================
-
-const onRootChange = (nodeData) => {
-
-  let pidx = rootCheckedList.value.indexOf(nodeData.id)
-  if (nodeData.checked.length > 0 && pidx === -1) {
-    rootCheckedList.value.push(nodeData.id)
-  }
-
-  if (nodeData.checked.length === 0 && pidx !== -1) {
-    rootCheckedList.value.splice(pidx, 1)
-  }
-}
 const onGroupChange = (e, resourceList) => {
   resourceList.checked = e ? resourceList.children.map(x => x.id) : []
 }
@@ -130,8 +133,7 @@ const onSubmit = async () => {
     <el-card class="form-card" shadow="never" :key="resourceTree.id" v-for="resourceTree in resourceTreeData">
       <SectionTitle :title="resourceTree.resourceName"/>
 
-      <el-checkbox-group v-model="resourceTree.checked"
-                         @change="onRootChange(resourceTree)">
+      <el-checkbox-group v-model="resourceTree.checked">
 
         <el-descriptions direction="vertical"
                          :key="resourceList.id"
