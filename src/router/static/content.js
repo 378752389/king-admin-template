@@ -19,6 +19,15 @@ export default {
             component: () => import('@/views/content/category/index.vue')
         },
         {
+            path: 'package',
+            name: 'package',
+            order: 2,
+            meta: {
+                title: '套餐管理'
+            },
+            component: () => import('@/views/content/package/index.vue')
+        },
+        {
             path: 'product',
             name: 'product',
             order: 3,
@@ -27,6 +36,16 @@ export default {
                 // permission: 'content:product',
             },
             component: () => import('@/views/content/product/index.vue')
+        },
+        {
+            path: 'material',
+            name: 'material',
+            order: 4,
+            meta: {
+                title: '物料管理',
+                // permission: 'content:material',
+            },
+            component: () => import('@/views/content/material/index.vue')
         },
         {
             path: 'product-add',
@@ -47,25 +66,6 @@ export default {
                 // permission: 'content:material',
             },
             component: () => import('@/views/content/product/update.vue')
-        },
-        {
-            path: 'material',
-            name: 'material',
-            order: 4,
-            meta: {
-                title: '物料管理',
-                // permission: 'content:material',
-            },
-            component: () => import('@/views/content/material/index.vue')
-        },
-        {
-            path: 'package',
-            name: 'package',
-            order: 2,
-            meta: {
-                title: '套餐管理'
-            },
-            component: () => import('@/views/content/package/index.vue')
         },
         {
             path: 'package-add',
