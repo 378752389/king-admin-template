@@ -1,7 +1,6 @@
 import axios from "axios";
 import router from '@/router';
 import lodash from 'lodash';
-import {ElMessage} from "element-plus";
 
 const request = axios.create({
     baseURL: import.meta.env.VITE_HTTP_BASE_URL,
@@ -47,7 +46,8 @@ request.interceptors.response.use(function (response) {
 
     // 全局异常处理
     if (resp.code !== 200) {
-        throw new Error(resp.message || '请求异常')
+        console.log(resp)
+        throw new Error(resp.message)
     }
 
     // 返回接口的响应结果

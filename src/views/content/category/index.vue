@@ -129,8 +129,6 @@ const loadData = async () => {
     pageData.pageNum = pageDataResult.data.pageNum;
     pageData.pageSize = pageDataResult.data.pageSize;
     pageData.total = pageDataResult.data.total;
-  } catch (e) {
-    ElMessage.error(e.message)
   } finally {
     tableDataLoading.value = false;
   }
@@ -194,11 +192,11 @@ onMounted(async () => {
         <el-table-column type="index" label="序号" width="120"/>
         <el-table-column prop="icon" label="目录图标">
           <template #default="scope">
-<!--            <el-image :src="scope.row.icon"-->
-<!--                      style="width: 30px;height: 30px;"-->
-<!--                      :preview-teleported="true"-->
-<!--                      :preview-src-list="[scope.row.icon]"/>-->
-            <SvgIcon :icon="'king-' + scope.row.icon" />
+            <!--            <el-image :src="scope.row.icon"-->
+            <!--                      style="width: 30px;height: 30px;"-->
+            <!--                      :preview-teleported="true"-->
+            <!--                      :preview-src-list="[scope.row.icon]"/>-->
+            <SvgIcon :icon="'king-' + scope.row.icon"/>
           </template>
         </el-table-column>
         <el-table-column label="类别">

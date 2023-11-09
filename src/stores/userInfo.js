@@ -73,25 +73,16 @@ export const useUserInfoStore = defineStore("userInfo", () => {
     })
 
     const getMenu = async () => {
-        try {
-            const menuResult = await menuApi();
-            if (menuResult.code === 200) {
-                menuList.value = menuResult.data;
-            }
-        } catch (e) {
-            ElMessage.error(e.message)
+        const menuResult = await menuApi();
+        if (menuResult.code === 200) {
+            menuList.value = menuResult.data;
         }
-
     }
 
     const getInfo = async () => {
-        try {
-            const infoResult = await infoApi();
-            if (infoResult.code === 200) {
-                info.value = infoResult.data;
-            }
-        } catch (e) {
-            ElMessage.error(e.message)
+        const infoResult = await infoApi();
+        if (infoResult.code === 200) {
+            info.value = infoResult.data;
         }
     }
 
