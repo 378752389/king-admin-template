@@ -25,7 +25,7 @@ export default {
                 permission: 'order:list',
                 hidden: true,
             },
-            component: () => import('@/views/order/list/OrderDetail.vue')
+            component: () => import('@/views/order/list/components/OrderDetail.vue')
         },
         {
             path: 'setting',

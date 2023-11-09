@@ -3,7 +3,7 @@ import {onMounted, reactive, ref} from "vue";
 import SectionTitle from "@/components/SectionTitle.vue";
 import {ElMessage} from "element-plus";
 import {useRouter} from "vue-router";
-import {getOrderPage} from "@/api/order/list";
+import {getOrderPageApi} from "@/api/order/list";
 
 // ============================== 属性 =======================================
 
@@ -92,7 +92,7 @@ const pageSizeChange = async (pageSize) => {
 const loadData = async () => {
   loadStatus.value = true
   try {
-    const resp = await getOrderPage({
+    const resp = await getOrderPageApi({
       pageNum: pageData.pageNum,
       pageSize: pageData.pageSize,
       ...searchForm

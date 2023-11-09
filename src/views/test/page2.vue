@@ -19,13 +19,21 @@ onMounted(() => {
 const arr = ref([])
 
 const onBeforeEnter = (el) => {
-  console.log(el)
+  el.style.height = 0;
+  el.style.overflow = 'hidden';
 }
 const onEnter = (el) => {
-  console.log(el)
+  el.style.height = 'auto';
+  const height = el.clientHeight;
+  console.log(height)
+  el.style.height = 0;
+  requestAnimationFrame(() => {
+    el.style.height = height + 'px';
+    el.style.transition = '1s';
+  })
 }
 const onAfterEnter = (el) => {
-  console.log(el)
+  el.style.transition = 'none';
 }
 
 const show = ref(false)

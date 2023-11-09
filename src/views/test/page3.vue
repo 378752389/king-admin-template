@@ -1,7 +1,7 @@
 <script setup>
 import {ref, onMounted} from 'vue';
 import {ElMessage, ElMessageBox} from "element-plus";
-import {getCategoryPage} from "@/api/content/category";
+import {getCategoryPageApi} from "@/api/content/category";
 
 const onInput = (row) => {
   ElMessageBox.confirm(
@@ -15,7 +15,7 @@ const onInput = (row) => {
   ).then(() => {
     row.switchLoading = true;
     return new Promise((resolve) => {
-      getCategoryPage({}).then(res => {
+      getCategoryPageApi( {}).then(res => {
         // 正常处理
         ElMessage.success(res.message);
         row.enable = !row.enable;
