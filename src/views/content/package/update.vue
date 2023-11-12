@@ -16,7 +16,7 @@ const packageModel = reactive({
   description: '',
   publish: 0,
   sort: 0,
-  price: 0,
+  promotionPrice: 0,
   pic: '',
   productIds: []
 })
@@ -42,7 +42,7 @@ onMounted(async () => {
     packageModel.description = data.description
     packageModel.publish = data.publish
     packageModel.sort = data.sort
-    packageModel.price = data.price
+    packageModel.promotionPrice = data.promotionPrice
     packageModel.pic = data.pic
     packageModel.productIds = data.productList.map(p => p.id)
   }

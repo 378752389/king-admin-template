@@ -12,7 +12,7 @@ const packageModel = reactive({
   description: '',
   publish: 0,
   sort: 2,
-  price: 28,
+  promotionPrice: 28,
   pic: '',
   productIds: []
 })

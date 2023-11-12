@@ -101,7 +101,7 @@ const handleCancel = () => {
         </el-form-item>
 
         <el-form-item label="套餐售价">
-          <el-input v-model="modelObj.price"/>
+          <el-input v-model="modelObj.promotionPrice"/>
         </el-form-item>
 
         <el-form-item label="排序">

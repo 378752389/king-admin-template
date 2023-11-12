@@ -15,7 +15,7 @@ const onInput = (row) => {
   ).then(() => {
     row.switchLoading = true;
     return new Promise((resolve) => {
-      getCategoryPageApi( {}).then(res => {
+      getCategoryPageApi({}).then(res => {
         // 正常处理
         ElMessage.success(res.message);
         row.enable = !row.enable;
@@ -36,7 +36,7 @@ const onInput = (row) => {
 const tableData = ref([])
 onMounted(async () => {
   try {
-    const res = await getCategoryPage({});
+    const res = await getCategoryPageApi({});
     tableData.value = res.data.dataList;
   } catch (e) {
     ElMessage.error(e)

@@ -213,7 +213,7 @@ const onPublishInput = (row) => {
         <el-table-column type="index" width="120" label="序号"/>
         <el-table-column prop="name" label="套餐名" show-overflow-tooltip/>
         <el-table-column prop="categoryName" label="所属分类"/>
-        <el-table-column prop="price" label="售价"/>
+        <el-table-column prop="promotionPrice" label="售价"/>
         <el-table-column prop="sort" label="排序"/>
         <el-table-column prop="description" label="套餐介绍" show-overflow-tooltip/>
         <el-table-column label="发布状态">
