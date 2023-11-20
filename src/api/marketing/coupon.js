@@ -44,3 +44,19 @@ export const deleteCouponApi = (id) => {
         method: 'delete',
     })
 }
+
+
+export const getCouponRecordDetailApi = (id, {pageNum, pageSize, memberNickname, orderNo, useStatus}) => {
+    return request({
+        url: `/coupon/record/${id}`,
+        method: 'get',
+        params: {
+            pageNum,
+            pageSize,
+
+            memberNickname,
+            orderNo,
+            useStatus,
+        }
+    })
+}

@@ -50,6 +50,15 @@ const onAdd = async () => {
   })
 }
 
+const onRecord = async (row) => {
+  await router.push({
+    name: 'coupon-record-detail',
+    query: {
+      id: row.id
+    }
+  })
+}
+
 const onEdit = async (row) => {
   const id = row.id
   console.log(id)
@@ -174,6 +183,7 @@ onMounted(async () => {
         <el-table-column prop="remark" label="描述" show-overflow-tooltip/>
         <el-table-column label="管理" align="center">
           <template #default="scope">
+            <el-button type="primary" size="small" @click="onRecord(scope.row)">记录</el-button>
             <el-button type="warning" size="small" @click="onEdit(scope.row)">编辑</el-button>
 
             <el-popconfirm

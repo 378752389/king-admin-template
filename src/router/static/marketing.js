@@ -36,6 +36,15 @@ export default {
             component: () => import('@/views/marketing/coupon/update.vue')
         },
         {
+            path: 'coupon-record-detail',
+            name: 'coupon-record-detail',
+            meta: {
+                title: '优惠券详情',
+                hidden: true
+            },
+            component: () => import('@/views/marketing/coupon/components/CouponRecordDetail.vue')
+        },
+        {
             path: 'advertise',
             name: 'advertise',
             meta: {
