@@ -1,12 +1,15 @@
 import request from "@/utils/request";
 
-export const getPackagePageApi = ({pageNum = 1, pageSize = 10}) => {
+export const getPackagePageApi = ({pageNum = 1, pageSize = 10, name, categoryId}) => {
     return request({
         url: '/package',
         method: 'get',
         params: {
             pageNum,
-            pageSize
+            pageSize,
+
+            name,
+            categoryId
         },
     })
 }
@@ -34,23 +37,34 @@ export const updatePackageApi = (pkg) => {
     })
 }
 
-// packageIds 为 数组（Array）
-export const deletePackageApi = (packageIds) => {
+export const updatePackageStockApi = ({id, stock, lowStock, promotionPrice}) => {
     return request({
-        url: '/package',
-        method: 'delete',
+        url: '/package/stock',
+        method: 'post',
         data: {
-            ids: packageIds
+            id,
+            stock,
+            lowStock,
+            promotionPrice
         }
     })
 }
 
-export const switchPackagePublishStatusApi = (status) => {
+// packageIds 为 数组（Array）
+export const deletePackageApi = (id) => {
+    return request({
+        url: `/package/${id}`,
+        method: 'delete',
+    })
+}
+
+export const switchPackagePublishStatusApi = (id, publish) => {
     return request({
         url: '/package/status',
         method: 'post',
         data: {
-            status
+            id,
+            publish
         }
     })
 }

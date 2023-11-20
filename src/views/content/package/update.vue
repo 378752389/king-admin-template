@@ -18,6 +18,7 @@ const packageModel = reactive({
   sort: 0,
   promotionPrice: 0,
   pic: '',
+  lowStock: '',
   productIds: []
 })
 

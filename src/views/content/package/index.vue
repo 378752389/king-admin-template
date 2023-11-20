@@ -1,10 +1,17 @@
 <script setup>
-import {getPackagePageApi, deletePackageApi, switchPackagePublishStatusApi} from "@/api/content/package";
+import {
+  getPackagePageApi,
+  deletePackageApi,
+  switchPackagePublishStatusApi,
+  getPackageDetailApi,
+  updatePackageStockApi
+} from "@/api/content/package";
 import {ref, onMounted, reactive} from "vue";
 import SectionTitle from "@/components/SectionTitle.vue";
-import {ElMessage, ElMessageBox} from "element-plus";
+import {ElLoading, ElMessage, ElMessageBox} from "element-plus";
 import {useRouter} from 'vue-router';
 import {getCategoryListApi} from "@/api/content/category";
+import PackageStock from "@/views/content/package/components/PackageStock.vue";
 
 const router = useRouter();
 const searchForm = ref({
@@ -19,12 +26,27 @@ const pageData = reactive({
   pageSizeList: [10, 20, 50, 100]
 })
 
+const stockObj = reactive({
+  id: '',
+  promotionPrice: 0,
+  stock: 0,
+  lowStock: 0
+})
+
+const stockDescriptionObj = reactive({
+  totalPrice: 0,
+  packageName: '',
+  productList: []
+})
+
 const tableData = ref([])
 const categorySelect = ref([])
 const loadCategorySelect = async () => {
   const resp = await getCategoryListApi({type: 1})
   categorySelect.value = resp.data
 }
+
+const packageStockRef = ref(null)
 /**
  * 页面挂载
  */
@@ -106,6 +128,44 @@ const onEdit = (id) => {
   })
 }
 
+const onStockEdit = async (id) => {
+
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading',
+    background: 'rgba(0, 0, 0, 0.7)',
+  })
+
+  try {
+    const resp = await getPackageDetailApi(id)
+    console.log(resp.data)
+    if (resp && resp.data) {
+      stockObj.promotionPrice = resp.data.promotionPrice
+      stockObj.stock = resp.data.stock
+      stockObj.lowStock = resp.data.lowStock
+      stockObj.id = resp.data.id
+
+      stockDescriptionObj.totalPrice = resp.data.totalPrice
+      stockDescriptionObj.packageName = resp.data.name
+      stockDescriptionObj.productList = resp.data.productList
+
+      packageStockRef.value.onOpen()
+    }
+  } finally {
+    loading.close()
+  }
+
+
+}
+
+const handleStockSubmit = async () => {
+  const resp = await updatePackageStockApi(stockObj)
+  if (resp && resp.code === 200) {
+    ElMessage.success("库存修改成功")
+  }
+  packageStockRef.value.onClose()
+}
+
 /**
  * 删除管理员
  * @param row
@@ -153,7 +213,7 @@ const onPublishInput = (row) => {
       const currentStatus = row.publish
       // 修改后的状态
       const newStatus = (currentStatus === 1 ? 0 : 1)
-      switchPackagePublishStatusApi(newStatus).then(res => {
+      switchPackagePublishStatusApi(row.id, newStatus).then(res => {
         // 正常处理
         ElMessage.success(res.message);
         row.publish = newStatus
@@ -228,8 +288,9 @@ const onPublishInput = (row) => {
                        :model-value="scope.row.publish"/>
           </template>
         </el-table-column>
-        <el-table-column label="管理" align="center">
+        <el-table-column label="管理" width="200" align="center">
           <template #default="scope">
+            <el-button type="primary" size="small" @click="onStockEdit(scope.row.id)">库存</el-button>
             <el-button type="warning" size="small" @click="onEdit(scope.row.id)">编辑</el-button>
 
             <el-popconfirm
@@ -259,6 +320,10 @@ const onPublishInput = (row) => {
                      @size-change="pageSizeChange"/>
     </el-card>
 
+    <PackageStock ref="packageStockRef"
+                  v-model="stockObj"
+                  :description-obj="stockDescriptionObj"
+                  @on-stock-submit="handleStockSubmit"/>
   </div>
 
 </template>

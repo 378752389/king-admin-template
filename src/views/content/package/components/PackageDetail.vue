@@ -100,8 +100,12 @@ const handleCancel = () => {
                      v-model="modelObj.publish"/>
         </el-form-item>
 
-        <el-form-item label="套餐售价">
-          <el-input v-model="modelObj.promotionPrice"/>
+        <el-form-item label="套餐售价" style="width: 500px">
+          <el-input type="number" v-model="modelObj.promotionPrice"/>
+        </el-form-item>
+
+        <el-form-item label="低库存警告">
+          <el-input-number v-model="modelObj.lowStock"/>
         </el-form-item>
 
         <el-form-item label="排序">
