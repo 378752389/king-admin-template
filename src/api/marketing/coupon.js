@@ -21,7 +21,7 @@ export const getCouponDetailApi = (id) => {
     })
 }
 
-export const addCouponApi = ({coupon}) => {
+export const addCouponApi = (coupon) => {
     return request({
         url: '/coupon',
         method: 'post',
@@ -38,12 +38,9 @@ export const updateCouponApi = (coupon) => {
 }
 
 // couponIds 为 数组（Array）
-export const deleteCouponApi = (couponIds) => {
+export const deleteCouponApi = (id) => {
     return request({
-        url: '/coupon',
+        url: `/coupon/${id}`,
         method: 'delete',
-        data: {
-            ids: couponIds
-        }
     })
 }

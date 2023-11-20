@@ -136,7 +136,7 @@ const handleCancel = () => {
         <el-form-item label="开始时间" prop="expireTime">
           <el-date-picker
               v-model="modelObj.effectiveTime"
-              value-format="YYYY-MM-DD"
+              value-format="YYYY-MM-DD HH:mm:ss"
               type="date"
               placeholder="请选择开始时间"
               style="width: 150px;"
@@ -146,7 +146,7 @@ const handleCancel = () => {
 
           <el-date-picker
               v-model="modelObj.expireTime"
-              value-format="YYYY-MM-DD"
+              value-format="YYYY-MM-DD HH:mm:ss"
               type="date"
               placeholder="请选择结束时间"
               style="width: 150px;"

@@ -3,7 +3,7 @@ import {onMounted, reactive, ref} from "vue";
 import SectionTitle from "@/components/SectionTitle.vue";
 import {ElMessage} from "element-plus";
 import {useRouter} from "vue-router";
-import {getCouponPageApi} from "@/api/marketing/coupon";
+import {deleteCouponApi, getCouponPageApi} from "@/api/marketing/coupon";
 
 // ============================== 属性 =======================================
 
@@ -64,13 +64,12 @@ const onEdit = async (row) => {
 const onDelete = async (row) => {
   const id = row.id;
 
-  try {
-    // todo deleteApi
-    const res = await Promise.resolve(id)
-    ElMessage.success(res.message)
+  const resp = await deleteCouponApi(id)
+  if (resp && resp.code === 200) {
+    ElMessage.success(resp.message)
     await loadData()
-  } catch (e) {
-    ElMessage.error(e)
+  } else {
+    ElMessage.warning(resp.message)
   }
 }
 
