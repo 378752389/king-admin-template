@@ -3,7 +3,8 @@
 import CouponDetail from "@/views/marketing/coupon/components/CouponDetail.vue";
 import {reactive, onMounted} from "vue";
 import {ElMessage} from "element-plus";
-import {useRouter} from "vue-router";
+import {useRouter, useRoute} from "vue-router";
+import {getCouponDetailApi, updateCouponApi} from "@/api/marketing/coupon";
 
 // -------实体对象--------
 const couponModel = reactive({
@@ -24,24 +25,40 @@ const router = useRouter()
 
 const handleSubmit = async () => {
   try {
-    // todo changeApi
-    const resp = await new Promise(resolve => {
-      setTimeout(() => {
-        resolve({code: 200, message: '提交成功', data: {...couponModel}})
-      }, 1000)
-    })
-
-    ElMessage.success(resp.message)
-    await router.push({
-      name: 'coupon'
-    })
+    const resp = await updateCouponApi(couponModel)
+    if (resp && resp.code === 200) {
+      ElMessage.success(resp.message)
+      await router.push({
+        name: 'coupon'
+      })
+    }
   } catch (e) {
     ElMessage.error(e.message)
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
+  const route = useRoute()
+  const id = route.query.id
+  const resp = await getCouponDetailApi(id)
+  if (resp && resp.code === 200) {
+    let data = resp.data
 
+    couponModel.id = data.id
+    couponModel.name = data.name
+    couponModel.type = data.type
+    couponModel.releaseNum = data.releaseNum
+    couponModel.limitNum = data.limitNum
+    couponModel.amount = data.amount
+    couponModel.enableTime = data.enableTime
+    couponModel.thresholdAmount = data.thresholdAmount
+    couponModel.effectiveTime = data.effectiveTime
+    couponModel.expireTime = data.expireTime
+    couponModel.remark = data.remark
+
+  } else {
+    ElMessage.warning(resp.message)
+  }
 })
 
 </script>

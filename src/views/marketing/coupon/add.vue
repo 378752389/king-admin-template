@@ -4,6 +4,7 @@ import CouponDetail from "@/views/marketing/coupon/components/CouponDetail.vue";
 import {reactive} from "vue";
 import {ElMessage} from "element-plus";
 import {useRouter} from "vue-router";
+import {addCouponApi} from "@/api/marketing/coupon";
 
 // -------实体对象--------
 const couponModel = reactive({
@@ -24,17 +25,16 @@ const router = useRouter()
 
 const handleSubmit = async () => {
   try {
-    // todo changeApi
-    const resp = await new Promise(resolve => {
-      setTimeout(() => {
-        resolve({code: 200, message: '提交成功', data: {...couponModel}})
-      }, 1000)
-    })
+    const resp = await addCouponApi(couponModel)
+    if (resp && resp.code === 200) {
+      ElMessage.success(resp.message)
+      await router.push({
+        name: 'coupon'
+      })
+    } else {
+      ElMessage.warning(resp.message)
+    }
 
-    ElMessage.success(resp.message)
-    await router.push({
-      name: 'coupon'
-    })
   } catch (e) {
     ElMessage.error(e.message)
   }

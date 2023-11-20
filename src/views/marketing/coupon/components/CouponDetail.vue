@@ -11,7 +11,22 @@ const props = defineProps({
     type: Boolean
   },
   modelValue: {
-    type: Object
+    type: Object,
+    default: function () {
+      return {
+        id: 0,
+        name: '',
+        type: '',
+        releaseNum: '',
+        limitNum: '',
+        amount: '',
+        enableTime: '',
+        thresholdAmount: '',
+        effectiveTime: '',
+        expireTime: '',
+        remark: ''
+      }
+    }
   }
 })
 
@@ -79,7 +94,7 @@ const handleCancel = () => {
           :model="modelObj"
           :rules="couponRules">
 
-        <el-form-item label="广告名称" prop="name">
+        <el-form-item label="优惠券名称" prop="name">
           <el-input v-model="modelObj.name" style="width: 500px;"/>
         </el-form-item>
 
@@ -135,13 +150,6 @@ const handleCancel = () => {
               type="date"
               placeholder="请选择结束时间"
               style="width: 150px;"
-          />
-        </el-form-item>
-        <el-form-item label="发布状态" prop="publicStatus">
-          <el-switch
-              active-text="发布"
-              inactive-text="取消"
-              v-model="modelObj.publicStatus"
           />
         </el-form-item>
         <el-form-item label="优惠券类型" prop="type">

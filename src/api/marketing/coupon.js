@@ -1,6 +1,6 @@
 import request from "@/utils/request";
 
-export const getCouponPage = ({pageNum = 1, pageSize = 10, name, startTime, endTime}) => {
+export const getCouponPageApi = ({pageNum = 1, pageSize = 10, name, startTime, endTime}) => {
     return request({
         url: '/coupon',
         method: 'get',
@@ -14,7 +14,14 @@ export const getCouponPage = ({pageNum = 1, pageSize = 10, name, startTime, endT
     })
 }
 
-export const addCoupon = ({coupon}) => {
+export const getCouponDetailApi = (id) => {
+    return request({
+        url: `/coupon/${id}`,
+        method: 'get'
+    })
+}
+
+export const addCouponApi = ({coupon}) => {
     return request({
         url: '/coupon',
         method: 'post',
@@ -22,7 +29,7 @@ export const addCoupon = ({coupon}) => {
     })
 }
 
-export const updateCoupon = (coupon) => {
+export const updateCouponApi = (coupon) => {
     return request({
         url: '/coupon',
         method: 'put',
@@ -31,7 +38,7 @@ export const updateCoupon = (coupon) => {
 }
 
 // couponIds 为 数组（Array）
-export const deleteCoupon = (couponIds) => {
+export const deleteCouponApi = (couponIds) => {
     return request({
         url: '/coupon',
         method: 'delete',

@@ -3,7 +3,7 @@ import {onMounted, reactive, ref} from "vue";
 import SectionTitle from "@/components/SectionTitle.vue";
 import {ElMessage} from "element-plus";
 import {useRouter} from "vue-router";
-import {getCouponPage} from "@/api/marketing/coupon";
+import {getCouponPageApi} from "@/api/marketing/coupon";
 
 // ============================== 属性 =======================================
 
@@ -91,7 +91,7 @@ const loadData = async () => {
   loadStatus.value = true
   try {
     // todo getPageApi
-    const resp = await getCouponPage({
+    const resp = await getCouponPageApi({
       pageNum: pageData.pageNum,
       pageSize: pageData.pageSize,
       ...searchForm
@@ -172,7 +172,7 @@ onMounted(async () => {
         <el-table-column prop="effectiveTime" label="开始时间"/>
         <el-table-column prop="expireTime" label="结束时间"/>
 
-        <el-table-column prop="description" label="描述" show-overflow-tooltip/>
+        <el-table-column prop="remark" label="描述" show-overflow-tooltip/>
         <el-table-column label="管理" align="center">
           <template #default="scope">
             <el-button type="warning" size="small" @click="onEdit(scope.row)">编辑</el-button>
