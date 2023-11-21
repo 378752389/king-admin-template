@@ -87,7 +87,27 @@ const loadData = async () => {
 
   // todo
   if (resp && resp.code === 200) {
-    console.log(resp.data)
+    let data = resp.data
+
+    modelObj.id = data.coupon.id
+    modelObj.name = data.coupon.name
+    modelObj.type = data.coupon.type
+    modelObj.releaseNum = data.coupon.releaseNum
+    modelObj.limitNum = data.coupon.limitNum
+    modelObj.amount = data.coupon.amount
+    modelObj.enableTime = data.coupon.enableTime
+    modelObj.thresholdAmount = data.coupon.thresholdAmount
+    modelObj.effectiveTime = data.coupon.effectiveTime
+    modelObj.expireTime = data.coupon.expireTime
+    modelObj.remark = data.coupon.remark
+    modelObj.receiveNum = data.coupon.receiveNum
+    modelObj.useNum = data.coupon.useNum
+    modelObj.status = data.coupon.status
+
+    modelObj.couponRecordList = data.couponRecordList.dataList
+    pageData.pageSize = data.couponRecordList.pageSize
+    pageData.pageNum = data.couponRecordList.pageNum
+    pageData.total = data.couponRecordList.total
   }
 }
 
@@ -170,9 +190,8 @@ onMounted(async () => {
           <el-select
               v-model="searchForm.useStatus"
               placeholder="选择优惠券使用状态">
-            <el-option :value="1" label="未使用"/>
-            <el-option :value="2" label="已使用"/>
-            <el-option :value="3" label="已过期"/>
+            <el-option :value="0" label="未使用"/>
+            <el-option :value="1" label="已使用"/>
           </el-select>
         </el-form-item>
 
@@ -191,9 +210,19 @@ onMounted(async () => {
             <span v-if="scope.row.getType === 2">系统赠予</span>
           </template>
         </el-table-column>
-        <el-table-column label="领取时间" prop="createTime"/>
-        <el-table-column label="使用状态" prop="useStatus"/>
-        <el-table-column label="使用时间" prop="useTime"/>
+        <el-table-column label="领取时间" prop="createTime" align="center"/>
+        <el-table-column label="使用状态" align="center">
+          <template #default="scope">
+            <span v-if="scope.row.useStatus === 0">未使用</span>
+            <span v-if="scope.row.useStatus === 1">已使用</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="使用时间" align="center">
+          <template #default="scope">
+            <span v-if="scope.row.useTime">{{scope.row.useTime}}</span>
+            <span v-else> - </span>
+          </template>
+        </el-table-column>
         <el-table-column label="订单号" prop="orderNo"/>
       </el-table>
 

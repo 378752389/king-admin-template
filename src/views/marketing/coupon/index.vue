@@ -10,13 +10,10 @@ import {deleteCouponApi, getCouponPageApi} from "@/api/marketing/coupon";
 // -------搜索--------
 const searchForm = reactive({
   name: '',
-  startTime: '',
-  endTime: ''
+  type: '',
 })
 const searchRules = reactive({
   name: [],
-  startTime: [],
-  endTime: [],
 })
 const searchFormRef = ref(null)
 
@@ -140,24 +137,21 @@ onMounted(async () => {
                :inline="true"
                :rules="searchRules"
                :model="searchForm">
-        <el-form-item label="广告名" prop="name">
+        <el-form-item label="优惠券名称" prop="name">
           <el-input
               v-model="searchForm.name"
-              placeholder="输入广告名"/>
+              placeholder="输入优惠券名称"/>
         </el-form-item>
-        <el-form-item label="开始时间" prop="startTime">
-          <el-date-picker
-              placeholder="选择广告开始时间"
-              value-format="YYYY-MM-DD"
-              v-model="searchForm.startTime"/>
+        <el-form-item label="优惠券类型" prop="type">
+          <el-select
+              v-model="searchForm.type"
+              placeholder="选择优惠券类型">
+            <el-option :value="1" label="通用"/>
+            <el-option :value="2" label="指定套餐"/>
+          </el-select>
         </el-form-item>
-        <el-form-item label="结束时间" prop="endTime">
-          <el-date-picker
-              placeholder="选择广告结束时间"
-              value-format="YYYY-MM-DD"
-              v-model="searchForm.endTime"/>
-        </el-form-item>
-        <el-form-item style="">
+
+        <el-form-item>
           <el-button type="primary" @click="onSearch">查询</el-button>
           <el-button type="default" @click="onReset">重置</el-button>
         </el-form-item>
@@ -174,7 +168,12 @@ onMounted(async () => {
       <el-table :data="tableData" v-loading="loadStatus" border>
         <el-table-column type="index" width="120" label="序号"/>
         <el-table-column prop="name" label="优惠券名称"/>
-        <el-table-column prop="type" label="优惠券类型"/>
+        <el-table-column label="优惠券类型">
+          <template #default="scope">
+            <span v-if="scope.row.type === 1">通用</span>
+            <span v-else-if="scope.row.type === 2">指定套餐</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="amount" label="面值"/>
 
         <el-table-column prop="effectiveTime" label="开始时间"/>

@@ -137,9 +137,9 @@ const handleCancel = () => {
           <el-date-picker
               v-model="modelObj.effectiveTime"
               value-format="YYYY-MM-DD HH:mm:ss"
-              type="date"
+              type="datetime"
               placeholder="请选择开始时间"
-              style="width: 150px;"
+              style="width: 200px;"
           />
 
           <span style="margin: 0 20px;">至</span>
@@ -147,14 +147,16 @@ const handleCancel = () => {
           <el-date-picker
               v-model="modelObj.expireTime"
               value-format="YYYY-MM-DD HH:mm:ss"
-              type="date"
+              type="datetime"
               placeholder="请选择结束时间"
-              style="width: 150px;"
+              style="width: 200px;"
           />
         </el-form-item>
         <el-form-item label="优惠券类型" prop="type">
           <el-select
               v-model="modelObj.type">
+            <el-option label="通用" :value="1" />
+            <el-option label="指定套餐" :value="2" />
           </el-select>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
