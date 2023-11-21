@@ -168,7 +168,7 @@ const onDelete = async (row) => {
                 icon-color="#626AEF"
                 title="请确认是否删除管理员？">
               <template #reference>
-                <el-button type="danger" size="small">删除</el-button>
+                <el-button :disabled="scope.row.id === 1" type="danger" size="small">删除</el-button>
               </template>
             </el-popconfirm>
 
