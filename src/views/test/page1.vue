@@ -1,57 +1,29 @@
 <script setup>
-import {createAdmin, updateAdmin, deleteAdmin, getAdminPage} from "@/api/system/admin";
-import {useUserInfoStore} from "@/stores/userInfo";
+import request from "@/utils/request";
 
-const userInfoStore = useUserInfoStore();
-const query = () => {
-  getAdminPage({pageNum: 1, pageSize: 10}).then(res => {
-    console.log(res)
+const query = async () => {
+  const resp = await request({
+    url: '/test/1',
+    method: 'get',
   })
+
+  console.log(resp)
 }
 
 const create = () => {
-  createAdmin({
-    username: 'test',
-    password: '123',
-    avatar: '',
-    email: '',
-    gender: '',
-    phone: '',
-    qq: '',
-    wechat: '',
-    occupation: '',
-    description: ''
-  }).then(res => {
-    console.log("创建成功", res)
-  })
+
 }
 
 const update = () => {
-  updateAdmin({
-    id: 4,
-    username: 'asd',
-    password: '123',
-    avatar: '',
-    email: '',
-    gender: '',
-    phone: '',
-    qq: '',
-    wechat: '',
-    occupation: '',
-    description: ''
-  }).then(res => {
-    console.log("更新成功", res)
-  })
+
 }
 
 const remove = () => {
-  deleteAdmin(5).then(res => {
-    console.log("删除成功", res)
-  })
+
 }
 
 const userInfo = () => {
-  console.log(userInfoStore.menuList);
+
 }
 </script>
 

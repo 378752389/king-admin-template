@@ -1,6 +1,7 @@
 import axios from "axios";
 import router from '@/router';
 import lodash from 'lodash';
+import {ElMessage} from "element-plus";
 
 const request = axios.create({
     baseURL: import.meta.env.VITE_HTTP_BASE_URL,
@@ -31,33 +32,45 @@ request.interceptors.response.use(function (response) {
     // 对响应数据做点什么
     console.log(`[响应拦截器拦截] 请求路径: ${response.config.url}, 响应结果：`, response)
 
-    // token 失效，移除token
-    const resp = response.data;
-    if (resp.code === 401) {
-        localStorage.removeItem('token');
-        // router.push 返回一个 promise对象， 结果为 undefined
-        return router.push({name: 'login'})
-    }
+    const result = response.data;
 
-    // 有token才能进行后台管理页面
-    if (localStorage.getItem('token') && resp.code === 403) {
-        return router.push({name: '403'})
+    switch (result.code) {
+        case 200:
+            // 返回接口的响应结果
+            return result;
+        case 400:
+            // 业务异常
+            ElMessage.error(result.message)
+            return
+        case 401:
+            localStorage.removeItem('token')
+            // todo 保存当前页，跳转登录页， 登录成功跳转到 当前页
+            // router.push 返回一个 promise对象， 结果为 undefined
+            // 跳转到登录页
+            return router.push({name: 'login'})
+        case 403:
+            // 没有权限访问接口
+            ElMessage.info(result.message)
+            return
+            // if (localStorage.getItem('token')) {
+            //     ElMessage.info(result.message)
+            //     return
+            // }
+        case 500:
+            // 服务器运行错误
+            ElMessage.warning(result.message)
+            return
+        default:
+            // 其他状态码，给予提示，并按照正常返回处理
+            ElMessage.warning(result.message)
+            return result
     }
-
-    // 全局异常处理
-    if (resp.code !== 200) {
-        console.log(resp)
-        throw new Error(resp.message)
-    }
-
-    // 返回接口的响应结果
-    return response.data;
 }, function (error) {
     // 超出 2xx 范围的状态码都会触发该函数。
-    // 对响应错误做点什么
-    // 接口无效，请求跳转到登录页
-    return Promise.reject(error);
-
+    // 服务器错误 eg：
+    // 404  接口不存在
+    // 500  后台服务器问题
+    ElMessage.error(error.message)
 });
 
 export default request;

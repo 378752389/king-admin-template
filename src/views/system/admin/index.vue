@@ -51,7 +51,7 @@ const loadData = async () => {
       pageData.total = resp.data.total;
     }
   } catch (e) {
-    ElMessage.error(e.messages)
+    ElMessage.error(e.message)
   } finally {
     loadStatus.value = false
   }
