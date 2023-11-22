@@ -34,6 +34,8 @@ request.interceptors.response.use(function (response) {
 
     const result = response.data;
 
+    // 获取当前页面跳转的路由
+    // console.log(router.currentRoute.value.fullPath)
     switch (result.code) {
         case 200:
             // 返回接口的响应结果
@@ -43,8 +45,11 @@ request.interceptors.response.use(function (response) {
             ElMessage.error(result.message)
             return
         case 401:
+            ElMessage.info("token无效或过期")
+            // 移除旧 token
             localStorage.removeItem('token')
-            // todo 保存当前页，跳转登录页， 登录成功跳转到 当前页
+            // 保存当前页，跳转登录页， 登录成功跳转到 当前页
+            sessionStorage.setItem('redirect', router.currentRoute.value.fullPath)
             // router.push 返回一个 promise对象， 结果为 undefined
             // 跳转到登录页
             return router.push({name: 'login'})
@@ -52,10 +57,6 @@ request.interceptors.response.use(function (response) {
             // 没有权限访问接口
             ElMessage.info(result.message)
             return
-            // if (localStorage.getItem('token')) {
-            //     ElMessage.info(result.message)
-            //     return
-            // }
         case 500:
             // 服务器运行错误
             ElMessage.warning(result.message)

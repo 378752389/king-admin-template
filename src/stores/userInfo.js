@@ -3,6 +3,7 @@ import {ref, computed} from 'vue';
 import {loginApi, menuApi, logoutApi, infoApi} from "@/api/system/auth";
 import {ElMessage} from "element-plus";
 import {useRouter} from 'vue-router'
+import {getUrlParams} from "@/utils/urlUtils";
 
 
 export const useUserInfoStore = defineStore("userInfo", () => {
@@ -31,7 +32,13 @@ export const useUserInfoStore = defineStore("userInfo", () => {
                     message: '登录成功',
                     type: 'success',
                 })
-                router.replace({path: '/'})
+                // 移除重定向
+                const redirect = sessionStorage.getItem('redirect')
+                if (redirect) {
+                    sessionStorage.setItem('redirect', '')
+                }
+                const query = getUrlParams(redirect)
+                await router.replace({path: redirect || '/', query})
             } else {
                 ElMessage({
                     message: result.message || '登录失败',

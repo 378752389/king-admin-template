@@ -13,11 +13,11 @@ router.beforeEach(async (to, from, next) => {
         next();
         return;
     }
-    const token = localStorage.getItem("token");
-    if (token == null || token === '') {
-        next('/login');
-        return;
-    }
+    // const token = localStorage.getItem("token");
+    // if (token == null || token === '') {
+    //     next('/login');
+    //     return;
+    // }
 
     // 判断目标路由是否有权限
     if (to.meta && to.meta.permission) {

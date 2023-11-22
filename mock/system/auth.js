@@ -1,4 +1,4 @@
-import {nowStr} from "@/utils/timeUtil";
+import {nowStr} from "@/utils/timeUtils";
 
 /**
  * response 返回的对象四个属性：
