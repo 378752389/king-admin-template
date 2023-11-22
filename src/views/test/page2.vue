@@ -1,81 +1,67 @@
 <script setup>
-import {onMounted, ref} from 'vue';
+import {onMounted, ref} from "vue";
+import {getResourceListApi} from "@/api/system/resource";
 
-const boxRef = ref(null)
-const contextMenuRef = ref(null)
+const rootRef = ref(null)
 
-onMounted(() => {
-  // boxRef.value.addEventListener("contextmenu", function (e) {
-  //   e.preventDefault()
-  //   const x = e.clientX;
-  //   const y = e.clientY;
-  //   console.log(x, y)
-  //   contextMenuRef.value.openMenu()
-  // })
-
-  arr.value = [1, 2, 3, 4, 5]
+onMounted(async () => {
+  const result = await getResourceListApi(1)
+  console.log(rootRef.value.children[0].innerHTML = JSON.stringify(result));
 })
-
-const arr = ref([])
-
-const onBeforeEnter = (el) => {
-  el.style.height = 0;
-  el.style.overflow = 'hidden';
-}
-const onEnter = (el) => {
-  el.style.height = 'auto';
-  const height = el.clientHeight;
-  console.log(height)
-  el.style.height = 0;
-  requestAnimationFrame(() => {
-    el.style.height = height + 'px';
-    el.style.transition = '1s';
-  })
-}
-const onAfterEnter = (el) => {
-  el.style.transition = 'none';
-}
-
-const show = ref(false)
-const btnClick = () => {
-  show.value = !show.value;
-}
 </script>
 
 <template>
-  <div class="page2">
-    <div ref="boxRef" class="box"></div>
+  <div ref="rootRef" class="page2">
+    <el-card shadow="never">
+      asd<br/>
+      asd<br/>
+      asd<br/>
+      asd<br/>
+      asd<br/>
+      asd<br/>
+      asd<br/>
+      asd<br/>
+    </el-card>
 
-    <el-button @click="btnClick">Toggle</el-button>
-    <Transition
-        @before-enter="onBeforeEnter"
-        @enter="onEnter"
-        @after-enter="onAfterEnter">
-      <div v-if="show" class="rect">
-        <div class="item" :key="x" v-for="x in arr"></div>
-      </div>
-    </Transition>
+    <el-card shadow="never">
+      asd<br/>
+      asd<br/>
+      asd<br/>
+      asd<br/>
+      asd<br/>
+    </el-card>
+
+    <el-card shadow="never">
+      asd<br/>
+    </el-card>
+
+    <el-card shadow="never">
+      asd<br/>
+      asd<br/>
+      asd<br/>
+      asd<br/>
+      asd<br/>
+      asd<br/>
+      asd<br/>
+      asd<br/>
+      asd<br/>
+      asd<br/>
+      asd<br/>
+      asd<br/>
+      asd<br/>
+    </el-card>
+
+    <el-card shadow="never">
+      asd<br/>
+      asd<br/>
+      asd<br/>
+      asd<br/>
+    </el-card>
   </div>
-
 </template>
 
 <style scoped>
-.box {
-  height: 300px;
-  width: 300px;
-  background-color: #13ce66;
-}
 
-.rect {
-  width: 100px;
-}
-
-.item {
-  width: 100px;
-  height: 100px;
-  background-color: deepskyblue;
-  margin: 5px;
-}
 
 
 </style>

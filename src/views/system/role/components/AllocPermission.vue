@@ -129,13 +129,14 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <div class="role-detail-page">
+  <div class="alloc-permission-page">
     <el-card class="form-card" shadow="never" :key="resourceTree.id" v-for="resourceTree in resourceTreeData">
       <SectionTitle :title="resourceTree.resourceName"/>
 
       <el-checkbox-group v-model="resourceTree.checked">
 
         <el-descriptions direction="vertical"
+                         size="large"
                          :key="resourceList.id"
                          v-for="resourceList in resourceTree.children"
                          :column="1" border>
@@ -150,7 +151,7 @@ const onSubmit = async () => {
                   @change="onGroupChange($event, resourceList)"
                   :indeterminate="isIndeterminate(resourceList)"
                   :label="resourceList.id">
-                {{ resourceList.resourceName }}
+                {{ resourceList.resourceName }} （菜单）
               </el-checkbox>
             </template>
 
@@ -159,7 +160,7 @@ const onSubmit = async () => {
               <el-checkbox :key="item.id" :label="item.id"
                            @change="onItemChange(resourceList)"
                            v-for="item in resourceList.children">
-                {{ item.resourceName }}
+                {{ item.resourceName }} （接口）
               </el-checkbox>
             </el-checkbox-group>
           </el-descriptions-item>
@@ -176,7 +177,14 @@ const onSubmit = async () => {
   </div>
 </template>
 
-<style scoped>
+<style lang="less" scoped>
+
+.alloc-permission-page {
+
+}
+
+
+
 .el-descriptions {
   &:deep(.el-descriptions__cell) {
     padding: 20px;
