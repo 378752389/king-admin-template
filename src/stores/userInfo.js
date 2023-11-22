@@ -35,7 +35,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
                 // 移除重定向
                 const redirect = sessionStorage.getItem('redirect')
                 if (redirect) {
-                    sessionStorage.setItem('redirect', '')
+                    sessionStorage.removeItem('redirect')
                 }
                 const query = getUrlParams(redirect)
                 await router.replace({path: redirect || '/', query})
