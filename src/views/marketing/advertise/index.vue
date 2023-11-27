@@ -1,5 +1,5 @@
 <script setup>
-import {getAdvertisePage, deleteAdvertise} from "@/api/marketing/advertise";
+import {getAdvertisePageApi, deleteAdvertiseApi} from "@/api/marketing/advertise";
 import {ref, onMounted, reactive} from "vue";
 import SectionTitle from "@/components/SectionTitle.vue";
 import {ElMessage} from "element-plus";
@@ -40,7 +40,7 @@ const loadStatus = ref(false)
 const loadData = async () => {
   loadStatus.value = true
   try {
-    const resp = await getAdvertisePage({
+    const resp = await getAdvertisePageApi({
       pageNum: pageData.pageNum,
       pageSize: pageData.pageSize,
       ...searchForm.value
@@ -108,7 +108,7 @@ const onDelete = async (row) => {
   const id = row.id;
 
   try {
-    const res = await deleteAdvertise(id)
+    const res = await deleteAdvertiseApi(id)
     ElMessage.success(res.message)
     await loadData()
   } catch (e) {

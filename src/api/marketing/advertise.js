@@ -1,6 +1,6 @@
 import request from "@/utils/request";
 
-export const getAdvertisePage = ({pageNum = 1, pageSize = 10, name, startTime, endTime}) => {
+export const getAdvertisePageApi = ({pageNum = 1, pageSize = 10, name, startTime, endTime}) => {
     return request({
         url: '/advertise',
         method: 'get',
@@ -14,7 +14,7 @@ export const getAdvertisePage = ({pageNum = 1, pageSize = 10, name, startTime, e
     })
 }
 
-export const addAdvertise = ({advertise}) => {
+export const addAdvertiseApi = ({advertise}) => {
     return request({
         url: '/advertise',
         method: 'post',
@@ -22,7 +22,7 @@ export const addAdvertise = ({advertise}) => {
     })
 }
 
-export const updateAdvertise = (advertise) => {
+export const updateAdvertiseApi = (advertise) => {
     return request({
         url: '/advertise',
         method: 'put',
@@ -31,7 +31,7 @@ export const updateAdvertise = (advertise) => {
 }
 
 // advertiseIds 为 数组（Array）
-export const deleteAdvertise = (advertiseIds) => {
+export const deleteAdvertiseApi = (advertiseIds) => {
     return request({
         url: '/advertise',
         method: 'delete',
@@ -41,7 +41,7 @@ export const deleteAdvertise = (advertiseIds) => {
     })
 }
 
-export const switchAdvertisePublishStatus = (status) => {
+export const switchAdvertisePublishStatusApi = (status) => {
     return request({
         url: '/advertise/status',
         method: 'post',
