@@ -1,8 +1,16 @@
 export function getUrlParams(url) {
-    // 通过 ? 分割获取后面的参数字符串
-    let urlStr = url.split('?')[1]
     // 创建空对象存储参数
     let obj = {};
+    if (url === null) {
+        return obj;
+    }
+    // 通过 ? 分割获取后面的参数字符串
+    let urlStrArr = url.split('?')
+    if (urlStrArr.length === 1) {
+        return obj;
+    }
+    let urlStr = urlStrArr[1];
+
     if (!urlStr) {
         return obj
     }
