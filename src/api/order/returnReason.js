@@ -34,12 +34,13 @@ export const deleteReturnReasonApi = (returnReasonId) => {
     })
 }
 
-export const switchReturnReasonStatusApi = (enable) => {
+export const switchReturnReasonStatusApi = (id, publish) => {
     return request({
         url: '/returnReason/status',
         method: 'post',
         data: {
-            enable
+            id,
+            publish
         }
     })
 }

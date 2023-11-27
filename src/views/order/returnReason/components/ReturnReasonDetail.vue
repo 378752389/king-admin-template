@@ -64,10 +64,10 @@ const handleClose = () => {
 
 const handleOpen = (row) => {
   modelObj.id = row.id;
-  modelObj.enable = row.enable;
+  modelObj.publish = row.publish;
   modelObj.sort = row.sort;
   modelObj.createTime = row.createTime;
-  modelObj.reason = row.reason;
+  modelObj.name = row.name;
 
   showFlag.value = true;
 }
@@ -93,7 +93,7 @@ defineExpose({
         :rules="rules">
 
       <el-form-item label="退货原因" prop="reason">
-        <el-input v-model="modelObj.reason"/>
+        <el-input v-model="modelObj.name"/>
       </el-form-item>
 
       <el-form-item label="排序" prop="sort">
@@ -101,7 +101,7 @@ defineExpose({
       </el-form-item>
 
       <el-form-item label="是否启用" prop="enable">
-        <el-switch v-model="modelObj.enable"/>
+        <el-switch v-model="modelObj.publish" :active-value="1" :inactive-value="0"/>
       </el-form-item>
 
     </el-form>

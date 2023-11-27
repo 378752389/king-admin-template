@@ -10,7 +10,6 @@ import {
   switchReturnReasonStatusApi
 } from "@/api/order/returnReason";
 import ReturnReasonDetail from "@/views/order/returnReason/components/ReturnReasonDetail.vue";
-import {getCategoryPageApi} from "@/api/content/category";
 
 // ============================== 属性 =======================================
 
@@ -57,6 +56,7 @@ const onSubmit = async (model) => {
     if (resp) {
       ElMessage.success(resp.message)
       detailRef.value.handleClose()
+      await loadData()
     }
   } catch (e) {
     ElMessage.error(e.message)
@@ -75,12 +75,13 @@ const onStatusInput = (row) => {
       }
   ).then(() => {
     row.switchLoading = true;
-    const newStatus = !row.enable;
+    const id = row.id
+    const newStatus = !row.publish ? 1 : 0;
     return new Promise((resolve) => {
-      switchReturnReasonStatusApi(newStatus).then(res => {
+      switchReturnReasonStatusApi(id, newStatus).then(res => {
         // 正常处理
         // todo
-        row.enable = newStatus;
+        row.publish = newStatus;
         ElMessage.success(res.message);
         resolve(true);
       }).catch(e => {
@@ -132,13 +133,15 @@ onMounted(async () => {
       <el-table :data="tableData" v-loading="loadStatus" border>
 
         <el-table-column type="index" width="120" label="序号"/>
-        <el-table-column prop="reason" label="退货原因" show-overflow-tooltip/>
+        <el-table-column prop="name" label="退货原因" show-overflow-tooltip/>
         <el-table-column prop="sort" label="排序"/>
-        <el-table-column prop="enable" label="状态">
+        <el-table-column label="状态">
           <template #default="scope">
             <el-switch
-                :model-value="scope.row.enable"
+                :model-value="scope.row.publish"
                 @input="onStatusInput(scope.row)"
+                :active-value="1"
+                :inactive-value="0"
                 active-color="#13ce66"
                 :loading="!!scope.row.switchLoading"
             />
