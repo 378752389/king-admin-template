@@ -5,14 +5,14 @@ import {ElMessage} from "element-plus";
 
 const modelObj = reactive({
   orderTimeout: undefined,
-  orderFinishTimeout: undefined,
+  orderAutoConfirm: undefined,
 })
 
 const rules = reactive({
   orderTimeout: [
     {required: true, message: "订单超时时间不能为空", trigger: 'blur'}
   ],
-  orderFinishTimeout: [
+  orderAutoConfirm: [
     {required: true, message: "订单完成超时时间不能为空", trigger: 'blur'}
   ]
 })
@@ -31,7 +31,7 @@ const loadData = async () => {
     const resp = await getOrderSettingApi()
     if (resp) {
       modelObj.orderTimeout = resp.data.orderTimeout;
-      modelObj.orderFinishTimeout = resp.data.orderFinishTimeout;
+      modelObj.orderAutoConfirm = resp.data.orderAutoConfirm;
     }
   } catch (e) {
     ElMessage.error(e.message)
@@ -63,7 +63,7 @@ onMounted(async () => {
         </el-form-item>
 
         <el-form-item label="订单完成超时时间" prop="orderFinishTimeout">
-          <el-input v-model="modelObj.orderFinishTimeout" style="width: 500px">
+          <el-input v-model="modelObj.orderAutoConfirm" style="width: 500px">
             <template #append>
               分
             </template>
