@@ -31,12 +31,12 @@ export const updateAdvertiseApi = (advertise) => {
 }
 
 // advertiseIds 为 数组（Array）
-export const deleteAdvertiseApi = (advertiseIds) => {
+export const deleteAdvertiseApi = (id) => {
     return request({
         url: '/advertise',
         method: 'delete',
         data: {
-            ids: advertiseIds
+            id
         }
     })
 }
