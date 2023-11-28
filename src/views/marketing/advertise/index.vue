@@ -132,13 +132,13 @@ const onDelete = async (row) => {
         <el-form-item label="开始时间" prop="startTime">
           <el-date-picker
               placeholder="选择广告开始时间"
-              value-format="YYYY-MM-DD"
+              value-format="YYYY-MM-DD HH:mm:ss"
               v-model="searchForm.startTime"/>
         </el-form-item>
         <el-form-item label="结束时间" prop="endTime">
           <el-date-picker
               placeholder="选择广告结束时间"
-              value-format="YYYY-MM-DD"
+              value-format="YYYY-MM-DD HH:mm:ss"
               v-model="searchForm.endTime"/>
         </el-form-item>
         <el-form-item style="">
@@ -164,6 +164,8 @@ const onDelete = async (row) => {
         <el-table-column label="发布状态">
           <template #default="scope">
             <el-switch style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
+                       :active-value="1"
+                       :inactive-value="0"
                        v-model="scope.row.publicStatus" />
           </template>
         </el-table-column>

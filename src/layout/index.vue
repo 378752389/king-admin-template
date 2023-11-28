@@ -25,9 +25,9 @@ onMounted(async () => {
         <el-scrollbar>
           <RouterView v-slot="{Component}">
             <Transition name="fade" mode="out-in">
-              <KeepAlive :max="3">
+<!--              <KeepAlive :max="3">-->
                 <component :is="Component"/>
-              </KeepAlive>
+<!--              </KeepAlive>-->
             </Transition>
           </RouterView>
         </el-scrollbar>

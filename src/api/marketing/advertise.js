@@ -14,7 +14,14 @@ export const getAdvertisePageApi = ({pageNum = 1, pageSize = 10, name, startTime
     })
 }
 
-export const addAdvertiseApi = ({advertise}) => {
+export const getAdvertiseDetailApi = (id) => {
+    return request({
+        url: `/advertise/${id}`,
+        method: 'get'
+    })
+}
+
+export const addAdvertiseApi = (advertise) => {
     return request({
         url: '/advertise',
         method: 'post',
@@ -35,7 +42,7 @@ export const deleteAdvertiseApi = (id) => {
     return request({
         url: '/advertise',
         method: 'delete',
-        data: {
+        params: {
             id
         }
     })
