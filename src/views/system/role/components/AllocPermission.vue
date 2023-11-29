@@ -6,6 +6,8 @@ import SectionTitle from "@/components/SectionTitle.vue";
 import {updateRoleApi} from "@/api/system/role";
 import {useRoute, useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
+import {Waterfall} from "vue-waterfall-plugin-next";
+import 'vue-waterfall-plugin-next/dist/style.css'
 
 // ============================== 属性 =======================================
 
@@ -130,50 +132,56 @@ const onSubmit = async () => {
 
 <template>
   <div class="alloc-permission-page">
-    <el-card class="form-card" shadow="never" :key="resourceTree.id" v-for="resourceTree in resourceTreeData">
-      <SectionTitle :title="resourceTree.resourceName"/>
 
-      <el-checkbox-group v-model="resourceTree.checked">
+    <Waterfall :list="resourceTreeData" :width="840" :delay="0" :animation-delay="0">
+      <template #item="{ item }">
+        <el-card class="card" shadow="never" :key="item.id">
+          <SectionTitle :title="item.resourceName"/>
 
-        <el-descriptions direction="vertical"
-                         size="large"
-                         :key="resourceList.id"
-                         v-for="resourceList in resourceTree.children"
-                         :column="1" border>
+          <el-checkbox-group v-model="item.checked">
+
+            <el-descriptions direction="vertical"
+                             size="large"
+                             :key="resourceList.id"
+                             v-for="resourceList in item.children"
+                             :column="1" border>
 
 
-          <el-descriptions-item
-              label-align="left"
-              align="left">
+              <el-descriptions-item
+                  label-align="left"
+                  align="left">
 
-            <template #label>
-              <el-checkbox
-                  @change="onGroupChange($event, resourceList)"
-                  :indeterminate="isIndeterminate(resourceList)"
-                  :label="resourceList.id">
-                {{ resourceList.resourceName }} （菜单）
-              </el-checkbox>
-            </template>
+                <template #label>
+                  <el-checkbox
+                      @change="onGroupChange($event, resourceList)"
+                      :indeterminate="isIndeterminate(resourceList)"
+                      :label="resourceList.id">
+                    {{ resourceList.resourceName }} （菜单）
+                  </el-checkbox>
+                </template>
 
-            <el-checkbox-group
-                v-model="resourceList.checked">
-              <el-checkbox :key="item.id" :label="item.id"
-                           @change="onItemChange(resourceList)"
-                           v-for="item in resourceList.children">
-                {{ item.resourceName }} （接口）
-              </el-checkbox>
-            </el-checkbox-group>
-          </el-descriptions-item>
-        </el-descriptions>
-      </el-checkbox-group>
-    </el-card>
+                <el-checkbox-group
+                    v-model="resourceList.checked">
+                  <el-checkbox :key="resource.id" :label="resource.id"
+                               @change="onItemChange(resourceList)"
+                               v-for="resource in resourceList.children">
+                    {{ resource.resourceName }} （接口）
+                  </el-checkbox>
+                </el-checkbox-group>
+              </el-descriptions-item>
+            </el-descriptions>
+          </el-checkbox-group>
+        </el-card>
+      </template>
+    </Waterfall>
 
     <div style="display: flex;">
-      <div style="margin: 30px auto">
+      <div style="margin: auto">
         <el-button size="large" @click="onCancel">取消</el-button>
         <el-button size="large" type="primary" @click="onSubmit">提交</el-button>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -181,13 +189,10 @@ const onSubmit = async () => {
 
 .alloc-permission-page {
 
-}
-
-
-
-.el-descriptions {
-  &:deep(.el-descriptions__cell) {
-    padding: 20px;
+  .el-descriptions {
+    &:deep(.el-descriptions__cell) {
+      padding: 20px;
+    }
   }
 }
 </style>

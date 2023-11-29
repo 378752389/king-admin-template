@@ -1,71 +1,33 @@
 <script setup>
-import {ref, onMounted} from 'vue';
-import {ElMessage, ElMessageBox} from "element-plus";
-import {getCategoryPageApi} from "@/api/content/category";
+import {LazyImg, Waterfall} from 'vue-waterfall-plugin-next'
+import 'vue-waterfall-plugin-next/dist/style.css'
+import {ref} from 'vue';
 
-const onInput = (row) => {
-  ElMessageBox.confirm(
-      '请确定是否修改发布状态？',
-      '警告',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-  ).then(() => {
-    row.switchLoading = true;
-    return new Promise((resolve) => {
-      getCategoryPageApi({}).then(res => {
-        // 正常处理
-        ElMessage.success(res.message);
-        row.enable = !row.enable;
-        resolve(true);
-      }).catch(e => {
-        // 错误异常处理
-        ElMessage.error(e.message)
-      }).finally(() => {
-        row.switchLoading = false;
-      })
-    })
-
-  }).catch(() => {
-    ElMessage.info("取消操作")
-  })
-}
-
-const tableData = ref([])
-onMounted(async () => {
-  try {
-    const res = await getCategoryPageApi({});
-    tableData.value = res.data.dataList;
-  } catch (e) {
-    ElMessage.error(e)
-  }
-})
-
+const list = ref([
+  {name: 'aaa', height: '400px'},
+  {name: 'bbb', height: '200px'},
+  {name: 'ccc', height: '300px'},
+  {name: 'ddd', height: '250px'},
+])
 </script>
 
 <template>
 
   <div class="page3">
-    <el-table :data="tableData" border header-cell-class-name="custom-header">
-      <el-table-column label="id" prop="id"/>
-      <el-table-column label="目录名称" prop="categoryName"/>
-      <el-table-column label="发布状态">
-        <template #default="scope">
-          <el-switch
-              :model-value="scope.row.enable"
-              @input="onInput(scope.row)"
-              :loading="!!scope.row.switchLoading"
-          />
-        </template>
-      </el-table-column>
-    </el-table>
+    <Waterfall :list="list" :width="800">
+      <template #item="{ item }">
+        <el-card shadow="never" :style="{'height': item.height}">
+          <p class="text">这是具体内容 {{ item }}</p>
+        </el-card>
+      </template>
+    </Waterfall>
   </div>
 
 
 </template>
 
 <style scoped>
-
+.waterfall-list {
+  background: #13ce66;
+}
 </style>
