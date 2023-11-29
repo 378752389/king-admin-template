@@ -5,7 +5,7 @@ import {getResourceTreeApi} from "@/api/system/resource";
 import SectionTitle from "@/components/SectionTitle.vue";
 import {updateRoleApi} from "@/api/system/role";
 import {useRoute, useRouter} from "vue-router";
-import {ElMessage} from "element-plus";
+import {ElLoading, ElMessage} from "element-plus";
 import {Waterfall} from "vue-waterfall-plugin-next";
 import 'vue-waterfall-plugin-next/dist/style.css'
 
@@ -42,8 +42,16 @@ const loadData = async () => {
 }
 
 onMounted(async () => {
-
-  await loadData()
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading',
+    background: 'rgba(0, 0, 0, 0.7)',
+  })
+  try {
+    await loadData()
+  } finally {
+    loading.close()
+  }
 })
 
 // ============================== 普通函数 =======================================
@@ -133,7 +141,7 @@ const onSubmit = async () => {
 <template>
   <div class="alloc-permission-page">
 
-    <Waterfall :list="resourceTreeData" :width="840" :delay="0" :animation-delay="0">
+    <Waterfall :list="resourceTreeData" :width="830">
       <template #item="{ item }">
         <el-card class="card" shadow="never" :key="item.id">
           <SectionTitle :title="item.resourceName"/>
