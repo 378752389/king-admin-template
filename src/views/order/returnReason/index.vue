@@ -148,7 +148,7 @@ onMounted(async () => {
           </template>
         </el-table-column>
 
-        <el-table-column prop="createTime" label="开始时间"/>
+        <el-table-column prop="createTime" label="创建时间"/>
 
         <el-table-column label="管理" align="center">
           <template #default="scope">

@@ -3,9 +3,8 @@ import {ref, onMounted} from 'vue';
 import SvgIcon from "@/components/SvgIcon.vue";
 import TabSelect from "@/components/TabSelect.vue";
 import {useVModel} from "@vueuse/core";
-import {UPLOAD_PATH} from '@/config/settings';
-import {ElMessage} from "element-plus";
 import {useRouter} from "vue-router";
+import {getUploadFileUrlApi, uploadFileApi} from "@/api/system/oss";
 
 // 模型数据双向绑定
 const props = defineProps({
@@ -18,12 +17,6 @@ const props = defineProps({
 })
 const emit = defineEmits(['update:modelValue', 'onSubmit'])
 const modelObj = useVModel(props, 'modelValue', emit)
-
-// 商品图片上传
-const onUploadSuccess = (resp) => {
-  resp.data && (modelObj.value.pic = Object.values(resp.data)[0])
-  ElMessage.success("文件上传成功")
-}
 
 
 // 加载初始值
@@ -99,6 +92,19 @@ const handleCancel = () => {
   router.back()
 }
 
+const upload = async (resp) => {
+  console.log("resp", resp)
+  const file = resp.file
+  const filename = resp.file.name
+  const scene = 'product'
+  const ossResp = await getUploadFileUrlApi(filename, scene)
+
+  const uploadUrl = ossResp.data.uploadUrl
+  await uploadFileApi(uploadUrl, file)
+
+  modelObj.value.pic = ossResp.data.downloadUrl
+}
+
 </script>
 
 <template>
@@ -125,11 +131,9 @@ const handleCancel = () => {
         <el-form-item label="商品图片" prop="pic">
 
           <el-upload
-              name="files"
-              :action="UPLOAD_PATH + '?type=product'"
               :show-file-list="false"
+              :http-request="upload"
               list-type="picture-card"
-              :on-success="onUploadSuccess"
           >
             <el-image v-if="modelObj.pic" :src="modelObj.pic"/>
             <el-icon v-else>

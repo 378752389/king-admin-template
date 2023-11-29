@@ -18,14 +18,6 @@ export const getOrderDetailApi = (id) => {
     })
 }
 
-export const updateOrderApi = (order) => {
-    return request({
-        url: '/order',
-        method: 'put',
-        data: {...order}
-    })
-}
-
 // orderIds 为 数组（Array）
 export const deleteOrderApi = (orderIds) => {
     return request({
