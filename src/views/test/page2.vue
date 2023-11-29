@@ -1,67 +1,78 @@
 <script setup>
 import {onMounted, ref} from "vue";
-import {getResourceListApi} from "@/api/system/resource";
+import {getUploadFileUrlApi, uploadFileApi} from "@/api/system/oss";
+import request from "@/utils/request";
+import {ElMessage} from "element-plus";
 
-const rootRef = ref(null)
-
+const fileList = ref([])
 onMounted(async () => {
-  const result = await getResourceListApi(1)
-  console.log(rootRef.value.children[0].innerHTML = JSON.stringify(result));
+
 })
+
+const onPreview = (uploadFiles) => {
+  console.log("触发 onPreview", uploadFiles)
+}
+/**
+ *
+ * @param file          点击删除的文件
+ * @param uploadFiles   剩余待上传的文件列表
+ */
+const onRemove = (file, uploadFiles) => {
+  console.log("触发 onRemove", file, uploadFiles)
+}
+
+const onChange = () => {
+  console.log("change", fileList.value)
+}
+
+const onSuccess = (resp, file, fileList) => {
+  console.log("onSuccess", resp, file, fileList)
+}
+
+const upload = async (options) => {
+
+  const file = options.file
+  const filename = file.name
+  const ossResp = await getUploadFileUrlApi(filename, "product", false)
+  const resp = await uploadFileApi(ossResp.data.uploadUrl, file)
+  if (resp.status !== 200) {
+    ElMessage.error("文件上传失败，请联系稍后再试或联系工作人员！")
+    throw new Error("minio文件上传失败！")
+  }
+
+}
+
+const onError = () => {
+}
+const onProgress = () => {
+}
+
+
 </script>
 
 <template>
-  <div ref="rootRef" class="page2">
-    <el-card shadow="never">
-      asd<br/>
-      asd<br/>
-      asd<br/>
-      asd<br/>
-      asd<br/>
-      asd<br/>
-      asd<br/>
-      asd<br/>
-    </el-card>
+  <div class="page2">
+    <el-upload
+        v-model:file-list="fileList"
+        :on-preview="onPreview"
+        :on-remove="onRemove"
+        :on-change="onChange"
+        :on-success="onSuccess"
+        :http-request="upload"
+        list-type="picture-card"
+        multiple
+    >
 
-    <el-card shadow="never">
-      asd<br/>
-      asd<br/>
-      asd<br/>
-      asd<br/>
-      asd<br/>
-    </el-card>
+      <el-link>上传文件</el-link>
 
-    <el-card shadow="never">
-      asd<br/>
-    </el-card>
-
-    <el-card shadow="never">
-      asd<br/>
-      asd<br/>
-      asd<br/>
-      asd<br/>
-      asd<br/>
-      asd<br/>
-      asd<br/>
-      asd<br/>
-      asd<br/>
-      asd<br/>
-      asd<br/>
-      asd<br/>
-      asd<br/>
-    </el-card>
-
-    <el-card shadow="never">
-      asd<br/>
-      asd<br/>
-      asd<br/>
-      asd<br/>
-    </el-card>
+      <template #tip>
+        文件大小不能超过50kb
+      </template>
+    </el-upload>
   </div>
 </template>
 
 <style scoped>
-
 
 
 </style>

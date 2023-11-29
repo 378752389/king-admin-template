@@ -5,6 +5,7 @@ import TabSelect from "@/components/TabSelect.vue";
 import {useVModel} from "@vueuse/core";
 import {useRouter} from "vue-router";
 import {getUploadFileUrlApi, uploadFileApi} from "@/api/system/oss";
+import {ElMessage} from "element-plus";
 
 // 模型数据双向绑定
 const props = defineProps({
@@ -92,15 +93,19 @@ const handleCancel = () => {
   router.back()
 }
 
-const upload = async (resp) => {
-  console.log("resp", resp)
-  const file = resp.file
-  const filename = resp.file.name
+const upload = async (options) => {
+  const file = options.file
+  const filename = file.name
   const scene = 'product'
   const ossResp = await getUploadFileUrlApi(filename, scene)
 
   const uploadUrl = ossResp.data.uploadUrl
-  await uploadFileApi(uploadUrl, file)
+  const uploadResp = await uploadFileApi(uploadUrl, file)
+
+  if (uploadResp.status !== 200) {
+    ElMessage.error("文件上传失败，请联系稍后再试或联系工作人员！")
+    throw new Error("minio文件上传失败！")
+  }
 
   modelObj.value.pic = ossResp.data.downloadUrl
 }
