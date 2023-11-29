@@ -197,7 +197,7 @@ onMounted(async () => {
       </SectionTitle>
 
       <!--     todo 表格数据-->
-      <el-table :data="tableData" v-loading="loadStatus" border>
+      <el-table :data="tableData" v-loading="loadStatus" border header-cell-class-name="custom-header">
         <el-table-column type="index" width="120" label="序号"/>
         <el-table-column prop="name" label="商品名" show-overflow-tooltip/>
         <el-table-column label="图片">

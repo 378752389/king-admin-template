@@ -76,7 +76,7 @@ onMounted(() => {
                 row-key="id"
                 :default-sort="{prop: 'sort', order: 'descending'}"
                 v-loading="loadStatus"
-                border>
+                border header-cell-class-name="custom-header">
         <el-table-column prop="resourceName" label="资源名称"/>
         <el-table-column prop="path" label="资源路径"/>
         <el-table-column prop="resourceType" label="资源类型">

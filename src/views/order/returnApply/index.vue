@@ -161,7 +161,7 @@ onMounted(async () => {
     <el-card class="content-card" shadow="never">
       <!--     todo 表格数据-->
       <!--      table-layout: 固定表格宽度，让表格撑满整个父元素-->
-      <el-table :data="tableData" v-loading="loadStatus" border>
+      <el-table :data="tableData" v-loading="loadStatus" border header-cell-class-name="custom-header">
         <el-table-column type="index" width="120" label="序号"/>
         <el-table-column prop="orderNo" label="订单号" width="220"/>
         <el-table-column prop="applyTime" label="申请时间"/>

@@ -82,7 +82,7 @@ onMounted(async () => {
     <el-card class="form-card" shadow="never">
       <SectionTitle title="退货商品"/>
 
-      <el-table :data="modelObj.returnPackage" v-loading="loadStatus" border>
+      <el-table :data="modelObj.returnPackage" v-loading="loadStatus" border header-cell-class-name="custom-header">
         <el-table-column type="index" label="序号" width="80"/>
         <el-table-column label="商品图片">
           <template #default="scope">

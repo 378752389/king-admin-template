@@ -82,7 +82,7 @@ defineExpose({
 
       <el-divider/>
 
-      <el-table :data="descriptionObj.productList" border>
+      <el-table :data="descriptionObj.productList" border header-cell-class-name="custom-header">
         <el-table-column type="index" align="center" width="120" label="序号"/>
         <el-table-column prop="name" label="商品名称" show-overflow-tooltip/>
         <el-table-column prop="price" align="center" label="售价"/>

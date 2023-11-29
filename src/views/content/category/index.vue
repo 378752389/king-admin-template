@@ -188,7 +188,7 @@ onMounted(async () => {
           <el-button type="success" plain @click="onAdd">添加</el-button>
         </template>
       </SectionTitle>
-      <el-table :loading="tableDataLoading" :data="tableData" max-height="700">
+      <el-table :loading="tableDataLoading" :data="tableData" max-height="700" border header-cell-class-name="custom-header">
         <el-table-column type="index" label="序号" width="120"/>
         <el-table-column prop="icon" label="目录图标">
           <template #default="scope">

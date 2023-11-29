@@ -202,7 +202,7 @@ onMounted(async () => {
         </el-form-item>
       </el-form>
 
-      <el-table :data="modelObj.couponRecordList" border>
+      <el-table :data="modelObj.couponRecordList" border header-cell-class-name="custom-header">
         <el-table-column label="会员昵称" prop="memberNickname"/>
         <el-table-column label="领取方式">
           <template #default="scope">

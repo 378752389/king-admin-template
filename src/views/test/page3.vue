@@ -48,7 +48,7 @@ onMounted(async () => {
 <template>
 
   <div class="page3">
-    <el-table :data="tableData">
+    <el-table :data="tableData" border header-cell-class-name="custom-header">
       <el-table-column label="id" prop="id"/>
       <el-table-column label="目录名称" prop="categoryName"/>
       <el-table-column label="发布状态">

@@ -130,7 +130,7 @@ onMounted(async () => {
         <el-button type="primary" @click="onAdd">创建</el-button>
       </SectionTitle>
 
-      <el-table :data="tableData" v-loading="loadStatus" border>
+      <el-table :data="tableData" v-loading="loadStatus" border header-cell-class-name="custom-header">
 
         <el-table-column type="index" width="120" label="序号"/>
         <el-table-column prop="name" label="退货原因" show-overflow-tooltip/>

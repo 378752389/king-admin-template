@@ -107,7 +107,7 @@ onMounted(() => {
         </el-checkbox-group>
       </el-tab-pane>
     </el-tabs>
-    <el-table :data="tableData" border height="320">
+    <el-table :data="tableData" height="320" border header-cell-class-name="custom-header">
       <slot>
         <el-table-column label="id" prop="id"/>
         <el-table-column label="图片" prop="pic"/>

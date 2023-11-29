@@ -155,7 +155,7 @@ const onDelete = async (row) => {
 
       <!--     todo 表格数据-->
       <!--      table-layout: 固定表格宽度，让表格撑满整个父元素-->
-      <el-table :data="tableData" v-loading="loadStatus" border>
+      <el-table :data="tableData" v-loading="loadStatus" border header-cell-class-name="custom-header">
         <el-table-column type="index" width="120" label="序号"/>
         <el-table-column prop="name" label="广告名"/>
         <el-table-column prop="startTime" label="开始时间"/>

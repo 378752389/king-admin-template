@@ -249,7 +249,7 @@ onMounted(async () => {
       <div class="section food-list">
         <section-title title="商品列表"></section-title>
 
-        <el-table :data="modelObj.packageList" border>
+        <el-table :data="modelObj.packageList" border header-cell-class-name="custom-header">
           <el-table-column width="130" label="套餐图片">
             <template #default="scope">
               <el-image :src="scope.row.packagePic" style="width: 100px; height: 100px;"/>
@@ -291,7 +291,7 @@ onMounted(async () => {
       <div class="section operate-list">
         <section-title title="操作列表"></section-title>
 
-        <el-table :data="modelObj.operateHistory" border>
+        <el-table :data="modelObj.operateHistory" border header-cell-class-name="custom-header">
           <el-table-column prop="operateBy" label="操作人"/>
           <el-table-column prop="createTime" label="操作时间"/>
           <el-table-column prop="orderStatus" label="订单状态"/>
