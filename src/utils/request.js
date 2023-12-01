@@ -26,6 +26,7 @@ request.interceptors.request.use(function (config) {
     return Promise.reject(error);
 });
 
+let hint = false;
 // 添加响应拦截器
 request.interceptors.response.use(function (response) {
     // 2xx 范围内的状态码都会触发该函数。
@@ -45,6 +46,12 @@ request.interceptors.response.use(function (response) {
             ElMessage.error(result.message)
             return
         case 401:
+            // token失效导致多次提示
+            if (hint) {
+                return
+            }
+            hint = true
+            setTimeout(() => hint = false, 3000)
             ElMessage.info("token无效或过期")
             // 移除旧 token
             localStorage.removeItem('token')
