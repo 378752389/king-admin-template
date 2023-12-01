@@ -1,9 +1,9 @@
 <script setup>
-import {ref, computed} from 'vue';
+import {ref, onMounted, watch} from 'vue';
 import {useRouter} from "vue-router";
-import {useUserInfoStore} from "@/stores/userInfo";
-import {storeToRefs} from "pinia";
 import {useVModel} from "@vueuse/core";
+import {getUploadFileUrlApi, uploadFileApi} from "@/api/system/oss";
+import {ElMessage} from "element-plus";
 
 const props = defineProps({
   addFlag: {
@@ -30,19 +30,9 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'onSubmit'])
 const modelObj = useVModel(props, 'modelValue', emit)
 
-
-const picList = computed(() => {
-  return modelObj.value.pics.split(",")
-})
-
-const uploadPath = import.meta.env.VITE_FILE_UPLOAD_PATH + '?type=advertise';
 const router = useRouter()
-
-const {uploadHeaders} = storeToRefs(useUserInfoStore())
+const picList = ref([])
 const advertiseRules = ref([])
-const previewDialog = ref(false)
-const previewImageUrl = ref('')
-
 const handleSubmit = () => {
   emit('onSubmit')
 }
@@ -51,11 +41,45 @@ const handleCancel = () => {
   router.back()
 }
 
-const onPreviewPic = (uploadedFile) => {
-  previewImageUrl.value = uploadedFile.url
-  previewDialog.value = true
+watch(() => props.modelValue.pics, () => {
+  if (!modelObj.value.pics) {
+    console.log("asd", modelObj.value.pics)
+    return
+  }
+
+  picList.value = modelObj.value.pics.split(',').filter(x => x.trim() !== '').map(url => {
+    return {
+      url,
+      name: url.substring(url.lastIndexOf('/') + 1)
+    }
+  })
+})
+
+const upload = async (options) => {
+  const file = options.file
+  const filename = file.name
+  const scene = 'advertise'
+  const ossResp = await getUploadFileUrlApi(filename, scene)
+
+  const uploadUrl = ossResp.data.uploadUrl
+  const uploadResp = await uploadFileApi(uploadUrl, file)
+
+  if (uploadResp.status !== 200) {
+    ElMessage.error("文件上传失败，请联系稍后再试或联系工作人员！")
+    throw new Error("minio文件上传失败！")
+  }
+
+  if (modelObj.value.pics.trim() === '') {
+    modelObj.value.pics = ossResp.data.downloadUrl
+  } else {
+    modelObj.value.pics = modelObj.value.pics + ',' + ossResp.data.downloadUrl
+  }
 }
 
+const onUploadRemove = (removeFile, files) => {
+  modelObj.value.pics = files.map(x => x.url).join(',')
+  // console.log(removeFile, files)
+}
 </script>
 
 <template>
@@ -98,10 +122,10 @@ const onPreviewPic = (uploadedFile) => {
         <el-form-item label="图片" prop="pic">
           <!--        <el-input v-model="modelObj.pic"/>-->
           <el-upload
-              :action="uploadPath"
-              :headers="uploadHeaders"
-              :on-preview="onPreviewPic"
-              name="files"
+              multiple
+              :http-request="upload"
+              :on-remove="onUploadRemove"
+              v-model:file-list="picList"
               list-type="picture">
             <el-button type="primary">上传文件</el-button>
             <template #tip>
@@ -113,8 +137,9 @@ const onPreviewPic = (uploadedFile) => {
 
         </el-form-item>
         <el-form-item label="排序" prop="sort">
-          <el-input-number v-model="modelObj.sort"/>
+          <el-input-number  v-model="modelObj.sort"/>
         </el-form-item>
+
         <el-form-item label="广告类型" prop="type">
           <el-select
               v-model="modelObj.type">
@@ -134,9 +159,6 @@ const onPreviewPic = (uploadedFile) => {
       </el-form>
     </el-card>
 
-    <el-dialog v-model="previewDialog">
-      <img :src="previewImageUrl" alt="Preview Image"/>
-    </el-dialog>
   </div>
 </template>
 

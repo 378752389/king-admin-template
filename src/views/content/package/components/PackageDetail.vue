@@ -2,11 +2,11 @@
 import {ref, onMounted} from 'vue';
 import SvgIcon from "@/components/SvgIcon.vue";
 import TabSelect from "@/components/TabSelect.vue";
-import {storeToRefs} from 'pinia';
-import {useUserInfoStore} from "@/stores/userInfo";
 import {useVModel} from "@vueuse/core";
 import {useRouter} from "vue-router";
 import {getCategoryListApi, getCategoryProductApi} from "@/api/content/category";
+import {getUploadFileUrlApi, uploadFileApi} from "@/api/system/oss";
+import {ElMessage} from "element-plus";
 
 // 模型数据双向绑定
 const props = defineProps({
@@ -24,12 +24,21 @@ const categorySelect = ref([])
 const router = useRouter()
 const tabList = ref([])
 
-const {uploadHeaders} = storeToRefs(useUserInfoStore())
-// 套餐图片上传
-const uploadPath = import.meta.env.VITE_FILE_UPLOAD_PATH + '?type=package';
+const upload = async (options) => {
+  const file = options.file
+  const filename = file.name
+  const scene = 'package'
+  const ossResp = await getUploadFileUrlApi(filename, scene)
 
-const onUploadSuccess = (resp) => {
-  resp.data && (modelObj.value.pic = Object.values(resp.data)[0])
+  const uploadUrl = ossResp.data.uploadUrl
+  const uploadResp = await uploadFileApi(uploadUrl, file)
+
+  if (uploadResp.status !== 200) {
+    ElMessage.error("文件上传失败，请联系稍后再试或联系工作人员！")
+    throw new Error("minio文件上传失败！")
+  }
+
+  modelObj.value.pic = ossResp.data.downloadUrl
 }
 
 // 加载初始值
@@ -77,13 +86,11 @@ const handleCancel = () => {
         <el-form-item label="套餐图片" prop="avatar">
 
           <el-upload
-              name="files"
-              :action="uploadPath"
-              :headers="uploadHeaders"
               :show-file-list="false"
+              :http-request="upload"
               list-type="picture-card"
-              :on-success="onUploadSuccess"
           >
+
             <el-image v-if="modelObj.pic" :src="modelObj.pic"/>
             <el-icon v-else>
               <SvgIcon icon="king-plus"/>
