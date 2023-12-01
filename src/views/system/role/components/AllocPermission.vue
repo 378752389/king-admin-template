@@ -141,7 +141,7 @@ const onSubmit = async () => {
 <template>
   <div class="alloc-permission-page">
 
-    <Waterfall :list="resourceTreeData" :width="830">
+    <Waterfall :list="resourceTreeData" :width="800">
       <template #item="{ item }">
         <el-card class="card" shadow="never" :key="item.id">
           <SectionTitle :title="item.resourceName"/>
@@ -183,11 +183,9 @@ const onSubmit = async () => {
       </template>
     </Waterfall>
 
-    <div style="display: flex;">
-      <div style="margin: auto">
-        <el-button size="large" @click="onCancel">取消</el-button>
-        <el-button size="large" type="primary" @click="onSubmit">提交</el-button>
-      </div>
+    <div class="operate-btn-group">
+      <el-button size="large" @click="onCancel">取消</el-button>
+      <el-button size="large" type="primary" @click="onSubmit">提交</el-button>
     </div>
 
   </div>
@@ -201,6 +199,11 @@ const onSubmit = async () => {
     &:deep(.el-descriptions__cell) {
       padding: 20px;
     }
+  }
+
+  .operate-btn-group {
+    text-align: center;
+    margin-bottom: 50px;
   }
 }
 </style>
