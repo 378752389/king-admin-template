@@ -10,6 +10,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
     const menuList = ref([])
     const info = ref({})
     const router = useRouter()
+    const token = ref('')
 
     const uploadHeaders = computed(() => {
         return {
@@ -17,7 +18,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
         }
     })
 
-    const doLogin = async ({username, password}) => {
+    const doLogin = async ({username, password, rememberMe}) => {
         // 分页获取用户列表数据
 
         try {
@@ -26,12 +27,17 @@ export const useUserInfoStore = defineStore("userInfo", () => {
                 password
             })
             if (result && result.code === 200) {
-                localStorage.setItem('token', result.data.token);
-                ElMessage({
-                    showClose: true,
-                    message: '登录成功',
-                    type: 'success',
-                })
+                const t = result.data.token
+                token.value = t
+                localStorage.setItem('token', t)
+                // 记住我功能是否勾选, 勾选则存储token
+                if (rememberMe) {
+                    localStorage.setItem('username', username)
+                    localStorage.setItem('password', password)
+                } else {
+                    localStorage.removeItem('username')
+                    localStorage.removeItem('password')
+                }
                 // 移除重定向
                 const redirect = sessionStorage.getItem('redirect')
                 if (redirect) {
@@ -39,6 +45,12 @@ export const useUserInfoStore = defineStore("userInfo", () => {
                 }
                 const query = getUrlParams(redirect)
                 await router.replace({path: redirect || '/', query})
+
+                ElMessage({
+                    showClose: true,
+                    message: '登录成功',
+                    type: 'success',
+                })
             } else {
                 ElMessage({
                     message: result.message || '登录失败',
@@ -50,7 +62,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
                 type: 'error',
                 message: "登录失败，请联系开发人员"
             })
-            console.log(e);
+            console.error(e);
         }
     }
 
@@ -64,6 +76,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
                 })
                 menuList.value = []
                 info.value = {}
+                token.value = ''
                 localStorage.removeItem('token')
                 await router.push({name: 'login'})
             }
@@ -79,14 +92,18 @@ export const useUserInfoStore = defineStore("userInfo", () => {
         return menuList.value.map(x => x.permission)
     })
 
-    const getMenu = async () => {
+    const getToken = computed(() => {
+        return token
+    })
+
+    const loadMenu = async () => {
         const menuResult = await menuApi();
         if (menuResult.code === 200) {
             menuList.value = menuResult.data;
         }
     }
 
-    const getInfo = async () => {
+    const loadInfo = async () => {
         const infoResult = await infoApi();
         if (infoResult.code === 200) {
             info.value = infoResult.data;
@@ -100,8 +117,10 @@ export const useUserInfoStore = defineStore("userInfo", () => {
         uploadHeaders,
         doLogin,
         doLogout,
-        getMenu,
-        getInfo
+
+        loadMenu,
+        loadInfo,
+        getToken
     }
 }, {
     persist: {

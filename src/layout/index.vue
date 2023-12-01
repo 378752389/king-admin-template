@@ -9,10 +9,11 @@ const userInfoStore = useUserInfoStore();
 
 // 侧边栏挂载时如果路由为空，则加载菜单栏
 onMounted(async () => {
-  // 加载用户基本信息
-  await userInfoStore.getInfo();
-  // 加载菜单信息
-  await userInfoStore.getMenu();
+  await Promise.all([userInfoStore.loadInfo(), userInfoStore.loadMenu()])
+  // // 加载用户基本信息
+  // await userInfoStore.loadInfo();
+  // // 加载菜单信息
+  // await userInfoStore.loadMenu();
 })
 </script>
 

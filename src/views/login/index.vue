@@ -6,16 +6,16 @@ import {ElMessage} from "element-plus";
 
 const userInfoStore = useUserInfoStore();
 
-const loginData = ref({
-  username: 'admin',
-  password: '123',
-  agreement: true,
+const loginData = reactive({
+  username: localStorage.getItem('username') || '',
+  password: localStorage.getItem('password') || '',
+  rememberMe: localStorage.getItem('username') != null && localStorage.getItem('password') != null
 })
 
 const checkAgreement = (rule, value, callback) => {
-  if (!value) {
-    callback(new Error('请阅读并勾选用户协议'))
-  }
+  // if (!value) {
+  //   callback(new Error('请阅读并勾选用户协议'))
+  // }
   callback()
 }
 
@@ -27,7 +27,7 @@ const rules = reactive({
     {required: true, message: '密码不能为空', trigger: 'blur'},
     {min: 3, max: 15, message: '密码长度必须为6-15之间', trigger: 'blur'}
   ],
-  agreement: [
+  rememberMe: [
     {validator: checkAgreement, trigger: 'blur'}
   ]
 })
@@ -42,12 +42,14 @@ const doLogin = () => {
         message: '表单校验失败',
         type: 'warning',
       })
+      return
     }
 
     // 登录
     await userInfoStore.doLogin({
-      username: loginData.value.username,
-      password: loginData.value.password
+      username: loginData.username,
+      password: loginData.password,
+      rememberMe: loginData.rememberMe
     });
   })
 
@@ -72,8 +74,8 @@ const doLogin = () => {
         <el-input type="password" v-model="loginData.password" show-password clearable/>
       </el-form-item>
 
-      <el-form-item prop="agreement">
-        <el-checkbox label="用户协议" v-model="loginData.agreement"/>
+      <el-form-item prop="rememberMe">
+        <el-checkbox label="记住我" v-model="loginData.rememberMe" @change="console.log(loginData.rememberMe)"/>
         <el-link style="margin-left: 10px" :underline="false">
           <SvgIcon icon="king-pointer"/>
         </el-link>
