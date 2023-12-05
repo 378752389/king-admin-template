@@ -40,9 +40,9 @@ const modelObj = reactive({
   integration: '',
 
   memberId: 0,
-  memberName: '',
+  memberUsername: '',
 
-  packageList: [],
+  orderItemList: [],
 
   operateHistory: [{
     operateBy: '',
@@ -70,7 +70,7 @@ const loadDetail = async () => {
     modelObj.payTime = data.payTime
     modelObj.status = data.status
     modelObj.remark = data.remark
-    modelObj.source = data.source
+    modelObj.source = 1
     modelObj.type = data.type
     modelObj.promotionAmount = data.promotionAmount
     modelObj.totalAmount = data.totalAmount
@@ -82,8 +82,9 @@ const loadDetail = async () => {
     modelObj.integrationAmount = data.integrationAmount
     modelObj.integration = data.integration
     modelObj.memberId = data.memberId
-    modelObj.memberName = data.memberName
-    modelObj.packageList = data.packageList
+    modelObj.memberUsername = data.memberUsername
+
+    modelObj.orderItemList = data.orderItemList
     modelObj.operateHistory = data.operateHistory
 
     // 消息发送手机号
@@ -222,7 +223,7 @@ onMounted(async () => {
             {{ modelObj.orderNo }}
           </el-descriptions-item>
           <el-descriptions-item label="用户账号" label-align="center" align="center">
-            {{ modelObj.memberName }}
+            {{ modelObj.memberUsername }}
           </el-descriptions-item>
           <el-descriptions-item label="支付方式" label-align="center" align="center">
             <el-tag type="success" v-if="modelObj.payType === 1">微信支付</el-tag>
@@ -249,7 +250,7 @@ onMounted(async () => {
       <div class="section food-list">
         <section-title title="商品列表"></section-title>
 
-        <el-table :data="modelObj.packageList" border header-cell-class-name="custom-header">
+        <el-table :data="modelObj.orderItemList" border header-cell-class-name="custom-header">
           <el-table-column width="130" label="套餐图片">
             <template #default="scope">
               <el-image :src="scope.row.packagePic" style="width: 100px; height: 100px;"/>
