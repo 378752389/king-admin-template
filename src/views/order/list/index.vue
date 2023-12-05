@@ -172,15 +172,30 @@ onMounted(async () => {
       <el-table :data="tableData" v-loading="loadStatus" border header-cell-class-name="custom-header">
 
         <el-table-column type="index" width="120" label="序号"/>
-        <el-table-column prop="orderNo" width="230" label="订单号"/>
-        <el-table-column prop="createTime" label="订单创建时间"/>
-        <el-table-column prop="account" label="账号"/>
-        <el-table-column prop="amount" label="订单金额"/>
+        <el-table-column prop="orderNo" width="200" label="订单号"/>
+        <el-table-column prop="createTime" width="200" label="订单创建时间"/>
+        <el-table-column prop="memberUsername" label="会员账号"/>
+        <el-table-column prop="payAmount" label="订单支付金额"/>
 
-        <el-table-column prop="payWay" label="支付方式"/>
-        <el-table-column prop="status" label="订单状态"/>
+        <el-table-column label="支付方式">
+          <template #default="scope">
+            <el-tag type="success" v-if="scope.row.payType === 1">微信支付</el-tag>
+            <el-tag v-else-if="scope.row.payType === 2">支付宝支付</el-tag>
+            <el-tag type="info" v-else>未知</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="订单状态">
+          <template #default="scope">
+            <span v-if="scope.row.status === 0">待付款</span>
+            <span v-else-if="scope.row.status === 1">待出餐</span>
+            <span v-else-if="scope.row.status === 2">已出餐</span>
+            <span v-else-if="scope.row.status === 3">已完成</span>
+            <span v-else-if="scope.row.status === 4">已关闭</span>
+            <span v-else-if="scope.row.status === 5">无效订单</span>
+          </template>
+        </el-table-column>
 
-        <el-table-column label="管理" align="center">
+        <el-table-column label="管理" width="200" align="center">
           <template #default="scope">
             <el-button size="small" @click="onDetail(scope.row)">订单详情</el-button>
 
@@ -214,5 +229,4 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-
 </style>

@@ -1,12 +1,13 @@
 import request from "@/utils/request";
 
-export const getOrderPageApi = ({pageNum = 1, pageSize = 10}) => {
+export const getOrderPageApi = ({pageNum = 1, pageSize = 10, orderNo}) => {
     return request({
         url: '/order',
         method: 'get',
         params: {
             pageNum,
             pageSize,
+            orderNo,
         },
     })
 }
