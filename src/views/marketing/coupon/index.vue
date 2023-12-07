@@ -168,7 +168,7 @@ onMounted(async () => {
       <!--      :header-cell-style="{'backgroundColor': 'red'}"-->
       <el-table :data="tableData" v-loading="loadStatus" border header-cell-class-name="custom-header">
         <el-table-column type="index" width="120" label="序号"/>
-        <el-table-column prop="name" label="优惠券名称"/>
+        <el-table-column prop="name" label="优惠券名称" show-overflow-tooltip/>
         <el-table-column label="优惠券类型">
           <template #default="scope">
             <span v-if="scope.row.type === 1">通用</span>
@@ -177,11 +177,11 @@ onMounted(async () => {
         </el-table-column>
         <el-table-column prop="amount" label="面值"/>
 
-        <el-table-column prop="effectiveTime" label="开始时间"/>
-        <el-table-column prop="expireTime" label="结束时间"/>
+        <el-table-column prop="effectiveTime" label="开始时间" width="180"/>
+        <el-table-column prop="expireTime" label="结束时间" width="180"/>
 
         <el-table-column prop="remark" label="描述" show-overflow-tooltip/>
-        <el-table-column label="管理" align="center">
+        <el-table-column label="管理" align="center" width="200">
           <template #default="scope">
             <el-button type="primary" size="small" @click="onRecord(scope.row)">记录</el-button>
             <el-button type="warning" size="small" @click="onEdit(scope.row)">编辑</el-button>

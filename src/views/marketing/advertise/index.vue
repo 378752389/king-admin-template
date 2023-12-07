@@ -157,9 +157,9 @@ const onDelete = async (row) => {
       <!--      table-layout: 固定表格宽度，让表格撑满整个父元素-->
       <el-table :data="tableData" v-loading="loadStatus" border header-cell-class-name="custom-header">
         <el-table-column type="index" width="120" label="序号"/>
-        <el-table-column prop="name" label="广告名"/>
-        <el-table-column prop="startTime" label="开始时间"/>
-        <el-table-column prop="endTime" label="结束时间"/>
+        <el-table-column prop="name" label="广告名" show-overflow-tooltip/>
+        <el-table-column prop="startTime" label="开始时间" width="180"/>
+        <el-table-column prop="endTime" label="结束时间" width="180"/>
         <el-table-column prop="sort" label="排序"/>
         <el-table-column label="发布状态">
           <template #default="scope">
@@ -170,7 +170,7 @@ const onDelete = async (row) => {
           </template>
         </el-table-column>
         <el-table-column prop="description" label="描述" show-overflow-tooltip/>
-        <el-table-column label="管理" align="center">
+        <el-table-column label="管理" align="center" width="160">
           <template #default="scope">
             <el-button type="warning" size="small" @click="onEdit(scope.row.id)">编辑</el-button>
 

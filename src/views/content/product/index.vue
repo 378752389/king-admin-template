@@ -179,8 +179,9 @@ onMounted(async () => {
       <el-table :data="tableData" v-loading="loadStatus" border header-cell-class-name="custom-header">
         <el-table-column type="index" width="120" label="序号"/>
         <el-table-column prop="name" label="商品名" show-overflow-tooltip/>
-        <el-table-column prop="categoryName" label="所属分类"/>
         <el-table-column prop="price" label="售价"/>
+        <el-table-column prop="stock" label="库存"/>
+        <el-table-column prop="lowStock" label="低库存报警"/>
         <el-table-column prop="description" label="商品介绍" show-overflow-tooltip/>
         <el-table-column label="管理" align="center">
           <template #default="scope">

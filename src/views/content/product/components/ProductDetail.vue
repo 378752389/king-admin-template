@@ -6,6 +6,7 @@ import {useVModel} from "@vueuse/core";
 import {useRouter} from "vue-router";
 import {getUploadFileUrlApi, uploadFileApi} from "@/api/system/oss";
 import {ElMessage} from "element-plus";
+import {getCategoryListApi} from "@/api/content/category";
 
 // 模型数据双向绑定
 const props = defineProps({
@@ -18,71 +19,27 @@ const props = defineProps({
 })
 const emit = defineEmits(['update:modelValue', 'onSubmit'])
 const modelObj = useVModel(props, 'modelValue', emit)
-
+const categorySelect = ref();
 
 // 加载初始值
-onMounted(() => {
-  modelObj.value = {
-    categoryId: 1,
-    name: '巨无霸',
-    description: '',
-    publish: 0,
-    sort: 2,
-    stock: 100,
-    marketPrice: 30,
-    price: 28,
-    lowStock: 20,
-    pic: '',
-    materialIds: [1, 2, 3]
+onMounted(async () => {
+  // modelObj.value = {
+  //   categoryId: 0,
+  //   name: '',
+  //   description: '',
+  //   publish: 0,
+  //   stock: 0,
+  //   price: 0,
+  //   lowStock: 0,
+  //   pic: '',
+  //   materialIds: []
+  // }
+
+  const resp = await getCategoryListApi({type: 2})
+  if (resp && resp.code === 200) {
+    categorySelect.value = resp.data
   }
 })
-
-const tabList = ref([
-  {
-    id: 1,
-    name: '饮料',
-    children: [
-      {
-        id: 1,
-        pic: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-      },
-      {
-        id: 2,
-        pic: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-      },
-      {
-        id: 3,
-        pic: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-      },
-      {
-        id: 4,
-        pic: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-      },
-      {
-        id: 5,
-        pic: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-      },
-    ]
-  },
-  {
-    id: 2,
-    name: '汉堡',
-    children: [
-      {
-        id: 6,
-        pic: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-      },
-      {
-        id: 7,
-        pic: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-      },
-      {
-        id: 8,
-        pic: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-      },
-    ]
-  },
-])
 
 const handleSubmit = () => {
   emit('onSubmit')
@@ -118,10 +75,12 @@ const upload = async (options) => {
 
       <el-form label-width="120">
         <el-form-item label="商品分类">
-          <el-select v-model="modelObj.categoryId">
-            <el-option :label="'饮料'" :key="1" :value="1"/>
-            <el-option :label="'炸鸡'" :key="2" :value="2"/>
-            <el-option :label="'汉堡'" :key="3" :value="3"/>
+          <el-select v-model="modelObj.categoryId"
+                     placeholder="商品分类">
+            <el-option :key="category.id"
+                       :label="category.name"
+                       :value="category.id"
+                       v-for="category in categorySelect"/>
           </el-select>
         </el-form-item>
 
@@ -149,7 +108,7 @@ const upload = async (options) => {
         </el-form-item>
 
         <el-form-item label="发布状态">
-          <el-switch active-text="发布" inactive-text="取消" v-model="modelObj.publish"/>
+          <el-switch active-text="发布" inactive-text="取消" :active-value="1" :inactive-value="0" v-model="modelObj.publish"/>
         </el-form-item>
 
         <el-form-item label="库存量">
@@ -160,16 +119,8 @@ const upload = async (options) => {
           <el-input-number v-model="modelObj.lowStock"/>
         </el-form-item>
 
-        <el-form-item label="市场价">
-          <el-input v-model="modelObj.marketPrice"/>
-        </el-form-item>
-
         <el-form-item label="商品售价">
           <el-input v-model="modelObj.price"/>
-        </el-form-item>
-
-        <el-form-item label="排序">
-          <el-input-number v-model="modelObj.sort"/>
         </el-form-item>
 
         <!--      <el-form-item label="物料配置">-->

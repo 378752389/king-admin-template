@@ -1,6 +1,6 @@
 import request from "@/utils/request";
 
-export const getCouponPageApi = ({pageNum = 1, pageSize = 10, name, startTime, endTime}) => {
+export const getCouponPageApi = ({pageNum = 1, pageSize = 10, name, type}) => {
     return request({
         url: '/coupon',
         method: 'get',
@@ -8,8 +8,7 @@ export const getCouponPageApi = ({pageNum = 1, pageSize = 10, name, startTime, e
             pageNum,
             pageSize,
             name,
-            startTime,
-            endTime
+            type
         },
     })
 }
