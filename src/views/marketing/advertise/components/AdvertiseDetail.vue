@@ -1,5 +1,5 @@
 <script setup>
-import {ref, onMounted, watch} from 'vue';
+import {ref, computed, onMounted} from 'vue';
 import {useRouter} from "vue-router";
 import {useVModel} from "@vueuse/core";
 import {getUploadFileUrlApi, uploadFileApi} from "@/api/system/oss";
@@ -18,7 +18,7 @@ const props = defineProps({
         startTime: '',
         endTime: '',
         publish: 0,
-        pics: '',
+        pics: [],
         sort: 0,
         href: '',
         description: ''
@@ -30,8 +30,11 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'onSubmit'])
 const modelObj = useVModel(props, 'modelValue', emit)
 
+const picList = computed(() => {
+  return modelObj.value.pics?.map(x => {return {url: x, name: x.substring(x.lastIndexOf('/') + 1)}})
+})
+
 const router = useRouter()
-const picList = ref([])
 const advertiseRules = ref([])
 const handleSubmit = () => {
   emit('onSubmit')
@@ -40,20 +43,6 @@ const handleSubmit = () => {
 const handleCancel = () => {
   router.back()
 }
-
-watch(() => props.modelValue.pics, () => {
-  if (!modelObj.value.pics) {
-    console.log("asd", modelObj.value.pics)
-    return
-  }
-
-  picList.value = modelObj.value.pics.split(',').filter(x => x.trim() !== '').map(url => {
-    return {
-      url,
-      name: url.substring(url.lastIndexOf('/') + 1)
-    }
-  })
-})
 
 const upload = async (options) => {
   const file = options.file
@@ -69,17 +58,14 @@ const upload = async (options) => {
     throw new Error("minio文件上传失败！")
   }
 
-  if (modelObj.value.pics.trim() === '') {
-    modelObj.value.pics = ossResp.data.downloadUrl
-  } else {
-    modelObj.value.pics = modelObj.value.pics + ',' + ossResp.data.downloadUrl
-  }
+  modelObj.value.pics.push(ossResp.data.downloadUrl)
+  console.log("上传成功", modelObj.value.pics)
 }
 
-const onUploadRemove = (removeFile, files) => {
-  modelObj.value.pics = files.map(x => x.url).join(',')
-  // console.log(removeFile, files)
+const onUploadRemove = (file, uploadFiles) => {
+  modelObj.value.pics = uploadFiles.map(x => x.url)
 }
+
 </script>
 
 <template>
@@ -124,8 +110,8 @@ const onUploadRemove = (removeFile, files) => {
           <el-upload
               multiple
               :http-request="upload"
+              :file-list="picList"
               :on-remove="onUploadRemove"
-              v-model:file-list="picList"
               list-type="picture">
             <el-button type="primary">上传文件</el-button>
             <template #tip>

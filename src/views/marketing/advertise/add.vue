@@ -11,7 +11,7 @@ const advertiseModel = reactive({
   startTime: '',
   endTime: '',
   publish: 0,
-  pics: '',
+  pics: [],
   sort: 0,
   href: '',
   description: ''

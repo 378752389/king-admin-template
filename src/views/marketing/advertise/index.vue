@@ -166,7 +166,7 @@ const onDelete = async (row) => {
             <el-switch style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
                        :active-value="1"
                        :inactive-value="0"
-                       v-model="scope.row.publicStatus" />
+                       v-model="scope.row.publish" />
           </template>
         </el-table-column>
         <el-table-column prop="description" label="描述" show-overflow-tooltip/>
