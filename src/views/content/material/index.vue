@@ -1,11 +1,10 @@
 <script setup>
 import {ref, onMounted, reactive} from "vue";
 import SectionTitle from "@/components/SectionTitle.vue";
-import {ElMessage, ElMessageBox} from "element-plus";
+import {ElMessage} from "element-plus";
 import {
   getMaterialPageApi,
   deleteMaterialApi,
-  switchMaterialPublishStatusApi,
   addMaterialApi,
   updateMaterialApi
 } from "@/api/content/material";
@@ -19,7 +18,6 @@ const searchForm = reactive({
 const searchFormRef = ref(null)
 
 const loadStatus = ref(false)
-const switchEnable = ref(false)
 
 const tableData = ref([])
 const addFlag = ref(true)
@@ -44,14 +42,15 @@ const onSearch = () => {
 const onSubmit = async (model) => {
   let resp;
   if (addFlag.value) {
-    resp = addMaterialApi(model)
+    resp = await addMaterialApi(model)
   } else {
-    resp = updateMaterialApi(model)
+    resp = await updateMaterialApi(model)
   }
 
-  if (resp && resp.data) {
-    ElMessage.success(resp.data)
-  }
+  ElMessage.success(resp.message)
+  materialDetailRef.value.handleClose()
+
+  await loadData()
 }
 
 /**
@@ -90,41 +89,6 @@ const onDelete = async (row) => {
   await loadData()
 }
 
-const publishBeforeChange = () => {
-  switchEnable.value = true;
-  return switchEnable.value;
-}
-
-const onStatusInput = (row) => {
-  ElMessageBox.confirm(
-      '请确定是否修改发布状态？',
-      '警告',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-  ).then(() => {
-    row.switchLoading = true;
-    let id = row.id;
-    let newPublic = row.publish === 1 ? 0 : 1
-    return new Promise((resolve) => {
-      switchMaterialPublishStatusApi({id, publish: newPublic}).then(res => {
-        // 正常处理
-        // todo
-        row.publish = newPublic
-        ElMessage.success(res.message);
-        resolve(true);
-      }).finally(() => {
-        row.switchLoading = false;
-      })
-    })
-
-  }).catch(() => {
-    ElMessage.info("取消操作")
-  })
-}
-
 const pageNumChange = (pageNum) => {
   loadData({pageNum, pageSize: pageData.pageSize, ...searchForm})
 }
@@ -145,7 +109,7 @@ const loadData = async () => {
 
     if (resp && resp.data) {
       // todo
-      tableData.value = resp.data.dataList;
+      tableData.value = resp.data;
       pageData.pageNum = resp.data.pageNum;
       pageData.pageSize = resp.data.pageSize;
       pageData.total = resp.data.total;
@@ -215,18 +179,7 @@ onMounted(async () => {
           </template>
         </el-table-column>
         <el-table-column prop="description" label="商品介绍" show-overflow-tooltip/>
-        <el-table-column label="发布状态">
-          <template #default="scope">
-            <el-switch
-                :active-value="1"
-                :inactive-value="0"
-                :before-change="publishBeforeChange"
-                :model-value="scope.row.publish"
-                @input="onStatusInput(scope.row)"
-                :loading="!!scope.row.switchLoading"
-            />
-          </template>
-        </el-table-column>
+        <el-table-column prop="price" label="价格" />
         <el-table-column label="管理" align="center">
           <template #default="scope">
             <el-button type="warning" size="small" @click="onEdit(scope.row)">编辑</el-button>

@@ -148,7 +148,7 @@ onMounted(async () => {
           <el-date-picker
               placeholder="选择处理时间"
               value-format="YYYY-MM-DD"
-              v-model="searchForm.operateBy"/>
+              v-model="searchForm.operateTime"/>
         </el-form-item>
 
         <el-form-item>

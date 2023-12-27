@@ -1,6 +1,8 @@
 <script setup>
 import {ref, computed, reactive} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
+import SvgIcon from "@/components/SvgIcon.vue";
+import {getUploadFileUrlApi, uploadFileApi} from "@/api/system/oss";
 
 // ============================== 传参 =======================================
 
@@ -65,11 +67,28 @@ const handleClose = () => {
 const handleOpen = (row) => {
   modelObj.id = row.id
   modelObj.name = row.name
-  modelObj.publish = row.publish
+  modelObj.price = row.price
   modelObj.pic = row.pic
   modelObj.description = row.description
 
   showFlag.value = true;
+}
+
+const upload = async (options) => {
+  const file = options.file
+  const filename = file.name
+  const scene = 'material'
+  const ossResp = await getUploadFileUrlApi(filename, scene)
+
+  const uploadUrl = ossResp.data.uploadUrl
+  const uploadResp = await uploadFileApi(uploadUrl, file)
+
+  if (uploadResp.status !== 200) {
+    ElMessage.error("文件上传失败，请联系稍后再试或联系工作人员！")
+    throw new Error("minio文件上传失败！")
+  }
+
+  modelObj.pic = ossResp.data.downloadUrl
 }
 
 defineExpose({
@@ -98,21 +117,28 @@ defineExpose({
           <el-input v-model="modelObj.name"/>
         </el-form-item>
 
-        <el-form-item label="图片" prop="pic">
-          <el-input v-model="modelObj.pic"/>
+
+        <el-form-item label="价格" prop="price">
+          <el-input v-model="modelObj.price"/>
         </el-form-item>
 
-
-        <el-form-item label="描述" prop="description">
+        <el-form-item label="物料介绍" prop="description">
           <el-input v-model="modelObj.description"/>
         </el-form-item>
 
-        <el-form-item label="发布状态" prop="publish">
-          <el-switch
-              :active-value="1"
-              :inactive-value="0"
-              v-model="modelObj.publish"/>
+        <el-form-item label="图片" prop="pic">
+          <el-upload
+              :http-request="upload"
+              list-type="picture-card"
+              :show-file-list="false"
+          >
+            <el-image v-if="modelObj.pic" :src="modelObj.pic"/>
+            <el-icon v-else class="avatar-uploader-icon">
+              <SvgIcon :icon="'king-plus'"/>
+            </el-icon>
+          </el-upload>
         </el-form-item>
+
 
       </el-form>
 
