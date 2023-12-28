@@ -1,12 +1,12 @@
 <script setup>
 import {ref, onMounted} from 'vue';
 import SvgIcon from "@/components/SvgIcon.vue";
-import TabSelect from "@/components/TabSelect.vue";
 import {useVModel} from "@vueuse/core";
 import {useRouter} from "vue-router";
 import {getUploadFileUrlApi, uploadFileApi} from "@/api/system/oss";
 import {ElMessage} from "element-plus";
 import {getCategoryListApi} from "@/api/content/category";
+import {getMaterialListApi} from "@/api/content/material";
 
 // 模型数据双向绑定
 const props = defineProps({
@@ -20,6 +20,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'onSubmit'])
 const modelObj = useVModel(props, 'modelValue', emit)
 const categorySelect = ref();
+const materialCheckboxList = ref([])
 
 // 加载初始值
 onMounted(async () => {
@@ -34,6 +35,8 @@ onMounted(async () => {
   //   pic: '',
   //   materialIds: []
   // }
+  const materialList = await getMaterialListApi({})
+  materialCheckboxList.value = materialList.data
 
   const resp = await getCategoryListApi({type: 2})
   if (resp && resp.code === 200) {
@@ -123,13 +126,18 @@ const upload = async (options) => {
           <el-input v-model="modelObj.price"/>
         </el-form-item>
 
-        <!--      <el-form-item label="物料配置">-->
-        <!--        <TabSelect :data="tabList" v-model="modelObj.materialIds">-->
-        <!--          <template #default>-->
-        <!--            <el-table-column label="id" prop="id"/>-->
-        <!--          </template>-->
-        <!--        </TabSelect>-->
-        <!--      </el-form-item>-->
+        <el-form-item label="物料配置">
+          <el-checkbox-group v-model="modelObj.materialIds">
+            <el-checkbox
+                :key="material.id"
+                :label="material.id"
+                v-for="material in materialCheckboxList">
+              <template #default>
+                <el-image style="width: 100px; height: 100px;" :src="material.pic"/>
+              </template>
+            </el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
 
         <el-form-item>
           <el-button type="default" @click="handleCancel">取消</el-button>
@@ -145,5 +153,31 @@ const upload = async (options) => {
 .el-form {
   margin: 30px auto 0;
   width: 80%;
+}
+
+.el-checkbox-group {
+  display: flex;
+
+  .el-checkbox {
+    display: block;
+    position: relative;
+    height: 100px;
+    margin: 10px;
+
+    &:deep(.el-checkbox__label) {
+      padding: 0;
+    }
+
+    &:deep(.el-checkbox__input) {
+      display: block;
+      position: absolute;
+      left: 5px;
+      top: 5px;
+    }
+  }
+
+  .is-checked {
+    outline: 2px solid #337ecc;
+  }
 }
 </style>

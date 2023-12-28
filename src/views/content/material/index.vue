@@ -3,7 +3,7 @@ import {ref, onMounted, reactive} from "vue";
 import SectionTitle from "@/components/SectionTitle.vue";
 import {ElMessage} from "element-plus";
 import {
-  getMaterialPageApi,
+  getMaterialListApi,
   deleteMaterialApi,
   addMaterialApi,
   updateMaterialApi
@@ -22,13 +22,6 @@ const loadStatus = ref(false)
 const tableData = ref([])
 const addFlag = ref(true)
 const materialDetailRef = ref(null)
-
-const pageData = reactive({
-  pageNum: 1,
-  pageSize: 10,
-  total: 100,
-  pageSizeList: [10, 20, 50, 100]
-})
 
 // ============================== 事件 =======================================
 
@@ -89,30 +82,18 @@ const onDelete = async (row) => {
   await loadData()
 }
 
-const pageNumChange = (pageNum) => {
-  loadData({pageNum, pageSize: pageData.pageSize, ...searchForm})
-}
-const pageSizeChange = (pageSize) => {
-  loadData({pageSize, pageNum: pageData.pageNum, ...searchForm})
-}
-
 // ============================== 加载数据 =======================================
 
 const loadData = async () => {
   loadStatus.value = true
   try {
-    const resp = await getMaterialPageApi({
-      pageNum: pageData.pageNum,
-      pageSize: pageData.pageSize,
+    const resp = await getMaterialListApi({
       ...searchForm
     })
 
     if (resp && resp.data) {
       // todo
       tableData.value = resp.data;
-      pageData.pageNum = resp.data.pageNum;
-      pageData.pageSize = resp.data.pageSize;
-      pageData.total = resp.data.total;
     }
   } finally {
     loadStatus.value = false
@@ -201,14 +182,6 @@ onMounted(async () => {
         </el-table-column>
       </el-table>
 
-      <!--      分页-->
-      <el-pagination background layout="prev, pager, jumper, next, total, sizes"
-                     v-model:current-page="pageData.pageNum"
-                     v-model:page-size="pageData.pageSize"
-                     :page-sizes="pageData.pageSizeList"
-                     :total="pageData.total"
-                     @current-change="pageNumChange"
-                     @size-change="pageSizeChange"/>
     </el-card>
 
     <MaterialDetail

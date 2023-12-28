@@ -20,6 +20,8 @@ const productModel = reactive({
   sale: "",
   lockStock: 0,
   extra: "",
+
+  materialIds: []
 })
 
 const route = useRoute()
@@ -42,6 +44,7 @@ onMounted(async () => {
       productModel.stock = data.stock
       productModel.sale = data.sale
       productModel.extra = data.extra
+      productModel.materialIds = data.materialIds
     }
   } catch (e) {
     ElMessage.error(e.message)

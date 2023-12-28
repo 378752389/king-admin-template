@@ -1,13 +1,10 @@
 import request from "@/utils/request";
 
-export const getMaterialPageApi = ({pageNum = 1, pageSize = 10, name}) => {
+export const getMaterialListApi = ({name}) => {
     return request({
         url: '/material',
         method: 'get',
         params: {
-            pageNum,
-            pageSize,
-
             name
         },
     })
