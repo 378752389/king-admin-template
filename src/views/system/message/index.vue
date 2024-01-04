@@ -149,6 +149,13 @@ const onReset = () => {
         <!--        <el-table-column prop="queue" label="队列"/>-->
         <!--        <el-table-column prop="routeKey" label="路由键"/>-->
 
+        <el-table-column prop="status" label="消息状态">
+          <template #default="scope">
+            <el-tag v-if="scope.row.status === 0" type="warning">{{messageStatusEnum[0].label}}</el-tag>
+            <el-tag v-else-if="scope.row.status === 1" type="success">{{messageStatusEnum[1].label}}</el-tag>
+            <el-tag v-else-if="scope.row.status === 2" type="danger">{{messageStatusEnum[2].label}}</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column prop="deliverTime" label="投递时间"/>
         <el-table-column prop="deliverCount" label="投递次数"/>
 
