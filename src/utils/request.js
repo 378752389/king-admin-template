@@ -14,7 +14,14 @@ const request = axios.create({
 // 添加请求拦截器
 request.interceptors.request.use(function (config) {
     // 去除为空的查询参数
-    config.params = lodash.pickBy(config.params, item => item)
+    config.params = lodash.pickBy(config.params, item => {
+        // 0 是有效参数，拦截器不应该拦截
+        if (item === 0) {
+            return true
+        }
+
+        return item
+    })
     // 在发送请求之前做些什么
     let token = localStorage.getItem('token');
     if (token) {

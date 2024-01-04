@@ -1,7 +1,6 @@
 <script setup>
-import {LazyImg, Waterfall} from 'vue-waterfall-plugin-next'
-import 'vue-waterfall-plugin-next/dist/style.css'
-import {ref} from 'vue';
+import {ref, onMounted} from 'vue';
+import axios from "axios";
 
 const list = ref([
   {name: 'aaa', height: '400px'},
@@ -9,18 +8,26 @@ const list = ref([
   {name: 'ccc', height: '300px'},
   {name: 'ddd', height: '250px'},
 ])
+
+const suggest = ref()
+
+onMounted(async () => {
+  const resp = await axios({
+    url: "/search/suggest",
+    method: "GET",
+    query: {
+      suggest: "下午"
+    }
+  })
+
+  console.log(resp)
+})
 </script>
 
 <template>
 
   <div class="page3">
-    <Waterfall :list="list" :width="800">
-      <template #item="{ item }">
-        <el-card shadow="never" :style="{'height': item.height}">
-          <p class="text">这是具体内容 {{ item }}</p>
-        </el-card>
-      </template>
-    </Waterfall>
+   <el-input v-model="suggest" />
   </div>
 
 

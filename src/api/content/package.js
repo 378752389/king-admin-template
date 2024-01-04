@@ -21,7 +21,7 @@ export const getPackageDetailApi = (id) => {
     })
 }
 
-export const addPackageApi = ({pkg}) => {
+export const addPackageApi = (pkg) => {
     return request({
         url: '/package',
         method: 'post',
