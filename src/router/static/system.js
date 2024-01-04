@@ -73,6 +73,15 @@ export default {
             component: () => import('@/views/system/file/index.vue')
         },
         {
+            path: 'message',
+            name: 'message',
+            meta: {
+                title: '消息补偿管理',
+                // permission: 'system:message'
+            },
+            component: () => import('@/views/system/message/index.vue')
+        },
+        {
             path: 'admin-add',
             name: 'admin-add',
             meta: {
