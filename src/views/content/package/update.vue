@@ -11,13 +11,14 @@ const router = useRouter()
 
 const packageModel = reactive({
   id: 0,
-  categoryId: 0,
+  categoryId: '',
   name: '',
   description: '',
   publish: 0,
   sort: 0,
   promotionPrice: 0,
   pic: '',
+  type: '',
   lowStock: 0,
   productIds: []
 })
@@ -45,6 +46,7 @@ onMounted(async () => {
     packageModel.sort = data.sort
     packageModel.promotionPrice = data.promotionPrice
     packageModel.pic = data.pic
+    packageModel.type = data.type
     packageModel.productIds = data.productList.map(p => p.id)
   }
 })

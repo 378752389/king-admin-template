@@ -7,13 +7,14 @@ import {ElMessage} from "element-plus";
 import {useRouter} from "vue-router";
 
 const packageModel = reactive({
-  categoryId: 0,
+  categoryId: '',
   name: '',
   description: '',
   publish: 0,
   sort: 0,
   promotionPrice: 0,
   pic: '',
+  type: '',
   lowStock: 0,
   productIds: []
 })

@@ -16,7 +16,8 @@ import PackageStock from "@/views/content/package/components/PackageStock.vue";
 const router = useRouter();
 const searchForm = ref({
   name: '',
-  categoryId: ''
+  categoryId: '',
+  type: ''
 });
 
 const pageData = reactive({
@@ -47,6 +48,10 @@ const loadCategorySelect = async () => {
 }
 
 const packageStockRef = ref(null)
+const packageTypeEnum = ref([
+  {label: '单品套餐', value: 1, type: ''},
+  {label: '组合套餐', value: 2, type: 'success'},
+])
 /**
  * 页面挂载
  */
@@ -255,6 +260,18 @@ const onPublishInput = (row) => {
                        v-for="category in categorySelect"/>
           </el-select>
         </el-form-item>
+
+        <el-form-item label="套餐类型" prop="type">
+          <el-select
+              v-model="searchForm.type"
+              placeholder="套餐类型"
+          >
+            <el-option :label="packageType.label"
+                       :key="packageType.value"
+                       :value="packageType.value"
+                       v-for="packageType in packageTypeEnum"/>
+          </el-select>
+        </el-form-item>
         <el-form-item style="">
           <el-button type="primary" @click="onSearch">查询</el-button>
           <el-button type="default" @click="onReset">重置</el-button>
@@ -276,7 +293,14 @@ const onPublishInput = (row) => {
         <el-table-column prop="promotionPrice" label="售价"/>
         <el-table-column prop="totalPrice" label="套餐总价"/>
         <el-table-column prop="sort" label="排序"/>
-        <el-table-column prop="description" label="套餐介绍" show-overflow-tooltip/>
+        <el-table-column prop="type" label="套餐类型">
+          <template #default="scope">
+            <template v-for="typeEnum in packageTypeEnum">
+              <el-tag :key="typeEnum.value" :type="typeEnum.type" v-if="scope.row.type === typeEnum.value">{{typeEnum.label}}</el-tag>
+            </template>
+          </template>
+        </el-table-column>
+        <!--        <el-table-column prop="description" label="套餐介绍" show-overflow-tooltip/>-->
         <el-table-column label="发布状态">
           <template #default="scope">
             <el-switch style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"

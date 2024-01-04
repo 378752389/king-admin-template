@@ -23,6 +23,10 @@ const categorySelect = ref([])
 
 const router = useRouter()
 const tabList = ref([])
+const packageTypeEnum = ref([
+  {label: '单品套餐', value: 1, type: ''},
+  {label: '组合套餐', value: 2, type: 'success'},
+])
 
 const upload = async (options) => {
   const file = options.file
@@ -70,8 +74,14 @@ const handleCancel = () => {
 
       <el-form label-width="120">
         <el-form-item label="套餐分类">
-          <el-select v-model="modelObj.categoryId">
+          <el-select v-model="modelObj.categoryId" placeholder="请选择套餐分类">
             <el-option :label="item.name" :key="item.id" :value="item.id" v-for="item in categorySelect"/>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="套餐类型">
+          <el-select v-model="modelObj.type" placeholder="请选择套餐类型" :disabled="!addFlag">
+            <el-option :label="typeEnum.label" :key="typeEnum.value" :value="typeEnum.value" v-for="typeEnum in packageTypeEnum"/>
           </el-select>
         </el-form-item>
 
