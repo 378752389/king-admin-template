@@ -1,87 +1,52 @@
 <script setup>
-import {ref, onMounted, reactive} from 'vue';
-import {getRoleDetailApi} from "@/api/system/role";
-import {getResourceTreeApi} from "@/api/system/resource";
+import {ref} from 'vue';
 
-const modelObj = reactive({
-  id: '',
-  roleName: '',
-  resourceIds: []
-})
-const resourceTreeData = ref([])
-const loadDetail = async () => {
-  const resp = await getRoleDetailApi(9)
-  console.log(resp.data)
-  modelObj.id = resp.data.id
-  modelObj.roleName = resp.data.roleName
-  modelObj.resourceIds = resp.data.resourceIds
-
-  console.log("modelObj", modelObj)
-}
-
-onMounted(async () => {
-  await loadDetail()
-
-  const resourceTreeRes = await getResourceTreeApi()
-  resourceTreeData.value = resourceTreeRes.data
-  console.log(resourceTreeRes.data)
-})
-
-const checkList = ref([1, 2, 3, 4, 5])
-const labelList = ref([
+const tableData = ref([
   {
-    id: 1,
-    name: '语文',
+    date: '2016-05-03',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles',
   },
   {
-    id: 2,
-    name: '数学',
+    date: '2016-05-02',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles',
   },
   {
-    id: 3,
-    name: '英语',
+    date: '2016-05-04',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles',
   },
   {
-    id: 4,
-    name: '体育',
-  },
-  {
-    id: 5,
-    name: '科学',
+    date: '2016-05-01',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles',
   },
 ])
 
-/**
- * node: nextSibling、previousSibling、parent、children
- * @param node： element-plus 对节点数据进行的封装， 通过 node.data 可以获取节点数据
- * @param data： 节点数据
- */
-const remove = (node, data) => {
-  console.log("node", node)
-  console.log("data", data)
+const onMove = (idx, step) => {
+  const tmp = tableData.value[idx]
+  tableData.value[idx] = tableData.value[idx + step]
+  tableData.value[idx + step] = tmp
 }
 </script>
 
 <template>
 
   <div class="page4">
+    <el-table :data="tableData" style="width: 100%">
+      <el-table-column prop="date" label="Date" width="180"/>
+      <el-table-column prop="name" label="Name" width="180"/>
+      <el-table-column prop="address" label="Address"/>
 
-    <el-tree
-        :data="resourceTreeData"
-        show-checkbox
-        node-key="id"
-        default-expand-all
-        :expand-on-click-node="false">
-
-      <template #default="{ data }">
-        <!--        菜单按钮-->
-        <a  v-if="data.resourceType === 0" style="margin-left: 8px"> {{ data.resourceName }} </a>
-
-        <!--        <a v-if="data.resourceType === 2" style="margin-left: 8px" @click="remove(node, data)"> {{ data.resourceName }} </a>-->
-      </template>
-
-    </el-tree>
-
+      <el-table-column label="Operations">
+        <template #default="scope">
+          <el-button :disabled="scope.$index === 0" @click="onMove(scope.$index, -1)">上移</el-button>
+          <el-button :disabled="scope.$index === tableData.length - 1" @click="onMove(scope.$index, 1)">下移
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 

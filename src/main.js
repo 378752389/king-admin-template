@@ -34,4 +34,10 @@ for (const key in Icons) {
     app.component(registerKey, Icons[key])
 }
 
+
+const securityJsCode = ""
+window._AMapSecurityConfig = {
+    securityJsCode
+};
+
 app.mount('#app')
