@@ -1,35 +1,73 @@
-# king-admin-template
+# king-food-template
 
-This template should help get you started developing with Vue 3 in Vite.
+## 项目文档
 
-## Recommended IDE Setup
+文档地址：暂无
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## 项目介绍
 
-## Customize configuration
+`king-food-template`项目是一套基于快餐(kfc)点单系统后台管理系统。
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+### 项目演示
 
-## Project Setup
+#### 后端项目
 
-```sh
-npm install
-```
+`king-food` 地址：https://github.com/378752389/king-food/
 
-### Compile and Hot-Reload for Development
+#### 后台管理系统
 
-```sh
-npm run dev
-```
+前端项目`king-food-admin`地址：https://github.com/378752389/king-admin-template
 
-### Compile and Minify for Production
+![展示页面一](./document/admin/pkg.jpg)
 
-```sh
-npm run build
-```
+![展示页面二](./document/admin/pkg_edit.jpg)
 
-### Lint with [ESLint](https://eslint.org/)
+![展示页面三](./document/admin/order.jpg)
 
-```sh
-npm run lint
-```
+![展示页面四](./document/admin/order_detail.jpg)
+
+#### 前端小程序
+
+前端项目`king-food-web`地址：https://github.com/378752389/king-admin-template
+
+![mp展示页面一](./document/mp/menu.jpg)
+
+![mp展示页面二](./document/mp/cart.jpg)
+
+![mp展示页面三](./document/mp/index.jpg)
+
+
+#### PC管理端技术
+
+| 技术           | 说明                  | 官网                                   |
+|--------------| --------------------- | -------------------------------------- |
+| Vue          | 前端框架              | https://vuejs.org/                     |
+| Vue-router   | 路由框架              | https://router.vuejs.org/              |
+| Pinia        | 全局状态管理框架      | https://pinia.vuejs.org                |
+| Element-Plus | 前端UI框架            | https://element.eleme.io               |
+| Axios        | 前端HTTP框架          | https://github.com/axios/axios         |
+| Js-cookie    | cookie管理工具        | https://github.com/js-cookie/js-cookie |
+| nprogress    | 进度条控件            | https://github.com/rstacruz/nprogress  |
+
+
+## 环境搭建
+
+### 开发工具
+
+| 工具          | 说明                | 官网                                            |
+| ------------- | ------------------- | ----------------------------------------------- |
+| VsCode        | 开发IDE             | https://code.visualstudio.com/         |
+| Snipaste      | 屏幕截图工具        | https://www.snipaste.com/                       |
+| Typora        | Markdown编辑器      | https://typora.io/                              |
+
+
+
+### 搭建步骤
+
+> Windows/Mac环境部署
+
+- 按照项目依赖：yarn install
+- 运行项目：yarn dev
+
+
+
